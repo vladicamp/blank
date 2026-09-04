@@ -1,6 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/t7sp0m1pli2d/extra_domains/html/
-    # Copy all files except .git and .htaccess
-    - /usr/bin/rsync -rv --exclude='.git*' --exclude='.htaccess' ./ $DEPLOYPATH
+    - export DEPLOYPATH=/home/t7sp0m1pli2d/extra_domains/html
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R * $DEPLOYPATH
