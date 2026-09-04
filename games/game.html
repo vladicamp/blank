@@ -495,7 +495,7 @@ const ARROWS = (label) => `
               ? `<iframe src="${e(game.demo_url)}" title="${e(game.title)} demo"
                          allow="fullscreen; autoplay" loading="lazy"></iframe>`
               : `<div class="demo-frame__empty">
-                   <span class="demo-frame__play" aria-hidden="true">
+                   <span class="demo-frame__play" data-gameid="${e(game.specs.game_id)}" aria-hidden="true">
                      <svg width="20" height="24" viewBox="0 0 20 24" fill="currentColor"><path d="M0 0l20 12L0 24z"/></svg>
                    </span>
                    <p class="demo-frame__note">Demo coming soon</p>
@@ -611,6 +611,12 @@ const ARROWS = (label) => `
       if (heroArt.complete) placeNav(); else heroArt.addEventListener('load', placeNav);
       window.addEventListener('resize', placeNav);
     }
+
+    /* added custom coded for deme-frame__empty to add thumbanail as background
+    style in ws-overrides.css */
+    const demoFrameEmpty = document.querySelector('.demo-frame__empty');
+    demoFrameEmpty.style.backgroundImage = `url('${game.thumbnail}')`; 
+
   } catch (err) {
     console.error(err);
     root.innerHTML = `<section class="section container"><p>Could not load this game (${e(err.message)}).</p></section>`;
