@@ -2227,3 +2227,41 @@ main > section:has(+ #demo):not(.band-dark):not(.band-purple) { padding-bottom: 
   .game-grid > .game-card,
   .game-grid > .game-card:nth-child(-n + 4) { grid-column: span 1; }
 }
+
+/***************************
+=vc override start
+****************************/
+.demo-frame__empty
+{
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.demo-frame__play
+{
+  cursor: pointer;
+  background-color: transparent;
+}
+.demo-frame__play::before
+{
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: block;
+  background-color: rgba(0,0,0,.2);
+  transition: background-color 0.3s ease;
+}
+.demo-frame:hover .demo-frame__play::before
+{
+  background-color: rgba(0,0,0,.1);
+}
+.demo-frame .demo-frame__note 
+{
+  transition: color 0.3s ease;
+}
+.demo-frame:hover .demo-frame__note 
+{
+  color: #fff;
+}
+/***************************
+=vc override end
+****************************/
