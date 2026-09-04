@@ -1,0 +1,29 @@
+<!--
+	This is NOT a standalone page — it's the exact snippet to add to your
+	real page that already contains #request-demo-form.
+
+	1. Add the reCAPTCHA script tag once, anywhere in <head> or before
+	   </body> (only needs to load once per page):
+-->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<!--
+	2. Inside your existing <form id="request-demo-form">, add the
+	   reCAPTCHA div — right before the submit button works well:
+-->
+<div class="g-recaptcha" data-sitekey="<?php echo htmlspecialchars( RECAPTCHA_SITE_KEY ); ?>"></div>
+
+<!--
+	Since your form markup is currently static HTML (not .php), the line
+	above needs PHP to run. Either:
+	  a) rename that page's file extension to .php, and add
+	     <?php require_once __DIR__ . '/../config/qtech-config.php'; ?>
+	     at the very top of the file (before any HTML output), or
+	  b) skip the PHP entirely and hardcode your real site key directly:
+	     data-sitekey="YOUR_ACTUAL_SITE_KEY"
+	     (fine for the site key — it's meant to be public. Never do this
+	     with the secret key.)
+
+	3. Include the JS file once, near the end of <body>:
+-->
+<script src="contact-form.js"></script>

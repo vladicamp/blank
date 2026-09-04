@@ -1,0 +1,5 @@
+# Place this .htaccess file inside the /config folder if it must live
+# inside public_html. Blocks all direct browser access to every file in
+# this folder, including qtech-config.php.
+
+Require all denied
