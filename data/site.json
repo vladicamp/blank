@@ -1,0 +1,264 @@
+{
+  "_meta": {
+    "role": "Editable marketing copy for the landing page, the shared header/footer, and the brochure's front matter.",
+    "wp_mapping": "Becomes ACF Options Page fields plus the front-page template's field group. See wp/HANDOVER.md."
+  },
+  "company": {
+    "name": "Wild Sheep",
+    "legal_name": "Wild Sheep Games",
+    "domain": "wildsheepgames.com",
+    "email": "hello@wildsheepgames.com",
+    "hosting_note": "Wild Sheep is hosted by Q-RGS, available through QTech Network."
+  },
+  "footer": {
+    "_note": "Footer chrome. The menu itself is NOT here — it renders from `nav` below, the same array the header uses, so there is only ever one link list. `legal_links` is deliberately empty: Privacy / Terms / Cookies are the usual entries, but the pages do not exist yet and the row is content-gated, so it stays hidden rather than shipping dead links. Add them here and the row appears.",
+    "blurb": "Slots and mini-games operators can reshape: adjustable RTP, flexible max win, three game speeds, and full branded-exclusive rebuilds.",
+    "responsible": {
+      "age": "18+",
+      "text": "Please Gamble Responsibly",
+      "link": {
+        "label": "GambleAware.org",
+        "href": "https://www.gambleaware.org"
+      }
+    },
+    "copyright": "Wild Sheep Games. All rights reserved.",
+    "legal_links": []
+  },
+  "hero": {
+    "line_1": "GAMES FOR THE",
+    "line_2": "GAME",
+    "line_2_script": "CHANGERS",
+    "cta_primary": {
+      "label": "Our Games",
+      "href": "games/"
+    },
+    "cta_secondary": {
+      "label": "Request Demo",
+      "href": "#request-demo"
+    }
+  },
+  "personalisation": {
+    "_note": "The chips under this statement are the capability carousel's tab strip, so they are rendered from `capabilities` below rather than listed here — chip n selects card n.",
+    "body": "With <b>Wild Sheep</b>, you can <b>personalise</b> any game the way you see fit: for any market, any player, any goal. <b>Take control. Go wild.</b>"
+  },
+  "capabilities": [
+    {
+      "id": "branded-exclusive",
+      "title": "Branded Exclusive",
+      "body": "Proven titles, rebuilt around your brand. Tune the RTP and volatility to your market, and run it as a game no competitor can offer. First one is on us:",
+      "link": {
+        "label": "Get your own Branded Exclusive for FREE!",
+        "href": "free-branded-game/"
+      },
+      "art": "assets/img/capabilities/branded-exclusive.webp"
+    },
+    {
+      "id": "flexible-max-win",
+      "title": "Flexible Max Win",
+      "body": "Set the ceiling where your market wants it. The same title can ship as a steady grinder or a top-heavy chase without a rebuild.",
+      "art": "assets/img/capabilities/flexible-max-win.webp"
+    },
+    {
+      "id": "adjustable-rtp",
+      "title": "Adjustable RTP",
+      "body": "Multiple certified RTP configurations per title, so one integration covers every jurisdiction and margin target you operate against.",
+      "art": "assets/img/capabilities/adjustable-rtp.webp"
+    },
+    {
+      "id": "turbo-crazy-speed",
+      "title": "Turbo + Crazy Speed",
+      "body": "Pick from Normal, Fast and CRAZY game speeds to drive higher retention, better conversion, and <b>up to 30% revenue increase*</b>",
+      "art": "assets/img/capabilities/turbo-crazy-speed.webp"
+    }
+  ],
+  "value_props": [
+    {
+      "title": "Engagement Tools",
+      "body": "Tournaments, prize drops, free rounds, cashback, jackpots: all built in, launched on demand.",
+      "link": {
+        "label": "Read more",
+        "href": "#promotion-tools"
+      }
+    },
+    {
+      "title": "Certified Math Models",
+      "body": "GLI-certified by iTech: provably fair, audit-ready, cleared for regulated markets. No compliance surprises."
+    },
+    {
+      "title": "Fast API Integration",
+      "body": "Plug in, launch fast. Our lightweight API and trusted aggregator gets you going in no time."
+    }
+  ],
+  "brand_tiles": [
+    {
+      "_note": "`mark_hover` and `tagline` are both optional and both only appear on hover/tap — the resting tile is the full lockup from `logo`. `mark_hover` names a CSS class suffix (.mark--<value>).",
+      "brand": "origins",
+      "label": "Wild Sheep Origins",
+      "href": "games/?filter=origins",
+      "logo": "assets/img/logos/wildsheep-origins-stacked.svg",
+      "colour": "#9445FF",
+      "mark_hover": "origins-word",
+      "tagline": "customisable revenue generator"
+    },
+    {
+      "brand": "classic",
+      "label": "Wild Sheep Classic",
+      "href": "games/?filter=classic",
+      "logo": "assets/img/logos/wildsheep-classic.png",
+      "colour": "#FF932E",
+      "mark_hover": "classic-word",
+      "tagline": "battle-tested favourites"
+    }
+  ],
+  "hot_games": {
+    "title": "Hot Games!",
+    "body": "The titles operators are launching right now — proven performers with the engagement tooling already wired in.",
+    "cta": {
+      "label": "Our Games",
+      "href": "games/"
+    }
+  },
+  "upcomings": {
+    "title": "Upcomings"
+  },
+  "promotion_tools": {
+    "_note": "Key stays `promotion_tools` — it is referenced by the #promotion-tools anchor, the brochure builder and wp/acf-fields.json. Only the display strings changed.",
+    "title": "Engagement Tools",
+    "body": "Hold them for longer, with more turnover & profitable play sessions",
+    "items": [
+      {
+        "title": "Tournament Tools",
+        "body": "Build tournaments and challenges around your players: the prize pool, the qualifying games, a weekend sprint, a month long leaderboard, every parameter is yours to move.",
+        "icon": "M8 4h8v5a4 4 0 0 1-8 0V4Z M8 5.5H5.5V7a3 3 0 0 0 2.5 3 M16 5.5h2.5V7a3 3 0 0 1-2.5 3 M12 13v3.5 M8.5 20h7 M10 16.5h4l.8 3.5h-5.6l.8-3.5Z"
+      },
+      {
+        "title": "GGR Discount",
+        "body": "A rebate on your revenue share. The more volume you push through our content, the less you pay on it. No minimum commitment, no upfront spend to recover.",
+        "icon": "M20.6 3.4h-6.2c-.6 0-1.1.2-1.5.6l-9.1 9.1a2 2 0 0 0 0 2.9l4.2 4.2a2 2 0 0 0 2.9 0l9.1-9.1c.4-.4.6-.9.6-1.5V3.4Z M17.5 6.5h.01 M9.9 10.9a1.5 1.5 0 1 1-2.1-2.1 1.5 1.5 0 0 1 2.1 2.1Z M15.2 16.2a1.5 1.5 0 1 1-2.1-2.1 1.5 1.5 0 0 1 2.1 2.1Z M15.4 8.6l-7 7"
+      },
+      {
+        "title": "Player Cashback",
+        "body": "Return a share of player spend straight back into their balance. It stretches a deposit further, softens a losing session and gives players a reason to return tomorrow.",
+        "icon": "M4.6 8.4A8.6 8.6 0 0 1 18.7 6.2 M19.4 2.9l.3 3.7-3.7.3 M12 21.6a7.6 7.6 0 1 0 0-15.2 7.6 7.6 0 0 0 0 15.2Z M12 9.2v9.6 M14 11.4a2 2 0 0 0-2-1.4 1.6 1.6 0 0 0 0 3.2 1.6 1.6 0 0 1 0 3.2 2 2 0 0 1-2-1.4"
+      },
+      {
+        "title": "Mystery Jackpot",
+        "body": "Opt into our jackpot network and pick the tiers that suit your audience. A headline pot worth millions, backed by daily and mini jackpots that land often enough to keep the chase real.",
+        "icon": "M2.8 9.2h18.4L12 20.9 2.8 9.2Z M6.4 4.1h11.2l3.6 5.1H2.8l3.6-5.1Z M8.6 9.2 12 20.9l3.4-11.7 M8.6 9.2 10 4.1 M15.4 9.2 14 4.1"
+      },
+      {
+        "title": "Free Rounds",
+        "body": "Reward your best players with free rounds, and customised everything: a welcome gift, a reactivation nudge, a thank you to a top depositor. Conditions are set per campaign.",
+        "icon": "M20 12a8 8 0 1 1-2.6-5.9 M20.4 3.9v4.2h-4.2 M12 8.5l1.05 2.45 2.45 1.05-2.45 1.05L12 15.5l-1.05-2.45L8.5 12l2.45-1.05L12 8.5Z"
+      },
+      {
+        "title": "Prize Drops",
+        "body": "Randomised prizes within your casino. Any spin can pay, which turns an ordinary session into one worth staying in. Set the prize table, the drop frequency and the game list.",
+        "icon": "M3.4 10.8a8.6 8.6 0 0 1 17.2 0H3.4Z M8.9 10.8c0-4.8 1.4-8.6 3.1-8.6s3.1 3.8 3.1 8.6 M3.4 10.8l5.4 3.9 M20.6 10.8l-5.4 3.9 M8.8 14.6h6.4v5.2H8.8Z M12 14.6v5.2"
+      }
+    ]
+  },
+  "news": {
+    "title": "News",
+    "note": "NOT RENDERED. The News section was removed from the landing page; this copy is kept for the later phase that brings it back as real posts. See wp/HANDOVER.md.",
+    "items": [
+      {
+        "title": "Wild Sheep goes live on QTech Network",
+        "date": "2026-07-28",
+        "excerpt": "Our full catalogue is now available to every operator on the QTech aggregator."
+      },
+      {
+        "title": "Blob Invasion clears GLI certification",
+        "date": "2026-05-02",
+        "excerpt": "The chain-reaction collector is cleared for regulated markets across Europe and LatAm."
+      },
+      {
+        "title": "Turbo + Crazy Speed rolls out catalogue-wide",
+        "date": "2026-03-15",
+        "excerpt": "Every live title now ships with three selectable game speeds."
+      }
+    ]
+  },
+  "partners": {
+    "note": "NOT RENDERED. The partner row was removed from the landing page — these logos came from the XD comp and are not confirmed as cleared for public display. Kept so the section can return once they are.",
+    "title": "Trusted by",
+    "logos": [
+      {
+        "name": "Betpanda",
+        "file": "assets/img/partners/betpanda.png"
+      },
+      {
+        "name": "SOFTSWISS",
+        "file": "assets/img/partners/softswiss.png"
+      },
+      {
+        "name": "Spacehills",
+        "file": "assets/img/partners/spacehills.png"
+      },
+      {
+        "name": "OdiBets",
+        "file": "assets/img/partners/odibets.png"
+      }
+    ]
+  },
+  "contact": {
+    "title_line_1": "BE THE NEXT",
+    "title_line_2": "GAME",
+    "title_script": "CHANGERS",
+    "submit_label": "Request Demo",
+    "fields": [
+      {
+        "name": "first_name",
+        "label": "First Name",
+        "type": "text",
+        "required": true,
+        "width": "half"
+      },
+      {
+        "name": "last_name",
+        "label": "Last Name",
+        "type": "text",
+        "required": true,
+        "width": "half"
+      },
+      {
+        "name": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true,
+        "width": "full"
+      },
+      {
+        "name": "message",
+        "label": "Message",
+        "type": "textarea",
+        "required": false,
+        "width": "full"
+      }
+    ]
+  },
+  "nav": [
+    {
+      "label": "Home",
+      "href": "index.html"
+    },
+    {
+      "label": "Game Library",
+      "href": "games/"
+    },
+    {
+      "label": "Free Branded Game!",
+      "href": "free-branded-game/"
+    },
+    {
+      "label": "Download Brochure",
+      "href": "brochure/"
+    }
+  ],
+  "brochure": {
+    "title": "Game Catalogue",
+    "subtitle": "The complete Wild Sheep library",
+    "intro": "Wild Sheep builds slots and mini-games that operators can reshape: adjustable RTP, flexible max win, three game speeds, and full branded-exclusive rebuilds. Every title is GLI-certified by iTech and available through the QTech Network.",
+    "footer_note": "Specifications are indicative and may vary by jurisdiction and configuration. Contact us for certified math sheets."
+  }
+}

@@ -1,0 +1,232 @@
+<!doctype html>
+<!-- data-root is how every page tells the JS where the site root is.
+     WordPress port: emit get_template_directory_uri() here. -->
+<!-- data-parallax selects the first-fold scroll effect, and is the ONLY switch:
+     "v2" = the headline holds still while the fold scrolls up under it, until the
+            dark band rises over it.
+     "v1" = the headline recedes and fades behind the cast as you scroll.
+     Both live in site.css under [data-parallax='…']; change this one word to
+     swap them. Any other value (or removing the attribute) disables both and
+     leaves the fold static. -->
+<html lang="en" data-root="" data-parallax="v2">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wild Sheep — Games for the Game Changers</title>
+  <meta name="description" content="Wild Sheep builds slots and mini-games operators can reshape: adjustable RTP, flexible max win, three game speeds and full branded-exclusive rebuilds. GLI-certified, available through QTech Network.">
+  <link rel="icon" href="assets/img/logos/sheep-icon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/SCHABO-XCondensed.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="landing">
+
+<!-- == template-parts/header.php ======================================== -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__logo" href="index.html" aria-label="Wild Sheep — home">
+      <span class="mark mark--wordmark"></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="site-nav" id="site-nav" data-open="false" aria-label="Main">
+  <a href="index.html">Home</a>
+  <a href="games/">Game Library</a>
+  <a href="free-branded-game/">Free Branded Game!</a>
+  <a href="brochure/">Download Brochure</a>
+</nav>
+
+<main>
+
+  <!-- == template-parts/hero.php ======================================== -->
+  <!-- NOT .container: the lineup runs the full width of the viewport and is
+       cropped by the screen edge, so the section can't sit inside the content
+       column. The type gets the column back via .hero__type's own max-width. -->
+  <section class="hero">
+    <div class="hero__type">
+      <h1 class="visually-hidden">Wild Sheep — games for the game changers</h1>
+      <p class="hero__line" aria-hidden="true">Games for the</p>
+      <p class="hero__line hero__line--script" aria-hidden="true">
+        <span class="hero__word">Game</span>
+        <span class="mark mark--changers hero__script"></span>
+      </p>
+    </div>
+    <!-- The cast lineup. Decorative: every character here is a game whose name
+         is already in the catalogue below, so it is hidden from assistive tech
+         rather than given invented alt text.
+         `eager` + high priority — it is the largest thing in the first fold and
+         lazy-loading it would leave a hole above the fold on a slow connection.
+         The wrapper exists so the image's negative bottom margin resolves against
+         the IMAGE's own width rather than the hero's — see .hero__art in site.css. -->
+    <div class="hero__art" aria-hidden="true">
+      <!-- WebP q85 at native size, 454KB against the PNG's 4.3MB — visually
+           indistinguishable at 1:1 (the diff is fine texture noise, no banding
+           or ringing, and the alpha edge is untouched). Downscaling instead of
+           lowering quality was measurably WORSE on both counts, so the source
+           keeps its full 2864px. The PNG stays as the master and the fallback. -->
+      <picture>
+        <source srcset="assets/img/hero-lineup.webp" type="image/webp">
+        <img src="assets/img/hero-lineup.png" alt=""
+             width="2864" height="1307" loading="eager" fetchpriority="high">
+      </picture>
+    </div>
+  </section>
+
+  <!-- == template-parts/personalisation.php ============================= -->
+  <section class="band-dark section personalisation">
+    <div class="container">
+      <p class="personalisation__body" data-personalisation-body></p>
+      <div class="btn-row" data-personalisation-chips></div>
+      <!-- Same reservation as the hero: mobile-only height for the dark-fold
+           image when it lands. -->
+      <div class="personalisation__art-slot" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- == template-parts/capabilities.php =============================== -->
+  <!-- .bleed-clip lets a card run past the content column and off the screen
+       rather than being sliced at the column edge; .cap-viewport therefore does
+       NOT clip. The chips in the band above are this carousel's tab strip. -->
+  <section class="band-dark section--tight bleed-clip cap-carousel-section" style="padding-top:0">
+    <div class="container">
+      <div class="cap-carousel" data-rail data-cap-rail>
+        <div class="cap-viewport">
+          <div class="cap-track" data-rail-track data-capabilities></div>
+        </div>
+        <!-- Inside the card, bottom-left — see .cap-carousel__nav. -->
+        <div class="carousel-nav cap-carousel__nav">
+          <button type="button" data-rail-prev aria-label="Previous capability">
+            <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true"><path d="M12 2 3 11l9 9" stroke="currentColor" stroke-width="2.5"/></svg>
+          </button>
+          <button type="button" data-rail-next aria-label="Next capability">
+            <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true"><path d="M2 2l9 9-9 9" stroke="currentColor" stroke-width="2.5"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- == template-parts/value-props.php ================================ -->
+  <!-- Closes out the same dark band as the two blocks above. -->
+  <section class="band-dark value-props-section">
+    <div class="container">
+      <div class="value-props" data-value-props></div>
+    </div>
+  </section>
+
+  <!-- == template-parts/brand-tiles.php =============================== -->
+  <section class="brand-tiles" data-brand-tiles></section>
+
+  <!-- == template-parts/hot-games.php ================================= -->
+  <section class="section bleed-clip" id="hot-games">
+    <div class="container">
+      <div class="rail-head">
+        <div>
+          <h2 class="display display--lg">Hot Games!</h2>
+          <p class="section-lead">The titles operators are launching right now — proven performers with the engagement tooling already wired in.</p>
+        </div>
+        <a class="btn" href="games/">Our Games</a>
+      </div>
+      <div data-rail data-rail-flush>
+        <div class="rail">
+          <div class="rail-track rail-track--lg" data-rail-track data-hot-games></div>
+        </div>
+        <div class="carousel-nav">
+          <button type="button" data-rail-prev aria-label="Previous game">
+            <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true"><path d="M12 2 3 11l9 9" stroke="currentColor" stroke-width="2.5"/></svg>
+          </button>
+          <button type="button" data-rail-next aria-label="Next game">
+            <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true"><path d="M2 2l9 9-9 9" stroke="currentColor" stroke-width="2.5"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- == template-parts/upcomings.php ================================= -->
+  <!-- padding-top:0 so the gap above the panel is Hot Games' own --sec-y
+       bottom padding alone, matching the tiles -> HOT GAMES gap. -->
+  <section class="section--tight" id="upcomings" style="padding-top:0;padding-bottom:0">
+    <div class="container">
+      <div class="upcomings-panel">
+        <div>
+          <h2 class="display display--md" style="color:var(--white)">Upcomings</h2>
+          <!-- Pulled out to the panel's right edge so the cards are cropped by
+               the dark ground itself rather than stopping short of it. -->
+          <div class="upcomings-rail" data-rail data-rail-flush style="margin-top:2rem">
+            <div class="rail">
+              <div class="rail-track" data-rail-track data-upcomings></div>
+            </div>
+            <div class="carousel-nav">
+              <button type="button" data-rail-prev aria-label="Previous upcoming game">
+                <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true"><path d="M12 2 3 11l9 9" stroke="currentColor" stroke-width="2.5"/></svg>
+              </button>
+              <button type="button" data-rail-next aria-label="Next upcoming game">
+                <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true"><path d="M2 2l9 9-9 9" stroke="currentColor" stroke-width="2.5"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- == template-parts/promotion-tools.php =========================== -->
+  <section class="band-purple section" id="promotion-tools">
+    <div class="container">
+      <h2 class="display display--md">Engagement Tools</h2>
+      <p class="section-lead">Hold them for longer, with more turnover &amp; profitable play sessions</p>
+      <div class="promo-grid" data-promo-tools></div>
+    </div>
+  </section>
+
+  <!-- == template-parts/contact.php =================================== -->
+  <section class="band-dark section" id="request-demo">
+    <div class="container contact-grid">
+      <div>
+        <p class="hero__line" style="font-size:var(--d-xl)" aria-hidden="true">Be the next</p>
+        <p class="hero__line hero__line--script" style="font-size:var(--d-xl);justify-content:flex-start" aria-hidden="true">
+          <span class="hero__word">Game</span>
+          <span class="mark mark--changers hero__script"></span>
+        </p>
+        <h2 class="visually-hidden">Be the next game changers — request a demo</h2>
+      </div>
+
+      <form class="contact-form" id="request-demo-form" novalidate data-email="hello@wildsheepgames.com">
+        <div class="contact-form" style="display:contents" data-contact-fields></div>
+        <button class="btn" type="submit">Request Demo</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- == template-parts/footer.php ====================================== -->
+<footer class="site-footer band-dark">
+  <div class="container site-footer__top">
+    <div class="site-footer__brand">
+      <span class="mark mark--wordmark-outline site-footer__logo" role="img" aria-label="Wild Sheep"></span>
+      <p class="site-footer__blurb" data-footer-blurb></p>
+    </div>
+    <!-- Rendered from site.json's `nav` — the same array the header menu
+         uses, so the two can never drift apart. See initFooter(). -->
+    <nav class="site-footer__nav" data-footer-nav aria-label="Footer"></nav>
+  </div>
+
+  <div class="container site-footer__bottom">
+    <p class="site-footer__responsible" data-footer-responsible></p>
+    <ul class="site-footer__legal" data-footer-legal hidden></ul>
+    <p class="site-footer__note" data-hosting-note>Wild Sheep is hosted by Q-RGS, available through QTech Network.</p>
+    <p class="site-footer__copy" data-footer-copy></p>
+  </div>
+</footer>
+
+<script src="assets/js/store.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

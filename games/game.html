@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game — Wild Sheep</title>
+  <link rel="icon" href="../assets/img/logos/sheep-icon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/SCHABO-XCondensed.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-page="game">
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__logo" href="../index.html" aria-label="Wild Sheep — home">
+      <span class="mark mark--wordmark"></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="site-nav" id="site-nav" data-open="false" aria-label="Main">
+  <a href="../index.html">Home</a>
+  <a href="./">Game Library</a>
+  <a href="../free-branded-game/">Free Branded Game!</a>
+  <a href="../brochure/">Download Brochure</a>
+</nav>
+
+<main data-game-root>
+  <p class="loading" style="padding:6rem;text-align:center">Loading…</p>
+</main>
+
+<!-- No margin-top: on an Origins page the purple form band hands straight off to
+     the purple footer, and any gap there reads as a seam. On a Classic page the
+     demo section's own margin already supplies the air above the footer. -->
+<footer class="site-footer band-dark">
+  <div class="container site-footer__top">
+    <div class="site-footer__brand">
+      <!-- Outline lockup, as on the landing page. It is the variant that reads on a
+           brand-coloured ground: the solid mark paints as one flat silhouette in
+           --footer-mark, which on purple or orange loses the sheep entirely. -->
+      <span class="mark mark--wordmark-outline site-footer__logo" role="img" aria-label="Wild Sheep"></span>
+      <p class="site-footer__blurb" data-footer-blurb></p>
+    </div>
+    <!-- Rendered from site.json's `nav` — the same array the header menu
+         uses, so the two can never drift apart. See initFooter(). -->
+    <nav class="site-footer__nav" data-footer-nav aria-label="Footer"></nav>
+  </div>
+
+  <div class="container site-footer__bottom">
+    <p class="site-footer__responsible" data-footer-responsible></p>
+    <ul class="site-footer__legal" data-footer-legal hidden></ul>
+    <p class="site-footer__note" data-hosting-note>Wild Sheep is hosted by Q-RGS, available through QTech Network.</p>
+    <p class="site-footer__copy" data-footer-copy></p>
+  </div>
+</footer>
+
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/site.js"></script>
+<script>
+/* ==========================================================================
+   single-game.php
+   Renders one catalogue entry as the game one-sheet: hero, spec band, story +
+   core features, symbols, the Buy Bonus carousel and demo play. Every block
+   after the hero is optional and skipped when the game has no data for it, so
+   a title with catalogue fields only still produces a valid page.
+   See `_meta.detail_blocks` in games.json.
+   ========================================================================== */
+
+/* The two figures that lead the spec band. */
+const HEADLINE_SPECS = [['rtp', 'RTP'], ['max_win', 'Max Win']];
+
+/* Everything else, in the reading order of the printed spec panel.
+   `bonus_buy` is deliberately absent: the Buy Bonus carousel below enumerates
+   every tier, so a "Yes — 6 tiers" cell only repeats it.
+
+   The two ranges describe themselves differently and this list carries BOTH
+   vocabularies rather than flattening them into one. Origins states a grid and
+   a win mechanic ("6x4", "4096 ways") and quotes hit frequencies; Classic
+   states a reel count and a line count ("6 reels", "4,096 ways"), adds region
+   and orientation, and quotes no frequencies at all. Each game renders only
+   the keys it carries, so one order serves both. */
+const SPEC_LABELS = {
+  volatility:       'Volatility',
+  hit_rate:         'Win Hit Frequency',
+  feature_hit_rate: 'Feature Hit Frequency',
+  layout:           'Grid Layout',
+  mechanic:         'Win Mechanic',
+  reels:            'Game Type',
+  lines:            'Lines',
+  region:           'Region',
+  free_spin_cost:   'Default Free-Spin Cost',
+  min_bet:          'Default Min Bet',
+  max_bet:          'Default Max Bet',
+  orientation:      'Orientation Support',
+  game_id:          'Game ID',
+};
+
+/* No VARIANT_FIELDS list, and that is a deliberate reversal.
+   An earlier pass built a switcher over whole configurations on the assumption
+   that hit rate, deviation and average feature win move with the RTP band. The
+   ORIGINS brochure — the source of truth — publishes a headline RTP plus its
+   alternates and a SINGLE figure for everything else on every one of the seven
+   pages. So only RTP varies, and a switcher would imply movement the source
+   does not state. The alternates render beside the headline instead, which is
+   also how the printed spec sheet sets them. */
+
+const TICK = `<svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+  <circle cx="9" cy="9" r="9" fill="currentColor"/>
+  <path d="M5 9.3l2.6 2.6L13 6.5" stroke="#fff" stroke-width="2" stroke-linecap="square"/>
+</svg>`;
+
+/* Same circle, a cross instead of a tick — the brochure's own treatment for an
+   option a game does not support. Colour comes from `.spec-options .is-off`. */
+const CROSS = `<svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+  <circle cx="9" cy="9" r="9" fill="currentColor"/>
+  <path d="M6 6l6 6M12 6l-6 6" stroke="#fff" stroke-width="2" stroke-linecap="square"/>
+</svg>`;
+
+const ARROWS = (label) => `
+  <div class="carousel-nav">
+    <button type="button" data-rail-prev aria-label="Previous ${label}">
+      <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true"><path d="M12 2 3 11l9 9" stroke="currentColor" stroke-width="2.5"/></svg>
+    </button>
+    <button type="button" data-rail-next aria-label="Next ${label}">
+      <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true"><path d="M2 2l9 9-9 9" stroke="currentColor" stroke-width="2.5"/></svg>
+    </button>
+  </div>`;
+
+(async () => {
+  const root = document.querySelector('[data-game-root]');
+  const e = WS.escape;
+
+  /* `story` and a feature's `body` are arrays of paragraphs in the data; older
+     entries may still carry a bare string. Normalising here rather than at
+     each call site keeps the templates below free of the distinction. */
+  const paras = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+  const toP = (v, cls) => paras(v)
+    .map((p) => `<p${cls ? ` class="${cls}"` : ''}>${e(p)}</p>`).join('');
+
+  try {
+    const data = await WS.loadData();
+    const slug = new URLSearchParams(location.search).get('g');
+    const game = data.games.find((g) => g.slug === slug);
+
+    if (!game) {
+      root.innerHTML = `<section class="section container">
+        <h1 class="display display--md">Game not found</h1>
+        <p class="section-lead">That title isn't in the catalogue.</p>
+        <p style="margin-top:1.5rem"><a class="btn" href="./">Back to the library</a></p>
+      </section>`;
+      return;
+    }
+
+    document.title = `${game.title} — Wild Sheep`;
+
+    /* An unreleased title has no page of its own — nothing links here, and the
+       one-sheet would be a hero over a thumbnail and three empty sections. The
+       URL still resolves rather than 404ing, because it may be bookmarked or
+       shared, but it answers with the date and a way back.
+       `isTeaser()` comes from site.js so the card renderers and this page can
+       never disagree about which titles are teasers. */
+    if (isTeaser(game)) {
+      /* Drop the game-page header treatment. It is fixed and paints its marks
+         white at the top of the scroll, which is right over a dark hero and
+         invisible over the paper this page uses instead. Changing `data-page`
+         hands the header back to its ordinary sticky, ink-on-paper behaviour. */
+      document.body.dataset.page = 'game-teaser';
+      const when = game.release_date ? WS.fmtDate(game.release_date) : null;
+      root.innerHTML = `
+        <section class="section container teaser-page">
+          <p class="eyebrow">Coming soon</p>
+          <h1 class="display display--lg">${e(game.title)}</h1>
+          ${when ? `<p class="section-lead">Available ${when.month} ${when.year}.</p>` : ''}
+          <p class="teaser-page__note">This title hasn't launched yet, so there's
+            nothing to show beyond the date. It'll get a full page — specification,
+            features and demo — when it does.</p>
+          <p class="btn-row">
+            <a class="btn btn--solid" href="../index.html#request-demo">Request Demo</a>
+            <a class="btn" href="./">Game Library</a>
+          </p>
+        </section>`;
+      return;
+    }
+
+    const base = data.base;
+    const specs = game.specs || {};
+    const variants = specs.variants || [];
+    const brand = data.brands?.[game.brand]?.colour || '#9445FF';
+    const released = new Date(`${game.release_date}T00:00:00`) <= new Date();
+
+    /* ---- hero ---------------------------------------------------------- */
+    /* Every catalogue title now ships a transparent logo cut from its asset
+       pack, so the composed treatment is the normal path and the flat
+       thumbnail is the fallback for a title whose art hasn't landed yet. Both
+       sit inside the band now — nothing bleeds past it. */
+    const art = game.art?.logo
+      ? `<img class="game-hero__art game-hero__art--logo" src="${base}${e(game.art.logo)}"
+              alt="${e(game.title)} logo" loading="eager">`
+      : `<img class="game-hero__art" src="${base}${e(game.thumbnail)}"
+              alt="${e(game.title)} key art" loading="eager">`;
+
+    const backdrop = game.art?.backdrop
+      ? `<img class="game-hero__backdrop" src="${base}${e(game.art.backdrop)}" alt="" aria-hidden="true">`
+      : '';
+
+    /* Explicit line breaks when the data provides them; otherwise let the
+       single tagline string wrap on its own. */
+    const tagline = game.tagline_lines?.length
+      ? game.tagline_lines.map((l) => `<span>${e(l)}</span>`).join('')
+      : e(game.tagline);
+
+    /* Prev / next through the catalogue, pinned to the viewport edges of the
+       hero. The order is the library grid's default — released titles, newest
+       first — so stepping with the arrows walks the same sequence the visitor
+       just saw, rather than games.json's write order. Teasers are excluded for
+       the usual reason: they have no page to land on.
+       It wraps, so neither arrow is ever a dead control. */
+    const ordered = WS.query(data.games, { sort: 'newest', released: true });
+    const here = ordered.findIndex((g) => g.slug === game.slug);
+    const step = (delta) => {
+      if (here < 0 || ordered.length < 2) return null;
+      return ordered[(here + delta + ordered.length) % ordered.length];
+    };
+    const navArrow = (dir, g) => {
+      if (!g) return '';
+      const d = dir === 'prev'
+        ? 'M12 2 3 11l9 9'      // ‹
+        : 'M2 2l9 9-9 9';       // ›
+      return `
+        <a class="game-hero__nav game-hero__nav--${dir}"
+           href="?g=${encodeURIComponent(g.slug)}"
+           aria-label="${dir === 'prev' ? 'Previous' : 'Next'} game: ${e(g.title)}">
+          <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true">
+            <path d="${d}" stroke="currentColor" stroke-width="2.5"/>
+          </svg>
+          <span class="game-hero__nav-title">${e(g.title)}</span>
+        </a>`;
+    };
+
+    /* Origins is the range that can be rebuilt as a branded exclusive, so its
+       primary CTA sells that rather than a generic demo — and it scrolls to a
+       form on THIS page instead of throwing the visitor back to the landing
+       page and making them find it. Classic keeps the demo request, which still
+       goes to the landing form: rebranding is not on offer for that range, so
+       there is nothing here for it to scroll to. */
+    const isOrigins = game.brand === 'origins';
+    const primaryCta = isOrigins
+      ? `\n              <a class="btn btn--solid" href="#request-demo">Rebrand This Game</a>`
+      : `\n              <a class="btn btn--solid" href="../index.html#request-demo">Request Demo</a>`;
+
+    const hero = `
+      <section class="game-hero" style="--brand:${brand}">
+        <div class="game-hero__band">${backdrop}</div>
+        ${navArrow('prev', step(-1))}${navArrow('next', step(1))}
+        <div class="container game-hero__inner">
+          <div class="game-hero__copy">
+            <h1 class="display display--lg">${e(game.title)}</h1>
+            <p class="game-hero__tagline">${tagline}</p>
+            <p class="game-hero__summary">${e(game.summary)}</p>
+            <div class="btn-row">${primaryCta}
+              <a class="btn" href="#demo">Demo Play</a>
+            </div>
+          </div>
+          ${art}
+        </div>
+      </section>`;
+
+    /* ---- spec band ------------------------------------------------------ */
+    /* Every certified RTP is set at the same size and the same colour, in one
+       row. The brochure prints the shipping band large and the alternates small
+       and lilac, but on the page that read as a footnote — they are equally
+       shippable configurations, so nothing here ranks one above the others.
+       `variants[0]` duplicates the flat `specs.rtp`, so the list is rendered
+       from `variants` alone rather than from the flat value plus the rest. */
+    const rtpRow = (variants.length > 1 ? variants.map((v) => v.rtp) : [specs.rtp])
+      .map((v) => `<span>${e(v)}</span>`).join('');
+
+    const headline = HEADLINE_SPECS
+      .filter(([k]) => specs[k])
+      .map(([k, label]) => `
+        <div class="stat">
+          <p class="stat__label">${label}</p>
+          <p class="stat__value${k === 'rtp' && variants.length > 1 ? ' stat__value--row' : ''}">${
+            k === 'rtp' ? rtpRow : e(specs[k])}</p>
+          ${k === 'rtp' && variants.length > 1
+            ? `<p class="stat__note">${variants.length} certified configurations</p>` : ''}
+        </div>`)
+      .join('');
+
+    const cells = Object.entries(SPEC_LABELS)
+      .filter(([k]) => specs[k])
+      .map(([k, label]) => `<div><dt>${label}</dt><dd>${e(specs[k])}</dd></div>`)
+      .concat(game.release_date
+        ? [`<div><dt>${released ? 'Released' : 'Available'}</dt>
+             <dd>${WS.fmtDate(game.release_date).full}</dd></div>`]
+        : [])
+      .join('');
+
+    /* An option is a plain string when the game has it, or `{label, available}`
+       when it does not — the brochure marks an unavailable one with a grey
+       cross rather than omitting the row, because the three are a fixed set and
+       a missing row would read as an oversight. */
+    const options = game.options?.length
+      ? `<ul class="spec-options">${game.options
+          .map((o) => (typeof o === 'string' ? { label: o, available: true } : o))
+          .map(({ label, available }) => `
+            <li${available === false ? ' class="is-off"' : ''}>
+              ${available === false ? CROSS : TICK}${e(label)}
+            </li>`).join('')}</ul>`
+      : '';
+
+    /* Distribution reach is identical across every sheet in a range, so it is
+       stored once under `_meta.platforms` and referenced by key. It sits in the
+       spec band because that is what it is — specification, not marketing. */
+    const platform = data._meta?.platforms?.[game.platform];
+    const reach = platform ? `
+      <div class="spec-reach">
+        <div>
+          <dt>Languages <b>${platform.languages.length}</b></dt>
+          <dd>${platform.languages.map(e).join(' · ')}</dd>
+        </div>
+        <div>
+          <dt>Currencies <b>${platform.currencies.length}</b></dt>
+          <dd>${platform.currencies.map(e).join(' · ')}</dd>
+        </div>
+      </div>` : '';
+
+    /* A title whose spec figures are still placeholders says so inside the band
+       rather than as a banner above it — the banner was the first thing under
+       the hero on two thirds of the catalogue.
+
+       Gated on an explicit `specs_provisional` flag, NOT on "has no story",
+       which is what it used to key off. Two titles (Spin My Drink, High
+       Roller's Cash) carry real brochure figures and no background story,
+       and the old test called their specs invented. */
+    const provisional = !game.specs_provisional || !cells ? '' : `
+      <p class="spec-provisional">Placeholder specification — this title's
+      one-sheet hasn't been transcribed yet, and the figures above use standard
+      fields rather than measured values.</p>`;
+
+    const specBand = headline || cells ? `
+      <section class="band-dark section" id="spec">
+        <div class="container">
+          <h2 class="display spec-band__title">Specification</h2>
+          ${headline ? `<div class="spec-headline">${headline}</div>` : ''}
+          ${cells ? `<dl class="spec-grid">${cells}</dl>` : ''}
+          ${options}
+          ${reach}
+          ${provisional}
+        </div>
+      </section>` : '';
+
+    /* ---- story + core features + screenshots ------------------------------ */
+    /* Purely decorative — the cast carries no information the copy doesn't, so
+       it is hidden from assistive tech rather than given invented alt text. */
+    const cast = game.art?.cast?.length
+      ? `<div class="story__cast" aria-hidden="true">${game.art.cast
+          .map((c) => `<img src="${base}${e(c)}" alt="" loading="lazy">`).join('')}</div>`
+      : '';
+
+    /* The heading sits above the split, not inside its first column, so the
+       prose can take the full column width when there is no cast to sit
+       beside it — see .story-grid--solo. */
+    const story = game.story ? `
+      <div class="story-block">
+        <h2 class="display display--xs">Background Story</h2>
+        <div class="story-grid${cast ? '' : ' story-grid--solo'}">
+          <div class="story__prose">${toP(game.story)}</div>
+          ${cast}
+        </div>
+      </div>` : '';
+
+    /* auto-fit rather than a fixed column count: the catalogue runs from one
+       feature (The Void) to four (High Roller's Cash), and a fixed three-up
+       leaves a single card stranded in the first third. */
+    const features = game.features?.length ? `
+      <div class="feature-block">
+        <h2 class="display display--xs">Core Features</h2>
+        <ul class="feature-cards">${game.features.map((f) => `
+          <li>
+            <h3>${e(f.title)}</h3>
+            ${toP(f.body)}
+          </li>`).join('')}</ul>
+      </div>` : '';
+
+    /* Screenshots live inside the story rather than in their own section: they
+       are what the story looks like in play, not a separate topic. */
+    /* `w`/`h` are the file's own pixel dimensions, and they do two jobs. The
+       `width`/`height` attributes give the browser the intrinsic ratio so it
+       reserves the right box before the image loads — without them these have no
+       CSS aspect-ratio to fall back on and collapse to zero height. And they
+       settle orientation at render time, so a portrait phone capture is marked
+       before it loads rather than after. */
+    const shots = game.screenshots?.length
+      ? `<div class="shot-grid">${game.screenshots.map((s) => `
+          <figure class="shot${s.h > s.w ? ' shot--portrait' : ''}">
+            <img src="${base}${e(s.file)}" alt="${e(game.title)} — ${e(s.caption)}"
+                 loading="lazy"${s.w ? ` width="${s.w}" height="${s.h}"` : ''}>
+            <figcaption>${e(s.caption)}</figcaption>
+          </figure>`).join('')}</div>`
+      : '';
+
+    const storySection = story || features || shots ? `
+      <section class="section story" id="story">
+        <div class="container">${story}${features}${shots}</div>
+      </section>` : '';
+
+    /* ---- symbols ---------------------------------------------------------- */
+    /* The paytable and feature symbols, straight off the sheet's symbol slides.
+       Sized by HEIGHT with object-fit: contain — the packs mix near-square
+       tiles with tall portraits, and matching widths would make the square ones
+       tower over the rest. Same reasoning as .buy-card__symbol. */
+    const symbols = game.symbols?.length ? `
+      <section class="section--tight" id="symbols">
+        <div class="container">
+          <h2 class="display display--xs">${e(game.symbols_title || 'Symbols')}</h2>
+          ${game.symbols_lead ? `<p class="section-lead">${e(game.symbols_lead)}</p>` : ''}
+          <ul class="symbol-grid">${game.symbols.map((s, i) => {
+            /* Only a symbol that HAS a note gets the button, the marker and the
+               overlay — the affordance must never promise something a cell
+               cannot deliver. The rest render as a plain art + name cell. */
+            if (!s.note) return `
+            <li class="symbol">
+              <span class="symbol__art">
+                <img src="${base}${e(s.file)}" alt="" aria-hidden="true" loading="lazy">
+              </span>
+              <h3 class="symbol__name">${e(s.name)}</h3>
+            </li>`;
+            const noteId = `sym-note-${i}`;
+            return `
+            <li class="symbol symbol--has-note">
+              <button class="symbol__toggle" type="button"
+                      aria-expanded="false" aria-controls="${noteId}">
+                <span class="visually-hidden">What ${e(s.name)} does</span>
+              </button>
+              <span class="symbol__art">
+                <img src="${base}${e(s.file)}" alt="" aria-hidden="true" loading="lazy">
+              </span>
+              <h3 class="symbol__name">${e(s.name)}</h3>
+              <p class="symbol__note" id="${noteId}">${e(s.note)}</p>
+            </li>`;
+          }).join('')}</ul>
+        </div>
+      </section>` : '';
+
+    /* ---- buy bonus carousel ---------------------------------------------- */
+    /* Same rail component as Hot Games, so one behaviour serves both. The lead
+       counts the cards rather than stating a number: the catalogue runs from
+       four tiers to five, and the copy used to say "six" on every one of them. */
+    const buy = game.buy_options?.length ? `
+      <section class="section" id="buy-bonus">
+        <div class="container">
+          <div class="rail-head">
+            <div>
+              <h2 class="display display--md">Buy Bonus</h2>
+              <p class="section-lead">${game.buy_options.length} entry points into the
+                feature set, so players can pick their own risk and operators can
+                price the shortcut.</p>
+            </div>
+          </div>
+          <div data-rail>
+            <div class="rail">
+              <div class="rail-track" data-rail-track>${game.buy_options.map((b) => `
+                <article class="buy-card">
+                  ${b.symbol ? `<img class="buy-card__symbol" src="${base}${e(b.symbol)}" alt="" aria-hidden="true" loading="lazy">` : ''}
+                  <div>
+                    <h3 class="buy-card__title">${e(b.title)}</h3>
+                    <p class="buy-card__body">${e(b.body)}</p>
+                  </div>
+                  ${b.cost ? `<p class="buy-card__cost">${e(b.cost)}</p>` : ''}
+                </article>`).join('')}</div>
+            </div>
+            ${ARROWS('buy option')}
+          </div>
+        </div>
+      </section>` : '';
+
+    /* ---- demo play ------------------------------------------------------- */
+    /* Placeholder until `demo_url` is filled in; the same frame then renders
+       the live embed with no template change. */
+    const demo = `
+      <section class="section--tight" id="demo">
+        <div class="container">
+          <!-- Heading kept for assistive tech only. The frame is self-evident on
+               screen, but #demo is the target of the hero's Demo Play button, so
+               removing the name outright would leave that jump landing on an
+               unlabelled region. -->
+          <h2 class="visually-hidden">Demo Play</h2>
+          <div class="demo-frame">
+            ${game.demo_url
+              ? `<iframe src="${e(game.demo_url)}" title="${e(game.title)} demo"
+                         allow="fullscreen; autoplay" loading="lazy"></iframe>`
+              : `<div class="demo-frame__empty">
+                   <span class="demo-frame__play" aria-hidden="true">
+                     <svg width="20" height="24" viewBox="0 0 20 24" fill="currentColor"><path d="M0 0l20 12L0 24z"/></svg>
+                   </span>
+                   <p class="demo-frame__note">Demo coming soon</p>
+                 </div>`}
+          </div>
+        </div>
+      </section>`;
+
+    /* ---- rebrand / demo form (Origins only) ------------------------------ */
+    /* The hero's primary CTA scrolls here, so the form has to be ON this page.
+       Fields come from the same `site.contact.fields` the landing page uses —
+       one field list in the project, not two. The game is carried in a hidden
+       input so the enquiry arrives knowing which title it came from. */
+    const contact = data.site?.contact;
+    const rebrandForm = isOrigins && contact?.fields?.length ? `
+      <section class="band-purple section" id="request-demo">
+        <div class="container contact-grid">
+          <div>
+            <h2 class="display display--md">Rebrand<br>this game</h2>
+            <p class="section-lead">${e(game.title)} can ship as a branded exclusive —
+              your artwork, your RTP band, your max win, and a title no competitor
+              can offer. Tell us what you have in mind.</p>
+          </div>
+          <form class="contact-form" id="request-demo-form" novalidate
+                data-email="${e(data.site.company.email)}">
+            <input type="hidden" name="game" value="${e(game.title)}">
+            ${contact.fields.map((f) => `
+              <div class="field${f.width === 'full' ? ' field--full' : ''}">
+                ${f.type === 'textarea'
+                  ? `<textarea id="${e(f.name)}" name="${e(f.name)}" rows="3" placeholder=" "${f.required ? ' required' : ''}></textarea>`
+                  : `<input id="${e(f.name)}" name="${e(f.name)}" type="${e(f.type)}" placeholder=" "${f.required ? ' required' : ''}>`}
+                <label for="${e(f.name)}">${e(f.label)}${f.required ? ' *' : ''}</label>
+              </div>`).join('')}
+            <!-- Solid, not the outline variant the landing form uses: that is a green
+                 rule and a green label, which measures ~2.4:1 on this purple band.
+                 Filled puts ink on green and clears the floor comfortably. -->
+            <button class="btn btn--solid" type="submit">${e(contact.submit_label || 'Request Demo')}</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>` : '';
+
+    root.innerHTML = hero + specBand + storySection + symbols + buy + demo + rebrandForm;
+
+    /* Overlay-header state.
+       site.js's initHeader() already toggles `data-scrolled` from a scroll
+       listener, and that is fine on pages where missing an event only costs a
+       border. Here the same attribute drives a white-on-artwork logo, so a
+       missed event would leave white marks on white paper — invisible. An
+       IntersectionObserver on a sentinel pinned to the top of the hero is
+       positional rather than event-driven: it reports the truth on load,
+       on resize and after any scroll, however that scroll was caused. */
+    const header = document.querySelector('.site-header');
+    const heroEl = root.querySelector('.game-hero');
+    if (header && heroEl && 'IntersectionObserver' in window) {
+      const sentinel = document.createElement('span');
+      sentinel.className = 'hero-sentinel';
+      heroEl.prepend(sentinel);
+      new IntersectionObserver(
+        ([entry]) => header.setAttribute('data-scrolled', String(!entry.isIntersecting)),
+        { threshold: 0 },
+      ).observe(sentinel);
+    }
+
+    /* The header wears the game's own brand lockup. Marks are painted with CSS
+       mask, so the same file serves the white-over-hero and dark-when-scrolled
+       states — see the .mark rules in site.css. */
+    /* The footer takes the game's range as its ground — purple for Origins,
+       orange for Classic. Only the attribute is set here; the two palettes
+       (including the fact that Classic flips to ink type, because white on
+       #FF932E is 2.2:1) live in site.css beside every other colour decision.
+       Any brand the CSS doesn't name simply leaves the default dark footer. */
+    const footer = document.querySelector('.site-footer');
+    if (footer && game.brand) footer.dataset.footerBrand = game.brand;
+
+    /* Same idea one section up: the spec band's label takes the range's colour
+       (purple for Origins, orange for Classic). One attribute, palettes in CSS. */
+    const specEl = root.querySelector('#spec');
+    if (specEl && game.brand) specEl.dataset.brand = game.brand;
+
+    const headerMark = document.querySelector('.site-header__logo .mark');
+    const brandMark = { origins: 'mark--origins-wide', classic: 'mark--classic-wide' }[game.brand];
+    if (headerMark && brandMark) {
+      headerMark.classList.remove('mark--wordmark');
+      headerMark.classList.add(brandMark);
+      headerMark.closest('.site-header__logo').classList.add('is-brand');
+    }
+
+    initSymbolNotes(root);
+    initRails();
+    /* site.js binds this on DOMContentLoaded, which is long before the form
+       above exists — so it found nothing and returned. Bind it now. */
+    if (rebrandForm) initContactForm();
+
+    /* Stacked on a phone, the hero puts the artwork above the copy, and arrows
+       centred on the whole hero land beside the paragraph instead of the logo.
+       The logo's height is per-title — every lockup has its own aspect ratio —
+       so there is no CSS value that finds its middle. Measure it and hand the
+       offset to the stylesheet, which uses it only under the mobile breakpoint.
+       Re-measured on resize and after the image decodes, since the height is
+       not known until then. */
+    const heroSection = root.querySelector('.game-hero');
+    const heroArt = root.querySelector('.game-hero__art');
+    if (heroSection && heroArt) {
+      const placeNav = () => {
+        const a = heroArt.getBoundingClientRect();
+        const h = heroSection.getBoundingClientRect();
+        if (!a.height || !h.height) return;
+        heroSection.style.setProperty('--hero-nav-y',
+          `${(a.top - h.top + a.height / 2).toFixed(1)}px`);
+      };
+      placeNav();
+      if (heroArt.complete) placeNav(); else heroArt.addEventListener('load', placeNav);
+      window.addEventListener('resize', placeNav);
+    }
+  } catch (err) {
+    console.error(err);
+    root.innerHTML = `<section class="section container"><p>Could not load this game (${e(err.message)}).</p></section>`;
+  }
+})();
+</script>
+</body>
+</html>

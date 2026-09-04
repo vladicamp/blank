@@ -1,0 +1,107 @@
+<!doctype html>
+<!-- data-root is how every page tells the JS where the site root is.
+     WordPress port: emit get_template_directory_uri() here. -->
+<html lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free Branded Game — Wild Sheep</title>
+  <meta name="description" content="Claim a free branded-exclusive game from Wild Sheep. Book a consultation, tell us your market, and we rebuild a proven title around your brand — tuned to your business and backed by promotion tools. Limited meetings available.">
+  <link rel="icon" href="../assets/img/logos/sheep-icon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/SCHABO-XCondensed.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body data-page="free-branded-game">
+
+<!-- == template-parts/header.php ======================================== -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__logo" href="../index.html" aria-label="Wild Sheep — home">
+      <span class="mark mark--wordmark"></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="site-nav" id="site-nav" data-open="false" aria-label="Main">
+  <a href="../index.html">Home</a>
+  <a href="../games/">Game Library</a>
+  <a href="./">Free Branded Game!</a>
+  <a href="../brochure/">Download Brochure</a>
+</nav>
+
+<main>
+  <!-- == template-parts/free-branded-game.php ========================== -->
+  <!-- One purple field top to bottom: the offer, what it includes, then the
+       form. The band hands straight off to the footer, which takes the same
+       purple, so there is no seam between the two — same treatment the game
+       page's rebrand form uses. -->
+  <section class="band-purple section fbg" id="claim">
+    <div class="container">
+
+      <p class="fbg__eyebrow">Branded Exclusive</p>
+      <h1 class="display display--lg fbg__title">Get your own<br>game. Free.</h1>
+
+      <p class="fbg__lead">
+        Book a consultation and we will rebuild one of our proven titles around
+        your brand — your name, your artwork, your maths. No licence fee for the
+        rebuild, and no competitor can run it.
+      </p>
+
+      <ul class="fbg__points">
+        <li>
+          <h2 class="fbg__point-title">Built around your business</h2>
+          <p>We tune RTP, volatility and max win to your market and your margin
+             targets, so the game fits the players you already have.</p>
+        </li>
+        <li>
+          <h2 class="fbg__point-title">Promotions included</h2>
+          <p>Tournaments, prize drops, free rounds, cashback and jackpots come
+             built in, and we help you plan the campaign around the launch.</p>
+        </li>
+        <li>
+          <h2 class="fbg__point-title">Limited meetings</h2>
+          <p>We only take on a handful of rebuilds at a time, so consultation
+             slots are limited. Sign up soon to claim one.</p>
+        </li>
+      </ul>
+
+      <div class="fbg__form">
+        <h2 class="display display--sm fbg__form-title">Claim yours</h2>
+        <form class="contact-form" id="request-demo-form" novalidate data-email="hello@wildsheepgames.com">
+          <div class="contact-form" style="display:contents" data-contact-fields></div>
+          <input type="hidden" name="enquiry" value="free-branded-game">
+          <button class="btn btn--solid" type="submit">Book my consultation</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- == template-parts/footer.php ======================================== -->
+<footer class="site-footer band-dark" data-footer-brand="origins">
+  <div class="container site-footer__top">
+    <div class="site-footer__brand">
+      <span class="mark mark--wordmark-outline site-footer__logo" role="img" aria-label="Wild Sheep"></span>
+      <p class="site-footer__blurb" data-footer-blurb></p>
+    </div>
+    <nav class="site-footer__nav" data-footer-nav aria-label="Footer"></nav>
+  </div>
+
+  <div class="container site-footer__bottom">
+    <p class="site-footer__responsible" data-footer-responsible></p>
+    <ul class="site-footer__legal" data-footer-legal hidden></ul>
+    <p class="site-footer__note" data-hosting-note>Wild Sheep is hosted by Q-RGS, available through QTech Network.</p>
+    <p class="site-footer__copy" data-footer-copy></p>
+  </div>
+</footer>
+
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

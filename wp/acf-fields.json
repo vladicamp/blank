@@ -1,0 +1,98 @@
+[
+  {
+    "key": "group_wildsheep_game",
+    "title": "Game details",
+    "description": "Mirrors data/games.json exactly. Keep field names identical — the front-end JS reads these keys directly. See wp/HANDOVER.md §4.",
+    "fields": [
+      {
+        "key": "field_ws_tagline",
+        "label": "Tagline",
+        "name": "tagline",
+        "type": "text",
+        "instructions": "Short hook line shown under the title. e.g. \"The invasion spreads. So do the wins.\"",
+        "required": 1,
+        "maxlength": 90
+      },
+      {
+        "key": "field_ws_brand",
+        "label": "Range",
+        "name": "brand",
+        "type": "select",
+        "instructions": "Which Wild Sheep range this title belongs to. Drives the brand colour and the Origins/Classic filters.",
+        "required": 1,
+        "choices": { "origins": "Wild Sheep Origins", "classic": "Wild Sheep Classic" },
+        "default_value": "origins",
+        "return_format": "value"
+      },
+      {
+        "key": "field_ws_category",
+        "label": "Type",
+        "name": "category",
+        "type": "select",
+        "instructions": "Drives the Slots / Mini Game filters.",
+        "required": 1,
+        "choices": { "slots": "Slots", "mini-game": "Mini Game" },
+        "default_value": "slots",
+        "return_format": "value"
+      },
+      {
+        "key": "field_ws_status",
+        "label": "Status",
+        "name": "status",
+        "type": "select",
+        "instructions": "\"Upcoming\" adds the Coming Soon flag and lists the game in the landing page's Upcomings rail.",
+        "required": 1,
+        "choices": { "live": "Live", "upcoming": "Upcoming" },
+        "default_value": "live",
+        "return_format": "value"
+      },
+      {
+        "key": "field_ws_featured",
+        "label": "Featured (Hot Games)",
+        "name": "featured",
+        "type": "true_false",
+        "instructions": "Show this title in the landing page's \"Hot Games!\" carousel.",
+        "ui": 1,
+        "default_value": 0
+      },
+      {
+        "key": "field_ws_release_date",
+        "label": "Release date",
+        "name": "release_date",
+        "type": "date_picker",
+        "instructions": "Used for sorting (Newest First), the Upcomings dates, and the brochure contents table.",
+        "required": 1,
+        "display_format": "j F Y",
+        "return_format": "Y-m-d",
+        "first_day": 1
+      },
+      {
+        "key": "field_ws_specs",
+        "label": "Specification",
+        "name": "specs",
+        "type": "group",
+        "instructions": "All optional. Any game with no specs simply renders without a spec table. NOTE: values currently in games.json are placeholders — replace with certified figures.",
+        "layout": "block",
+        "sub_fields": [
+          { "key": "field_ws_rtp",        "label": "RTP",        "name": "rtp",        "type": "text", "placeholder": "96.20%",   "wrapper": { "width": "33" } },
+          { "key": "field_ws_volatility", "label": "Volatility", "name": "volatility", "type": "text", "placeholder": "High",     "wrapper": { "width": "33" } },
+          { "key": "field_ws_max_win",    "label": "Max win",    "name": "max_win",    "type": "text", "placeholder": "12,000x",  "wrapper": { "width": "34" } },
+          { "key": "field_ws_layout",     "label": "Layout",     "name": "layout",     "type": "text", "placeholder": "7x7 Cluster", "wrapper": { "width": "33" } },
+          { "key": "field_ws_mechanic",   "label": "Mechanic",   "name": "mechanic",   "type": "text", "placeholder": "Chain reaction collector", "wrapper": { "width": "33" } },
+          { "key": "field_ws_hit_rate",   "label": "Hit rate",   "name": "hit_rate",   "type": "text", "placeholder": "31.5%",    "wrapper": { "width": "34" } },
+          { "key": "field_ws_bonus_buy",  "label": "Bonus buy",  "name": "bonus_buy",  "type": "text", "placeholder": "Yes — 3 tiers", "wrapper": { "width": "34" } },
+          { "key": "field_ws_min_bet",    "label": "Min bet",    "name": "min_bet",    "type": "text", "placeholder": "0.10",     "wrapper": { "width": "33" } },
+          { "key": "field_ws_max_bet",    "label": "Max bet",    "name": "max_bet",    "type": "text", "placeholder": "100.00",   "wrapper": { "width": "33" } }
+        ]
+      }
+    ],
+    "location": [
+      [{ "param": "post_type", "operator": "==", "value": "game" }]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "active": true,
+    "show_in_rest": 1
+  }
+]

@@ -1,0 +1,140 @@
+/* ==========================================================================
+   Wild Sheep — design tokens
+   Every value here is measured from the Adobe XD comp (1920px canvas).
+   WordPress port: these become the palette + typography in theme.json.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'SCHABO';
+  src: url('../fonts/SCHABO-XCondensed.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/SpaceGrotesk-Light.ttf') format('truetype');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/SpaceGrotesk-Regular.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/SpaceGrotesk-Medium.ttf') format('truetype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/SpaceGrotesk-Bold.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* ---- Colour ---------------------------------------------------------- */
+  --ink:            #2E2E2E;   /* body text, dark bands, and ALL display type —
+                                  the same grey the WILD SHEEP wordmark is painted
+                                  in, so type and logo sit at one weight. There is
+                                  deliberately no blacker ink than this. */
+  --paper:          #F7F7F7;   /* page background */
+  --paper-tint:     #F0EFF3;   /* one step off paper, faintly purple-leaning —
+                                  separates a section without a hard band */
+  --white:          #FFFFFF;
+  --green:          #27DB88;   /* every CTA, border and interactive accent */
+  --green-dark:     #12A863;   /* hover state, meets contrast on paper */
+  --purple:         #9445FF;   /* Wild Sheep / Origins */
+  --purple-light:   #A15EFD;   /* hero brush stroke; also purple ON the dark
+                                  band — --purple is only 2.95:1 there */
+  --hero-base:      #0B1622;   /* sits under the game-hero key art, matched to
+                                  the darkest zone of the artwork itself */
+  --hero-scrim:     rgba(0, 0, 0, 0.55);  /* readability wash behind the hero's
+                                  copy column. Neutral black rather than --ink:
+                                  it is a shade over artwork, not a surface, and
+                                  #2E2E2E is too light to darken a bright sky */
+  --orange:         #FF932E;   /* Wild Sheep Classic */
+  --rule:           rgba(46, 46, 46, 0.18);
+  --rule-invert:    rgba(255, 255, 255, 0.22);
+  --rule-invert-50: rgba(255, 255, 255, 0.5);   /* hairline panels on a brand
+                                                   colour — the Engagement Tools
+                                                   cards and their icons */
+
+  /* One stroke weight for every outline in the button language — buttons,
+     carousel arrows, the sort select, the demo frame, the promo cards. Change
+     it here and the whole site's outlines move together. */
+  --rule-w:         2px;
+
+  /* ---- Type ------------------------------------------------------------ */
+  --font-display: 'SCHABO', 'Arial Narrow', sans-serif;
+  --font-body:    'Space Grotesk', system-ui, -apple-system, sans-serif;
+
+  /* Weight is a two-step system, not a per-rule choice: prose is 400, and 700
+     is the only step up — for <b>, buttons, form status, and small uppercase
+     meta labels. 300 is reserved for the two oversized standfirsts (the
+     personalisation statement and the brochure cover), where the size carries
+     the emphasis and Regular would look heavy. Nothing sits at 500. */
+
+  /* Display sizes fluid between a 1280px and 1920px viewport.
+     Upper bounds are the exact comp values. */
+  --d-xl: clamp(5.5rem, 10.68vw, 12.813rem);   /* 205px — GAME LIBRARY, BE THE NEXT */
+  --d-lg: clamp(3.75rem, 6.25vw, 7.5rem);      /* 120px — HOT GAMES!, game titles   */
+  --d-md: clamp(3rem,  5.885vw, 7.063rem);     /* 113px — PROMOTION TOOLS, NEWS     */
+  --d-sm: clamp(2.75rem, 4.69vw, 5.625rem);    /*  90px — carousel card titles      */
+  --d-xs: clamp(2.25rem, 3.39vw, 4.063rem);    /*  65px — value-prop headings       */
+  --d-2xs: clamp(1.5rem, 2.08vw, 2.5rem);      /*  40px — labelling headings that
+                                                   sit above larger content, e.g.
+                                                   SPECIFICATION over the figures  */
+
+  --t-lead:   clamp(1.75rem, 2.5vw, 3rem);     /*  48px — personalisation statement */
+  --t-xl:     clamp(1.375rem, 1.56vw, 1.875rem); /* 30px — game tagline             */
+  --t-lg:     clamp(1.125rem, 1.198vw, 1.438rem); /* 23px — intro body, section lead */
+  --t-btn:    clamp(0.938rem, 1.094vw, 1.313rem); /* 21px — buttons                 */
+  --t-body:   clamp(0.938rem, 0.938vw, 1.125rem); /* 18px — body copy               */
+  --t-eyebrow: 1rem;                            /*  16px — S L O T S                */
+  --t-small:  0.813rem;
+
+  --lh-tight: 0.82;   /* SCHABO sits tight — matches the comp's stacked headings */
+  --lh-lead:  1.24;   /* the personalisation statement — large type needs less */
+  --lh-body:  1.45;
+
+  /* SCHABO ships a single 400 weight. Without this, any heading element
+     (h1–h6, b) asks for 700 and the browser fakes it by smearing the glyphs
+     horizontally, which destroys the counters at display sizes. */
+  font-synthesis-weight: none;
+  font-synthesis: none;
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --canvas:    1920px;
+  --container: 1530px;  /* content column: 195px gutters on a 1920 canvas */
+  --gutter:    clamp(1.25rem, 10.156vw, 12.188rem);
+  --grid-gap:  clamp(0.5rem, 0.833vw, 1rem);   /* 16px between game tiles */
+
+  /* 180px vertical section rhythm. The FLOORS are set against the type rather
+     than against the viewport: below ~850px the vw term has fallen away and a
+     phone gets whatever the floor says, but the body copy inside these sections
+     does not shrink to match — --t-body bottoms out at 15px and --t-small is a
+     flat 13px at every width. The floors were originally 4rem/2.5rem, which
+     gave the same text roughly half the air it has on a desktop and read as
+     cramped. Raised to keep the ratio closer; the vw term and the upper bound
+     are untouched, so nothing above ~1000px moves at all. */
+  --sec-y:     clamp(5rem, 9.375vw, 11.25rem);
+  --sec-y-sm:  clamp(3.25rem, 5.2vw, 6.25rem);
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur:  260ms;
+}
+
+/* The comp is a light-mode design and the brand depends on it, so the palette
+   is fixed. Dark-mode users still get the intended contrast. */
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: light; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game Catalogue — Wild Sheep</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../assets/img/logos/sheep-icon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/SCHABO-XCondensed.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/brochure.css">
+</head>
+<body>
+
+<div class="brochure-bar no-print">
+  <div>
+    <a class="brochure-back" href="../games/">
+      <svg width="14" height="12" viewBox="0 0 14 12" fill="none" aria-hidden="true">
+        <path d="M6 1L1 6l5 5M1 6h12" stroke="currentColor" stroke-width="1.6"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back to library
+    </a>
+    <h1 class="brochure-bar__title">Game Catalogue</h1>
+    <p class="brochure-bar__meta" data-brochure-meta>Building…</p>
+    <p class="brochure-note">
+      Recommended: For the best results, open this page and download the PDF via
+      <b>Chrome</b> browser.
+    </p>
+  </div>
+  <div class="brochure-bar__actions">
+    <!-- Three editions. Each is the same builder with a range filter — the
+         scope is the only URL parameter brochure.js reads. -->
+    <div class="brochure-scopes" role="group" aria-label="Choose an edition">
+      <a class="btn brochure-scope" data-scope-link="origins" href="?scope=origins">Wild Sheep Origins</a>
+      <a class="btn brochure-scope" data-scope-link="classic" href="?scope=classic">Wild Sheep Classic</a>
+      <a class="btn brochure-scope" data-scope-link="all" href="?scope=all">All games</a>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn--solid" type="button" data-print>Download PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="brochure" data-brochure>
+  <p class="loading">Building the catalogue…</p>
+</div>
+
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/brochure.js"></script>
+</body>
+</html>

@@ -1,0 +1,2458 @@
+{
+  "_meta": {
+    "role": "STAGING ONLY — extracted from the Origins marketing sheets. Not read by the site. See _incoming/README.md.",
+    "source_root": "/Users/eric/Documents/#BACKUP/#WORK2/9. may/WILD SHEEP/ref/WSO asset Techtoniq",
+    "extracted_games": 7,
+    "per_variant_fields": [
+      "avg_feature_win",
+      "feature_hit_rate",
+      "hit_rate",
+      "id",
+      "rtp",
+      "sd",
+      "volatility"
+    ],
+    "warnings": [
+      "high-rollers-cash: no background story on the sheet — prose slides are thin (4 slides); needs manual copy",
+      "spin-my-drink: no background story on the sheet — prose slides are thin (3 slides); needs manual copy"
+    ],
+    "catalogue_reconciliation": {
+      "games_json_today": 18,
+      "new_games_not_in_games_json": {
+        "bamboonanza": "Origins. Full pack + 3 RTP sheets. Specs extracted below.",
+        "wonder-of-greece": "Classic. Artwork + Blueprint legal only, NO specs.",
+        "joker-win-hits-megaways": "Classic. Promotion pack STILL ZIPPED — not inspected."
+      },
+      "name_mismatch_not_new": {
+        "WSG-fortuneofsparta": "= existing slug 'fortunes-of-sparta' (licence doc: 'Fortunes of Sparta')"
+      },
+      "classic_range": {
+        "packs": 14,
+        "spec_data": "NONE. All 11 readable docs are 'Product and Legal Requirements.docx' from Blueprint Gaming Ltd. A keyword sweep for RTP / Volatility / Max Win / Hit Freq across every one returns zero hits.",
+        "licensing": "Blueprint Gaming Ltd. Their doc states the licence information 'MUST be included on all artwork associated with the stated game'. Clear before publishing any Classic artwork."
+      }
+    },
+    "conflicts_with_games_json": {
+      "blob-invasion.specs.rtp": {
+        "games_json": "94.0%",
+        "sheet": "94.3%"
+      },
+      "blob-invasion.specs.volatility": {
+        "games_json": "Medium",
+        "sheet": "no volatility field; sheet quotes SD: 9"
+      },
+      "blob-invasion.specs.rtp_variants": {
+        "games_json": [
+          "96.0%",
+          "98.2%"
+        ],
+        "sheet": "Blob Invasion ships ONE RTP (94.3%). The two sheets are document revisions v1.2/v1.3 with identical figures, not RTP bands. The existing variants appear to be invented."
+      },
+      "note": "Every other game's specs in games.json are acknowledged placeholders."
+    },
+    "vocabulary_split": {
+      "sd_sheets": [
+        "blob-invasion",
+        "cursed",
+        "iron-gate",
+        "the-void"
+      ],
+      "volatility_sheets": [
+        "bamboonanza",
+        "high-rollers-cash",
+        "spin-my-drink"
+      ],
+      "note": "The two are not interchangeable and neither is derivable from the other. The schema needs both; a game carries one or the other."
+    }
+  },
+  "games": {
+    "bamboonanza": {
+      "source": "ref/WSO asset Techtoniq/Bamboonanza/",
+      "sheets": [
+        "bamboonanza game sheet RTP94 v1.0.pptx",
+        "bamboonanza game sheet RTP96 v1.0.pptx",
+        "bamboonanza game sheet RTP98 v1.0.pptx"
+      ],
+      "common": {
+        "layout": "5 x 6",
+        "mechanic": "50 lines",
+        "max_win": "50000x bet",
+        "free_spin_cost": "€0.10",
+        "min_bet": "€0.10",
+        "max_bet": "€100"
+      },
+      "variants": [
+        {
+          "id": "bamboonanza",
+          "rtp": "93.77%",
+          "volatility": "Very High",
+          "feature_hit_rate": "1/203",
+          "hit_rate": "19.38%",
+          "avg_feature_win": "105 x bet",
+          "sheets": [
+            "bamboonanza game sheet RTP94 v1.0.pptx"
+          ]
+        },
+        {
+          "id": "bamboonanza-96",
+          "rtp": "96.36%",
+          "volatility": "Very High",
+          "feature_hit_rate": "1/203",
+          "hit_rate": "19.38%",
+          "avg_feature_win": "110 x bet",
+          "sheets": [
+            "bamboonanza game sheet RTP96 v1.0.pptx"
+          ]
+        },
+        {
+          "id": "bamboonanza-98",
+          "rtp": "97.96%",
+          "volatility": "Very High",
+          "feature_hit_rate": "1/203",
+          "hit_rate": "19.38%",
+          "avg_feature_win": "115 x bet",
+          "sheets": [
+            "bamboonanza game sheet RTP98 v1.0.pptx"
+          ]
+        }
+      ],
+      "raw_slides": {
+        "slide1": [
+          [
+            "AVAILABLE ON ALL DEVICES"
+          ],
+          [
+            "ID",
+            "Columns x Rows:",
+            "RTP:",
+            "Volatility:",
+            "Payout Mechanic:",
+            "Max win (simulated):"
+          ],
+          [
+            "bamboonanza",
+            "5 x 6",
+            "93.77%",
+            "Very High",
+            "50 lines",
+            "50000x bet"
+          ],
+          [
+            "Default Free-Spin Cost:",
+            "Feature Hit Rate:",
+            "Hit Frequency:",
+            "Average Feature Win:",
+            "Default Min Bet:",
+            "Default Max Bet:"
+          ],
+          [
+            "€0.10",
+            "1/203",
+            "19.38%",
+            "105 x bet",
+            "€0.10",
+            "€100"
+          ]
+        ],
+        "slide2": [
+          [
+            "Deep in a hidden bamboo grove, where morning mist drifts between emerald stalks, a wise old Panda sits in perfect stillness, a white serpent coiled gently at his shoulder.",
+            "Here time moves slowly and the mind grows quiet. The Tiger meditates with paws pressed together, the Rabbit rests beneath a woven hat, and the Goat breathes with the swaying canes.",
+            "For centuries these gentle masters have guarded the secret of the grove: that true fortune is found not in haste, but in balance, patience and a calm and open heart.",
+            "When the golden koi stirs the waters and the lotus blooms with light, the bamboo reveals its hidden riches to those who approach with a peaceful spirit.",
+            "Breathe, let go, and let the harmony of Bamboonanza guide you to its greatest treasures."
+          ],
+          [
+            "BACKGROUND STORY"
+          ],
+          [
+            "Expanding Grid",
+            "The grid expands by one row after each winning cascade.",
+            "Expansion continues up to a maximum of 8 rows.",
+            "Each expansion increases winning potential and feature impact."
+          ],
+          [
+            "CORE FEATURES"
+          ],
+          [
+            "Multiplier Totem",
+            "The Multiplier Totem progresses through three stages.",
+            "Multiplier values increase as the Totem advances.",
+            "The active multiplier applies to all subsequent wins within the same game round.",
+            "The Multiplier Totem and active multiplier reset before the next game round begins."
+          ]
+        ],
+        "slide3": [
+          [
+            "FEATURE SYMBOLS"
+          ],
+          [
+            "Multiplier Symbol",
+            "The Mystery Symbol can land anywhere on the reels during both the Base Game and Free Games to reveal other symbols.",
+            "Golden Bamboo",
+            "The Golden Bamboo Feature triggers when a Mystery Symbol reveals a Golden Bamboo Symbol.",
+            "During the feature, each Golden Bamboo position spins independently to reveal one of the following special symbols:",
+            "• Cash Symbol",
+            "• Multiplier Symbol",
+            "• Scatter Symbol",
+            "• Fortune Scatter Symbol",
+            "• Collector Symbol"
+          ]
+        ],
+        "slide4": [
+          [
+            "FEATURE SYMBOLS"
+          ],
+          [
+            "Cash Symbol",
+            "The Cash Symbol may appear during the Golden Bamboo Feature.",
+            "Available Cash Prize values are: 1×, 2×, 5×, 10×, 25×, 50×, 100×, 250×, 500×, 1,000×, 2,500×, and 5,000× the Base Bet.",
+            "Multiplier Symbol",
+            "When a Multiplier Symbol appears, all Cash Symbols and Collector Symbols currently on the reels are multiplied by its value.",
+            "The Multiplier Symbol is then removed from the reels. The vacated position spins to reveal a new prize.",
+            "Available Multiplier values are 2×, 3×, 5× and 10×.",
+            "Collect Symbol",
+            "The Collector Symbol may appear during the Golden Bamboo Feature.",
+            "When a Collector Symbol appears, it collects the values of all Cash Symbols and Collect symbols currently on the reels."
+          ]
+        ],
+        "slide5": [
+          [
+            "Buy Bonus"
+          ],
+          [
+            "No low-paying symbol transform – Allows direct access to Free Games with 7–9 Free Spins and no low-paying symbol transformed at a cost of 100× the Base Bet.",
+            "2 low-paying symbols transform – Allows direct access to Free Games with 7–9 Free Spins and 2 low-paying symbols transformed at a cost of 180× the Base Bet.",
+            "4 low-paying symbols transform– Allows direct access to Free Games with 8–10 Free Spins and 4 low-paying symbols transformed at a cost of 600× the Base Bet.",
+            "RANDOM FREE GAMES – Randomly awards one of the three Free Games options at a cost of 300× the Base Bet."
+          ]
+        ],
+        "slide6": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "SCATTER"
+          ],
+          [
+            "LOW"
+          ],
+          [
+            "BAMBOO"
+          ],
+          [
+            "WILD"
+          ],
+          [
+            "HIGH"
+          ],
+          [
+            "MYSTICAL"
+          ]
+        ],
+        "slide7": [
+          [
+            "SUPPORTED LANGUAGES"
+          ],
+          [
+            "English",
+            "Simplified Chinese",
+            "Russian"
+          ],
+          [
+            "Thai",
+            "Korean",
+            "Turkish"
+          ],
+          [
+            "Spanish",
+            "Japanese",
+            "Vietnamese"
+          ],
+          [
+            "Portuguese"
+          ],
+          [
+            "SUPPORTED CURRENCIES"
+          ],
+          [
+            "AMD",
+            "ARS",
+            "AUD",
+            "AZN",
+            "BND",
+            "BOB",
+            "BRL",
+            "BYN",
+            "CAD",
+            "CDF"
+          ],
+          [
+            "CHF",
+            "CLP",
+            "COP",
+            "CZK",
+            "DOP",
+            "EURGBPGELGHSHUF"
+          ],
+          [
+            "IDRINRIQDIRRJPYKESKGSKRWKZTMDL"
+          ],
+          [
+            "MMKMXNMNTMYRNGNNOKNZDPENPHPPKR"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "TZSUAHUGXUSDUYUUZSVNDXAFXOFZAR"
+          ],
+          [
+            "ZMWAEDBDTBWPDZDEGPETBGTQHTGJOD"
+          ],
+          [
+            "LKRLYDMZNNADNPRPABSSPTMTmBTCkVND"
+          ],
+          [
+            "kIDRKWDBHDMADSARSLEVESHKD"
+          ]
+        ]
+      },
+      "prose_source": "bamboonanza game sheet RTP94 v1.0.pptx",
+      "story": "Here time moves slowly and the mind grows quiet. The Tiger meditates with paws pressed together, the Rabbit rests beneath a woven hat, and the Goat breathes with the swaying canes.",
+      "buy_options": [
+        {
+          "title": "No low-paying symbol transform",
+          "cost": "",
+          "body": "Allows direct access to Free Games with 7–9 Free Spins and no low-paying symbol transformed at a cost of 100× the Base Bet."
+        },
+        {
+          "title": "2 low-paying symbols transform",
+          "cost": "",
+          "body": "Allows direct access to Free Games with 7–9 Free Spins and 2 low-paying symbols transformed at a cost of 180× the Base Bet."
+        },
+        {
+          "title": "4 low-paying symbols transform",
+          "cost": "",
+          "body": "Allows direct access to Free Games with 8–10 Free Spins and 4 low-paying symbols transformed at a cost of 600× the Base Bet."
+        },
+        {
+          "title": "RANDOM FREE GAMES",
+          "cost": "",
+          "body": "Randomly awards one of the three Free Games options at a cost of 300× the Base Bet."
+        }
+      ],
+      "languages": [
+        "English",
+        "Simplified Chinese",
+        "Russian",
+        "Thai",
+        "Korean",
+        "Turkish",
+        "Spanish",
+        "Japanese",
+        "Vietnamese",
+        "Portuguese"
+      ],
+      "currencies": [
+        "AMD",
+        "ARS",
+        "AUD",
+        "AZN",
+        "BND",
+        "BOB",
+        "BRL",
+        "BYN",
+        "CAD",
+        "CDF",
+        "CHF",
+        "CLP",
+        "COP",
+        "CZK",
+        "DOP",
+        "EUR",
+        "GBP",
+        "GEL",
+        "GHS",
+        "HUF",
+        "IDR",
+        "INR",
+        "IQD",
+        "IRR",
+        "JPY",
+        "KES",
+        "KGS",
+        "KRW",
+        "KZT",
+        "MDL",
+        "MMK",
+        "MXN",
+        "MNT",
+        "MYR",
+        "NGN",
+        "NOK",
+        "NZD",
+        "PEN",
+        "PHP",
+        "PKR",
+        "PLN",
+        "PYG",
+        "RSD",
+        "RUB",
+        "RWF",
+        "SEK",
+        "THB",
+        "TND",
+        "TRY",
+        "TWD",
+        "TZS",
+        "UAH",
+        "UGX",
+        "USD",
+        "UYU",
+        "UZS",
+        "VND",
+        "XAF",
+        "XOF",
+        "ZAR",
+        "ZMW",
+        "AED",
+        "BDT",
+        "BWP",
+        "DZD",
+        "EGP",
+        "ETB",
+        "GTQ",
+        "HTG",
+        "JOD",
+        "LKR",
+        "LYD",
+        "MZN",
+        "NAD",
+        "NPR",
+        "PAB",
+        "SSP",
+        "TMT",
+        "mBTC",
+        "kVND",
+        "kIDR",
+        "KWD",
+        "BHD",
+        "MAD",
+        "SAR",
+        "SLE",
+        "VES",
+        "HKD"
+      ]
+    },
+    "blob-invasion": {
+      "source": "ref/WSO asset Techtoniq/Blob Invasion/",
+      "sheets": [
+        "Marketing Pack/BlobInvasion game sheet v1.2.pptx",
+        "Marketing Pack/BlobInvasion game sheet v1.3.pptx"
+      ],
+      "common": {
+        "layout": "6x6 - 8x8",
+        "mechanic": "Chain Collect",
+        "max_win": "10000x bet",
+        "free_spin_cost": "€0.20",
+        "min_bet": "€0.20",
+        "max_bet": "€100"
+      },
+      "variants": [
+        {
+          "id": "Blobinvasion",
+          "rtp": "94.3%",
+          "sd": "9",
+          "hit_rate": "27.1%",
+          "avg_feature_win": "54 x bet",
+          "sheets": [
+            "BlobInvasion game sheet v1.2.pptx",
+            "BlobInvasion game sheet v1.3.pptx"
+          ]
+        }
+      ],
+      "raw_slides": {
+        "slide1": [
+          [
+            "AVAILABLE ON ALL DEVICES"
+          ],
+          [
+            "ID",
+            "Columns x Rows :",
+            "RTP:",
+            "SD:",
+            "Payout Mechanic:",
+            "Max win (simulated):"
+          ],
+          [
+            "Blobinvasion",
+            "6x6 - 8x8",
+            "94.3%",
+            "9",
+            "Chain Collect",
+            "10000x bet"
+          ],
+          [
+            "Default Free-Spin Cost:",
+            "Hit Frequency:",
+            "Average Feature Win:",
+            "Default Min Bet:",
+            "Default Max Bet:"
+          ],
+          [
+            "€0.20",
+            "27.1%",
+            "54 x bet",
+            "€0.20",
+            "€100"
+          ]
+        ],
+        "slide2": [
+          [
+            "A drifting spaceship has been overrun by mysterious Blobs created by a failed space experiment. As the Blobs spread through the ship, they connect, multiply, and trigger chain reactions within its systems. The further the invasion grows, the more unstable — and rewarding — the journey becomes."
+          ],
+          [
+            "BACKGROUND STORY"
+          ],
+          [
+            "CORE FEATURES"
+          ],
+          [
+            "Blob Symbols Jelly Symbols",
+            "Blob Symbols collect matching Jelly Symbols and all Feature Symbols. Jelly symbols can be upgraded up to Payout Level 7."
+          ],
+          [
+            "Chain Collect",
+            "The game features the Chain Collect mechanic, where Blob Symbols move across the grid and collect adjacent paying symbols in horizontal or vertical positions to form wins."
+          ],
+          [
+            "Blob Invasion is a 6×6 non-payline slot featuring the Chain Collect mechanic, an expanding grid, symbol upgrades and transformations, Wild Symbols, Golden Tile Symbols, and both a Bonus Game and an Ultimate Bonus Game, offering a maximum win of 10,000× the selected bet."
+          ]
+        ],
+        "slide3": [
+          [
+            "FEATURE SYMBOLS"
+          ],
+          [
+            "Wild Symbol",
+            "The Wild symbol substitutes for Jelly symbol at its corresponding current payout levels.",
+            "Bonus Symbol",
+            "Three Bonus symbols collected by Blob symbols trigger Bonus Games."
+          ]
+        ],
+        "slide4": [
+          [
+            "FEATURE SYMBOLS"
+          ],
+          [
+            "Feature Symbol",
+            "There are nine different types of Feature Symbols in Blob Invasion:",
+            "Bonus symbols, Wild symbols, Golden tile symbols, Upgrade symbols, Upgrade All symbols, Transform symbols, Soapy Water symbols, Specimen Pod symbols and Flood Hatch symbols.",
+            "Golden tile",
+            "Golden tile symbols award a payout equal to their displayed value multiplied by the current active bet level.",
+            "The MAX WIN Tile awards the remaining amount required to reach the maximum win immediately."
+          ]
+        ],
+        "slide5": [
+          [
+            "Buy Bonus"
+          ],
+          [
+            "Boost Bet – Activate to increase the chance of triggering the Bonus Games feature, at a cost of 3× the selected bet.",
+            "SOAPY WATER CHAOS – A single spin is played with the Soapy Water feature active from the start at a cost of 10× the selected bet.",
+            "MAXIMUM GRID SIZE – A single spin is played on the maximum grid size at a cost of 25× the selected bet.",
+            "BUY BONUS GAMES – Allows direct access to Bonus Games at a cost of 100× the selected bet.",
+            "ULTIMATE BONUS GAMES – Allows direct access to Ultimate Bonus Games at a cost of 500× the selected bet."
+          ]
+        ],
+        "slide6": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "WILD(Infected)"
+          ],
+          [
+            "WILD"
+          ],
+          [
+            "BONUS"
+          ],
+          [
+            "WILD(Faded)"
+          ],
+          [
+            "GOLDEN TILE"
+          ]
+        ],
+        "slide7": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "UPGRADE ALL"
+          ],
+          [
+            "UPGRADE NORMAL"
+          ],
+          [
+            "TRANSFORM"
+          ],
+          [
+            "SPECIMEN POD"
+          ],
+          [
+            "SOAPY WATER"
+          ],
+          [
+            "FLOOD HATCH"
+          ],
+          [
+            "FEATURE DROP"
+          ]
+        ],
+        "slide8": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "Jelly"
+          ],
+          [
+            "BLOB"
+          ]
+        ],
+        "slide9": [
+          [
+            "SUPPORTED LANGUAGES"
+          ],
+          [
+            "English",
+            "Simplified Chinese",
+            "Russian"
+          ],
+          [
+            "Thai",
+            "Korean",
+            "Turkish"
+          ],
+          [
+            "Spanish",
+            "Japanese",
+            "Vietnamese"
+          ],
+          [
+            "Portuguese"
+          ],
+          [
+            "SUPPORTED CURRENCIES"
+          ],
+          [
+            "AMD",
+            "ARS",
+            "AUD",
+            "AZN",
+            "BND",
+            "BOB",
+            "BRL",
+            "BYN",
+            "CAD",
+            "CDF"
+          ],
+          [
+            "CHF",
+            "CLP",
+            "COP",
+            "CZK",
+            "DOP",
+            "EURGBPGELGHSHUF"
+          ],
+          [
+            "IDRINRIQDIRRJPYKESKGSKRWKZTMDL"
+          ],
+          [
+            "MMKMXNMNTMYRNGNNOKNZDPENPHPPKR"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "TZSUAHUGXUSDUYUUZSVNDXAFXOFZAR"
+          ],
+          [
+            "ZMWAEDBDTBWPDZDEGPETBGTQHTGJOD"
+          ],
+          [
+            "LKRLYDMZNNADNPRPABSSPTMTmBTCkVND"
+          ],
+          [
+            "kIDRKWDBHDMADSARSLEVESHKD"
+          ],
+          [
+            "Version: v1.2",
+            "Update Date: 2026-02-26"
+          ]
+        ]
+      },
+      "prose_source": "BlobInvasion game sheet v1.2.pptx",
+      "story": "A drifting spaceship has been overrun by mysterious Blobs created by a failed space experiment. As the Blobs spread through the ship, they connect, multiply, and trigger chain reactions within its systems. The further the invasion grows, the more unstable — and rewarding — the journey becomes.",
+      "buy_options": [
+        {
+          "title": "Boost Bet",
+          "cost": "3× the selected bet",
+          "body": "Activate to increase the chance of triggering the Bonus Games feature, at a cost of 3× the selected bet."
+        },
+        {
+          "title": "SOAPY WATER CHAOS",
+          "cost": "10× the selected bet",
+          "body": "A single spin is played with the Soapy Water feature active from the start at a cost of 10× the selected bet."
+        },
+        {
+          "title": "MAXIMUM GRID SIZE",
+          "cost": "25× the selected bet",
+          "body": "A single spin is played on the maximum grid size at a cost of 25× the selected bet."
+        },
+        {
+          "title": "BUY BONUS GAMES",
+          "cost": "100× the selected bet",
+          "body": "Allows direct access to Bonus Games at a cost of 100× the selected bet."
+        },
+        {
+          "title": "ULTIMATE BONUS GAMES",
+          "cost": "500× the selected bet",
+          "body": "Allows direct access to Ultimate Bonus Games at a cost of 500× the selected bet."
+        }
+      ],
+      "languages": [
+        "English",
+        "Simplified Chinese",
+        "Russian",
+        "Thai",
+        "Korean",
+        "Turkish",
+        "Spanish",
+        "Japanese",
+        "Vietnamese",
+        "Portuguese"
+      ],
+      "currencies": [
+        "AMD",
+        "ARS",
+        "AUD",
+        "AZN",
+        "BND",
+        "BOB",
+        "BRL",
+        "BYN",
+        "CAD",
+        "CDF",
+        "CHF",
+        "CLP",
+        "COP",
+        "CZK",
+        "DOP",
+        "EUR",
+        "GBP",
+        "GEL",
+        "GHS",
+        "HUF",
+        "IDR",
+        "INR",
+        "IQD",
+        "IRR",
+        "JPY",
+        "KES",
+        "KGS",
+        "KRW",
+        "KZT",
+        "MDL",
+        "MMK",
+        "MXN",
+        "MNT",
+        "MYR",
+        "NGN",
+        "NOK",
+        "NZD",
+        "PEN",
+        "PHP",
+        "PKR",
+        "PLN",
+        "PYG",
+        "RSD",
+        "RUB",
+        "RWF",
+        "SEK",
+        "THB",
+        "TND",
+        "TRY",
+        "TWD",
+        "TZS",
+        "UAH",
+        "UGX",
+        "USD",
+        "UYU",
+        "UZS",
+        "VND",
+        "XAF",
+        "XOF",
+        "ZAR",
+        "ZMW",
+        "AED",
+        "BDT",
+        "BWP",
+        "DZD",
+        "EGP",
+        "ETB",
+        "GTQ",
+        "HTG",
+        "JOD",
+        "LKR",
+        "LYD",
+        "MZN",
+        "NAD",
+        "NPR",
+        "PAB",
+        "SSP",
+        "TMT",
+        "mBTC",
+        "kVND",
+        "kIDR",
+        "KWD",
+        "BHD",
+        "MAD",
+        "SAR",
+        "SLE",
+        "VES",
+        "HKD"
+      ],
+      "sheet_version": "v1.2",
+      "sheet_updated": "2026-02-26"
+    },
+    "cursed": {
+      "source": "ref/WSO asset Techtoniq/Cursed/",
+      "sheets": [
+        "Marketing Pack/Cursed game sheet rtp94 v1.0.pptx",
+        "Marketing Pack/Cursed game sheet rtp96 v1.0.pptx"
+      ],
+      "common": {
+        "layout": "6x6",
+        "mechanic": "Ways",
+        "max_win": "25000x bet",
+        "free_spin_cost": "€0.20",
+        "min_bet": "€0.20",
+        "max_bet": "€100"
+      },
+      "variants": [
+        {
+          "id": "Cursed",
+          "rtp": "94.5%",
+          "sd": "7",
+          "hit_rate": "26.1%",
+          "avg_feature_win": "44 x bet",
+          "sheets": [
+            "Cursed game sheet rtp94 v1.0.pptx"
+          ]
+        },
+        {
+          "id": "Cursed",
+          "rtp": "96.0%",
+          "sd": "7",
+          "hit_rate": "26.1%",
+          "avg_feature_win": "47 x bet",
+          "sheets": [
+            "Cursed game sheet rtp96 v1.0.pptx"
+          ]
+        }
+      ],
+      "raw_slides": {
+        "slide1": [
+          [
+            "AVAILABLE ON ALL DEVICES"
+          ],
+          [
+            "ID",
+            "Columns x Rows :",
+            "RTP:",
+            "SD:",
+            "Payout Mechanic:",
+            "Max win (simulated):"
+          ],
+          [
+            "Cursed",
+            "6x6",
+            "94.5%",
+            "7",
+            "Ways",
+            "25000x bet"
+          ],
+          [
+            "Default Free-Spin Cost:",
+            "Hit Frequency:",
+            "Average Feature Win:",
+            "Default Min Bet:",
+            "Default Max Bet:"
+          ],
+          [
+            "€0.20",
+            "26.1%",
+            "44 x bet",
+            "€0.20",
+            "€100"
+          ]
+        ],
+        "slide2": [
+          [
+            "Decades ago, a shattered séance tore the veil between worlds.",
+            "What should have been sealed was left open, binding the restless dead to these halls and twisting the place into an endless night. Only Annie brings respite."
+          ],
+          [
+            "BACKGROUND STORY"
+          ],
+          [
+            "CORE FEATURES"
+          ],
+          [
+            "WICKED REEL",
+            "The Wicked Reel is positioned above the grid and consists of three rows.",
+            "The Wicked Reel contains Feature Symbols, blank symbols and empty cells. Blank symbols occupies positions only.",
+            "Feature symbols become active when they enter the grid."
+          ],
+          [
+            "Where she appears, the Specters withdraw—but never for long. They gather again in the shadows, fusing into something far worse.",
+            "The crackle of the PA system heralds new horrors. Ancient seals upon the doors glow with the promise of escape.",
+            "That promise is a lie.",
+            "Beyond each threshold lies only deeper darkness. Here, in the eternal seventh hour, awareness is the only light that remains. Let it fade, and the night will claim everything."
+          ]
+        ],
+        "slide3": [
+          [
+            "FEATURE SYMBOLS"
+          ],
+          [
+            "Wild Symbol",
+            "Wild symbols substitute for any paying symbol except Specters.",
+            "A winning combination consisting only of Wild symbols pays as the highest-paying regular symbol.",
+            "Bonus Symbol",
+            "3 or more Bonus symbols appear anywhere on the grid will trigger Free Spins.",
+            "• 3 Bonus symbols: 6 free spins",
+            "• 4 Bonus symbols: 9 free spins",
+            "• 5 Bonus symbols: 12 free spins",
+            "• 6 Bonus symbols: 15 free spins",
+            "The Bonus symbol appears only in the Base Game."
+          ]
+        ],
+        "slide4": [
+          [
+            "Buy Bonus"
+          ],
+          [
+            "Big Symbol – Activate a single game round with at least one Big Symbol guaranteed to enter the grid and the Wicked Reel, at a cost of 10× the selected bet.",
+            "Annie's Spell – Activate a single game round with Annie’s Spell guaranteed, at a cost of 50× the selected bet.",
+            "Buy Free Spins – Allows direct access to the Free Spins feature at a cost of 100× the selected bet.",
+            "Ultimate Free Spins – Allows direct access to the Ultimate Free Spins feature at a cost of 500× the selected bet.",
+            "During Ultimate Free Spins, the win multiplier starts at ×10."
+          ]
+        ],
+        "slide5": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "BONUS"
+          ],
+          [
+            "WILD"
+          ],
+          [
+            "HIGH"
+          ],
+          [
+            "LOW"
+          ],
+          [
+            "EXTRA SPIN"
+          ],
+          [
+            "WIN MULTIPLIER"
+          ],
+          [
+            "STICKY WILD"
+          ],
+          [
+            "ROW REPLACE"
+          ],
+          [
+            "MYSTERY"
+          ],
+          [
+            "CURSED DOOR"
+          ],
+          [
+            "SCATTER SPECTERS"
+          ],
+          [
+            "ANNIE’s SPELL"
+          ]
+        ],
+        "slide6": [
+          [
+            "SUPPORTED LANGUAGES"
+          ],
+          [
+            "English",
+            "Simplified Chinese",
+            "Russian"
+          ],
+          [
+            "Thai",
+            "Korean",
+            "Turkish"
+          ],
+          [
+            "Spanish",
+            "Japanese",
+            "Vietnamese"
+          ],
+          [
+            "Portuguese"
+          ],
+          [
+            "SUPPORTED CURRENCIES"
+          ],
+          [
+            "AMD",
+            "ARS",
+            "AUD",
+            "AZN",
+            "BND",
+            "BOB",
+            "BRL",
+            "BYN",
+            "CAD",
+            "CDF"
+          ],
+          [
+            "CHF",
+            "CLP",
+            "COP",
+            "CZK",
+            "DOP",
+            "EURGBPGELGHSHUF"
+          ],
+          [
+            "IDRINRIQDIRRJPYKESKGSKRWKZTMDL"
+          ],
+          [
+            "MMKMXNMNTMYRNGNNOKNZDPENPHPPKR"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "TZSUAHUGXUSDUYUUZSVNDXAFXOFZAR"
+          ],
+          [
+            "ZMWAEDBDTBWPDZDEGPETBGTQHTGJOD"
+          ],
+          [
+            "LKRLYDMZNNADNPRPABSSPTMTmBTCkVND"
+          ],
+          [
+            "kIDRKWDBHDMADSARSLEVESHKD"
+          ],
+          [
+            "Version: v1.2",
+            "Update Date: 2026-02-26"
+          ]
+        ]
+      },
+      "prose_source": "Cursed game sheet rtp94 v1.0.pptx",
+      "story": "Beyond each threshold lies only deeper darkness. Here, in the eternal seventh hour, awareness is the only light that remains. Let it fade, and the night will claim everything.",
+      "buy_options": [
+        {
+          "title": "Big Symbol",
+          "cost": "10× the selected bet",
+          "body": "Activate a single game round with at least one Big Symbol guaranteed to enter the grid and the Wicked Reel, at a cost of 10× the selected bet."
+        },
+        {
+          "title": "Annie's Spell",
+          "cost": "50× the selected bet",
+          "body": "Activate a single game round with Annie’s Spell guaranteed, at a cost of 50× the selected bet."
+        },
+        {
+          "title": "Buy Free Spins",
+          "cost": "100× the selected bet",
+          "body": "Allows direct access to the Free Spins feature at a cost of 100× the selected bet."
+        },
+        {
+          "title": "Ultimate Free Spins",
+          "cost": "500× the selected bet",
+          "body": "Allows direct access to the Ultimate Free Spins feature at a cost of 500× the selected bet."
+        }
+      ],
+      "languages": [
+        "English",
+        "Simplified Chinese",
+        "Russian",
+        "Thai",
+        "Korean",
+        "Turkish",
+        "Spanish",
+        "Japanese",
+        "Vietnamese",
+        "Portuguese"
+      ],
+      "currencies": [
+        "AMD",
+        "ARS",
+        "AUD",
+        "AZN",
+        "BND",
+        "BOB",
+        "BRL",
+        "BYN",
+        "CAD",
+        "CDF",
+        "CHF",
+        "CLP",
+        "COP",
+        "CZK",
+        "DOP",
+        "EUR",
+        "GBP",
+        "GEL",
+        "GHS",
+        "HUF",
+        "IDR",
+        "INR",
+        "IQD",
+        "IRR",
+        "JPY",
+        "KES",
+        "KGS",
+        "KRW",
+        "KZT",
+        "MDL",
+        "MMK",
+        "MXN",
+        "MNT",
+        "MYR",
+        "NGN",
+        "NOK",
+        "NZD",
+        "PEN",
+        "PHP",
+        "PKR",
+        "PLN",
+        "PYG",
+        "RSD",
+        "RUB",
+        "RWF",
+        "SEK",
+        "THB",
+        "TND",
+        "TRY",
+        "TWD",
+        "TZS",
+        "UAH",
+        "UGX",
+        "USD",
+        "UYU",
+        "UZS",
+        "VND",
+        "XAF",
+        "XOF",
+        "ZAR",
+        "ZMW",
+        "AED",
+        "BDT",
+        "BWP",
+        "DZD",
+        "EGP",
+        "ETB",
+        "GTQ",
+        "HTG",
+        "JOD",
+        "LKR",
+        "LYD",
+        "MZN",
+        "NAD",
+        "NPR",
+        "PAB",
+        "SSP",
+        "TMT",
+        "mBTC",
+        "kVND",
+        "kIDR",
+        "KWD",
+        "BHD",
+        "MAD",
+        "SAR",
+        "SLE",
+        "VES",
+        "HKD"
+      ],
+      "sheet_version": "v1.2",
+      "sheet_updated": "2026-02-26"
+    },
+    "high-rollers-cash": {
+      "source": "ref/WSO asset Techtoniq/High Roller's Cash/",
+      "sheets": [
+        "High Roller's Cash RTP94.pptx",
+        "High Roller's Cash RTP96.pptx",
+        "High Roller's Cash RTP98.pptx"
+      ],
+      "common": {
+        "layout": "1x 4",
+        "mechanic": "1 Line",
+        "max_win": "10101 x bet",
+        "free_spin_cost": "€0.10",
+        "min_bet": "€0.10",
+        "max_bet": "€10"
+      },
+      "variants": [
+        {
+          "id": "highrollerscash",
+          "rtp": "94.09%",
+          "volatility": "Medium-High",
+          "hit_rate": "21%",
+          "sheets": [
+            "High Roller's Cash RTP94.pptx"
+          ]
+        },
+        {
+          "id": "highrollerscash-96",
+          "rtp": "95.89%",
+          "volatility": "Medium-High",
+          "hit_rate": "21%",
+          "sheets": [
+            "High Roller's Cash RTP96.pptx"
+          ]
+        },
+        {
+          "id": "highrollerscash-98",
+          "rtp": "97.98%",
+          "volatility": "Medium-High",
+          "hit_rate": "21%",
+          "sheets": [
+            "High Roller's Cash RTP98.pptx"
+          ]
+        }
+      ],
+      "raw_slides": {
+        "slide1": [
+          [
+            "AVAILABLE ON ALL DEVICES"
+          ],
+          [
+            "ID",
+            "Columns x Rows :",
+            "RTP:",
+            "Volatility:",
+            "Payout Mechanic:",
+            "Max win (simulated):"
+          ],
+          [
+            "highrollerscash",
+            "1x 4",
+            "94.09%",
+            "Medium-High",
+            "1 Line",
+            "10101 x bet"
+          ],
+          [
+            "Default Free-Spin Cost:",
+            "Hit Frequency:",
+            "Default Min Bet:",
+            "Default Max Bet:"
+          ],
+          [
+            "€0.10",
+            "21%",
+            "€0.10",
+            "€10"
+          ]
+        ],
+        "slide2": [
+          [
+            "Reward Multiplier symbols land only on the special reel 4 and boost that spin’s line win.",
+            "Payout = number-symbol combination × Reward Multiplier."
+          ],
+          [
+            "Special Symbol — Reward Multiplier (2× / 5× / 10×)"
+          ],
+          [
+            "Scatter"
+          ],
+          [
+            "The reel 4 features activate progressively with the player’s stake. While a feature is locked, its position on reel 4 displays a padlock symbol. Higher stakes also raise the Lucky Wheel’s top prize tiers."
+          ],
+          [
+            "Feature Unlocks by Bet Level"
+          ],
+          [
+            "SCATTER lands only on reel 4 and launches the Lucky Wheel.",
+            "Lucky Wheel Bonus = total bet × the multiplier landed on the wheel.",
+            "Payout = number-symbol combination + Lucky Wheel Bonus."
+          ],
+          [
+            "Respin"
+          ],
+          [
+            "The RESPIN symbol appears only on reel 4. Landing it re-spins reels 1, 2 and 3.",
+            "Payout = number-symbol combination + the combination produced by the respin."
+          ]
+        ],
+        "slide3": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "SYMBOL"
+          ],
+          [
+            "JACKPOT SYMBOL"
+          ]
+        ],
+        "slide4": [
+          [
+            "SUPPORTED LANGUAGES"
+          ],
+          [
+            "English",
+            "Simplified Chinese",
+            "Russian"
+          ],
+          [
+            "Thai",
+            "Korean",
+            "Turkish"
+          ],
+          [
+            "Spanish",
+            "Japanese",
+            "Vietnamese"
+          ],
+          [
+            "Portuguese"
+          ],
+          [
+            "SUPPORTED CURRENCIES"
+          ],
+          [
+            "AMD",
+            "ARS",
+            "AUD",
+            "AZN",
+            "BND",
+            "BOB",
+            "BRL",
+            "BYN",
+            "CAD",
+            "CDF"
+          ],
+          [
+            "CHF",
+            "CLP",
+            "COP",
+            "CZK",
+            "DOP",
+            "EURGBPGELGHSHUF"
+          ],
+          [
+            "IDRINRIQDIRRJPYKESKGSKRWKZTMDL"
+          ],
+          [
+            "MMKMXNMNTMYRNGNNOKNZDPENPHPPKR"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "TZSUAHUGXUSDUYUUZSVNDXAFXOFZAR"
+          ],
+          [
+            "ZMWAEDBDTBWPDZDEGPETBGTQHTGJOD"
+          ],
+          [
+            "LKRLYDMZNNADNPRPABSSPTMTmBTCkVND"
+          ],
+          [
+            "kIDRKWDBHDMADSARSLEVESHKD"
+          ],
+          [
+            "Version: v1.2",
+            "Update Date: 2026-02-26"
+          ]
+        ]
+      },
+      "prose_source": "High Roller's Cash RTP94.pptx",
+      "languages": [
+        "English",
+        "Simplified Chinese",
+        "Russian",
+        "Thai",
+        "Korean",
+        "Turkish",
+        "Spanish",
+        "Japanese",
+        "Vietnamese",
+        "Portuguese"
+      ],
+      "currencies": [
+        "AMD",
+        "ARS",
+        "AUD",
+        "AZN",
+        "BND",
+        "BOB",
+        "BRL",
+        "BYN",
+        "CAD",
+        "CDF",
+        "CHF",
+        "CLP",
+        "COP",
+        "CZK",
+        "DOP",
+        "EUR",
+        "GBP",
+        "GEL",
+        "GHS",
+        "HUF",
+        "IDR",
+        "INR",
+        "IQD",
+        "IRR",
+        "JPY",
+        "KES",
+        "KGS",
+        "KRW",
+        "KZT",
+        "MDL",
+        "MMK",
+        "MXN",
+        "MNT",
+        "MYR",
+        "NGN",
+        "NOK",
+        "NZD",
+        "PEN",
+        "PHP",
+        "PKR",
+        "PLN",
+        "PYG",
+        "RSD",
+        "RUB",
+        "RWF",
+        "SEK",
+        "THB",
+        "TND",
+        "TRY",
+        "TWD",
+        "TZS",
+        "UAH",
+        "UGX",
+        "USD",
+        "UYU",
+        "UZS",
+        "VND",
+        "XAF",
+        "XOF",
+        "ZAR",
+        "ZMW",
+        "AED",
+        "BDT",
+        "BWP",
+        "DZD",
+        "EGP",
+        "ETB",
+        "GTQ",
+        "HTG",
+        "JOD",
+        "LKR",
+        "LYD",
+        "MZN",
+        "NAD",
+        "NPR",
+        "PAB",
+        "SSP",
+        "TMT",
+        "mBTC",
+        "kVND",
+        "kIDR",
+        "KWD",
+        "BHD",
+        "MAD",
+        "SAR",
+        "SLE",
+        "VES",
+        "HKD"
+      ],
+      "sheet_version": "v1.2",
+      "sheet_updated": "2026-02-26"
+    },
+    "iron-gate": {
+      "source": "ref/WSO asset Techtoniq/Irongate/",
+      "sheets": [
+        "Marketing Pack/irongate game sheet v1.2.1(RTP96).pptx",
+        "Marketing Pack/irongate game sheet v1.2.pptx"
+      ],
+      "common": {
+        "layout": "6x4 - 6x8",
+        "mechanic": "4096-262144ways",
+        "max_win": "50000x bet",
+        "free_spin_cost": "€0.20",
+        "min_bet": "€0.20",
+        "max_bet": "€200"
+      },
+      "variants": [
+        {
+          "id": "Irongate",
+          "rtp": "94.06%",
+          "sd": "8",
+          "hit_rate": "27.1%",
+          "avg_feature_win": "66 x bet",
+          "sheets": [
+            "irongate game sheet v1.2.pptx"
+          ]
+        },
+        {
+          "id": "Irongate-96",
+          "rtp": "96.31%",
+          "sd": "8",
+          "hit_rate": "27.1%",
+          "avg_feature_win": "66 x bet",
+          "sheets": [
+            "irongate game sheet v1.2.1(RTP96).pptx"
+          ]
+        }
+      ],
+      "raw_slides": {
+        "slide1": [
+          [
+            "AVAILABLE ON ALL DEVICES"
+          ],
+          [
+            "ID",
+            "Columns x Rows:",
+            "RTP:",
+            "SD:",
+            "Payout Mechanic:",
+            "Max win (simulated):"
+          ],
+          [
+            "Irongate-96",
+            "6x4 - 6x8",
+            "96.31%",
+            "8",
+            "4096-262144ways",
+            "50000x bet"
+          ],
+          [
+            "Default Free-Spin Cost:",
+            "Hit Frequency:",
+            "Average Feature Win:",
+            "Default Min Bet:",
+            "Default Max Bet:"
+          ],
+          [
+            "€0.20",
+            "27.1%",
+            "66 x bet",
+            "€0.20",
+            "€200"
+          ]
+        ],
+        "slide2": [
+          [
+            "Step into Irongate, an ancient fortress built to seal away immense power.Each breach weakens its defences, unleashing surges of energy that reshape the battlefield. As pressure builds, the gate shifts, expands, and strengthens—until it finally fails, releasing the full force it was meant to contain.",
+            "Wins cascade through an ever-expanding grid, while the Multiplier Totem grows in power with every successful breach. Strategic symbol interactions and escalating multipliers drive the action toward explosive rewards."
+          ],
+          [
+            "BACKGROUND STORY"
+          ],
+          [
+            "Expanding Grid",
+            "The grid expands by one row after each winning cascade.",
+            "Expansion continues up to a maximum of 8 rows.",
+            "Each expansion increases winning potential and feature impact."
+          ],
+          [
+            "CORE FEATURES"
+          ],
+          [
+            "Multiplier Totem",
+            "The Multiplier Totem progresses through three stages.",
+            "Multiplier values increase as the Totem advances.",
+            "The active multiplier applies to all subsequent wins within the same game round.",
+            "The Multiplier Totem and active multiplier reset before the next game round begins."
+          ]
+        ],
+        "slide3": [
+          [
+            "FEATURE SYMBOLS"
+          ],
+          [
+            "Wild Symbol",
+            "Substitutes for all symbols except Bonus, Upgrade, and Multiplier symbols.",
+            "Bonus Symbol",
+            "When a Bonus symbol reaches the leftmost reel, 7 Free Spins are awarded.",
+            "The active multiplier and the stage of the Multiplier Totem remain active during the Free Spins."
+          ]
+        ],
+        "slide4": [
+          [
+            "FEATURE SYMBOLS"
+          ],
+          [
+            "Multiplier Symbol",
+            "When reaching the leftmost reel or the bottom of the grid, the symbol:",
+            "Increases the active multiplier",
+            "Transforms into a Wild symbol",
+            "Upgrade Symbol",
+            "When reaching the leftmost reel or the bottom of the grid, the symbol:",
+            "Advances the Multiplier Totem by one stage",
+            "Transforms into a Wild symbol"
+          ]
+        ],
+        "slide5": [
+          [
+            "Buy Bonus"
+          ],
+          [
+            "Boost Bet – Increases the chance of triggering Free Spins.",
+            "Upgrade – Starts a single game round with the Multiplier Totem at Stage 3.",
+            "Multiplier Wild – Enables Multiplier symbols to activate upon reaching the leftmost reel or bottom of the grid.",
+            "Buy Free Spins – Direct access to the Free Spins feature.",
+            "Ultimate Free Spins – Direct access to the Ultimate Free Spins feature."
+          ]
+        ],
+        "slide6": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "HIGH"
+          ],
+          [
+            "LOW"
+          ],
+          [
+            "WILD"
+          ],
+          [
+            "BONUS"
+          ],
+          [
+            "UPGRADE"
+          ],
+          [
+            "MULTIPLIER"
+          ],
+          [
+            "MULTIPLIER WILD"
+          ]
+        ],
+        "slide7": [
+          [
+            "SUPPORTED LANGUAGES"
+          ],
+          [
+            "English",
+            "Simplified Chinese",
+            "Russian"
+          ],
+          [
+            "Thai",
+            "Korean",
+            "Turkish"
+          ],
+          [
+            "Spanish",
+            "Japanese",
+            "Vietnamese"
+          ],
+          [
+            "Portuguese"
+          ],
+          [
+            "SUPPORTED CURRENCIES"
+          ],
+          [
+            "AMD",
+            "ARS",
+            "AUD",
+            "AZN",
+            "BND",
+            "BOB",
+            "BRL",
+            "BYN",
+            "CAD",
+            "CDF"
+          ],
+          [
+            "CHF",
+            "CLP",
+            "COP",
+            "CZK",
+            "DOP",
+            "EURGBPGELGHSHUF"
+          ],
+          [
+            "IDRINRIQDIRRJPYKESKGSKRWKZTMDL"
+          ],
+          [
+            "MMKMXNMNTMYRNGNNOKNZDPENPHPPKR"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "TZSUAHUGXUSDUYUUZSVNDXAFXOFZAR"
+          ],
+          [
+            "ZMWAEDBDTBWPDZDEGPETBGTQHTGJOD"
+          ],
+          [
+            "LKRLYDMZNNADNPRPABSSPTMTmBTCkVND"
+          ],
+          [
+            "kIDRKWDBHDMADSARSLEVESHKD"
+          ],
+          [
+            "Version: v1.2.1",
+            "Update Date: 2026-03-02"
+          ]
+        ]
+      },
+      "prose_source": "irongate game sheet v1.2.1(RTP96).pptx",
+      "story": "Step into Irongate, an ancient fortress built to seal away immense power.Each breach weakens its defences, unleashing surges of energy that reshape the battlefield. As pressure builds, the gate shifts, expands, and strengthens—until it finally fails, releasing the full force it was meant to contain.",
+      "languages": [
+        "English",
+        "Simplified Chinese",
+        "Russian",
+        "Thai",
+        "Korean",
+        "Turkish",
+        "Spanish",
+        "Japanese",
+        "Vietnamese",
+        "Portuguese"
+      ],
+      "currencies": [
+        "AMD",
+        "ARS",
+        "AUD",
+        "AZN",
+        "BND",
+        "BOB",
+        "BRL",
+        "BYN",
+        "CAD",
+        "CDF",
+        "CHF",
+        "CLP",
+        "COP",
+        "CZK",
+        "DOP",
+        "EUR",
+        "GBP",
+        "GEL",
+        "GHS",
+        "HUF",
+        "IDR",
+        "INR",
+        "IQD",
+        "IRR",
+        "JPY",
+        "KES",
+        "KGS",
+        "KRW",
+        "KZT",
+        "MDL",
+        "MMK",
+        "MXN",
+        "MNT",
+        "MYR",
+        "NGN",
+        "NOK",
+        "NZD",
+        "PEN",
+        "PHP",
+        "PKR",
+        "PLN",
+        "PYG",
+        "RSD",
+        "RUB",
+        "RWF",
+        "SEK",
+        "THB",
+        "TND",
+        "TRY",
+        "TWD",
+        "TZS",
+        "UAH",
+        "UGX",
+        "USD",
+        "UYU",
+        "UZS",
+        "VND",
+        "XAF",
+        "XOF",
+        "ZAR",
+        "ZMW",
+        "AED",
+        "BDT",
+        "BWP",
+        "DZD",
+        "EGP",
+        "ETB",
+        "GTQ",
+        "HTG",
+        "JOD",
+        "LKR",
+        "LYD",
+        "MZN",
+        "NAD",
+        "NPR",
+        "PAB",
+        "SSP",
+        "TMT",
+        "mBTC",
+        "kVND",
+        "kIDR",
+        "KWD",
+        "BHD",
+        "MAD",
+        "SAR",
+        "SLE",
+        "VES",
+        "HKD"
+      ],
+      "sheet_version": "v1.2.1",
+      "sheet_updated": "2026-03-02"
+    },
+    "spin-my-drink": {
+      "source": "ref/WSO asset Techtoniq/Spin My Drink!/",
+      "sheets": [
+        "Spin My Drink! game sheet v1.0.pptx"
+      ],
+      "common": {
+        "mechanic": "Mini Game",
+        "max_win": "2x bet",
+        "min_bet": "€0.50",
+        "max_bet": "€100"
+      },
+      "variants": [
+        {
+          "id": "spinmydrink",
+          "rtp": "97.01%",
+          "volatility": "Low",
+          "hit_rate": "48.5%",
+          "sheets": [
+            "Spin My Drink! game sheet v1.0.pptx"
+          ]
+        }
+      ],
+      "raw_slides": {
+        "slide1": [
+          [
+            "AVAILABLE ON ALL DEVICES"
+          ],
+          [
+            "ID",
+            "RTP:",
+            "Volatility:",
+            "Win Mechanic:",
+            "Max win :"
+          ],
+          [
+            "spinmydrink",
+            "97.01%",
+            "Low",
+            "Mini Game",
+            "2x bet"
+          ],
+          [
+            "Hit Frequency:",
+            "Default Min Bet:",
+            "Default Max Bet:"
+          ],
+          [
+            "48.5%",
+            "€0.50",
+            "€100"
+          ]
+        ],
+        "slide2": [
+          [
+            "This game supports switching between different styles of wine bottles.",
+            "PURPLE RAM",
+            "PURPLE RAM-Wine References",
+            "WOOLY WALKER – WHISKEY",
+            "PURPLE RAM- GIN",
+            "GREY SHEEP VODKA",
+            "MAISON DU BELIER"
+          ]
+        ],
+        "slide3": [
+          [
+            "SUPPORTED LANGUAGES"
+          ],
+          [
+            "English",
+            "Simplified Chinese",
+            "Russian"
+          ],
+          [
+            "Thai",
+            "Korean",
+            "Turkish"
+          ],
+          [
+            "Spanish",
+            "Japanese",
+            "Vietnamese"
+          ],
+          [
+            "Portuguese"
+          ],
+          [
+            "SUPPORTED CURRENCIES"
+          ],
+          [
+            "AMD",
+            "ARS",
+            "AUD",
+            "AZN",
+            "BND",
+            "BOB",
+            "BRL",
+            "BYN",
+            "CAD",
+            "CDF"
+          ],
+          [
+            "CHF",
+            "CLP",
+            "COP",
+            "CZK",
+            "DOP",
+            "EURGBPGELGHSHUF"
+          ],
+          [
+            "IDRINRIQDIRRJPYKESKGSKRWKZTMDL"
+          ],
+          [
+            "MMKMXNMNTMYRNGNNOKNZDPENPHPPKR"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "TZSUAHUGXUSDUYUUZSVNDXAFXOFZAR"
+          ],
+          [
+            "ZMWAEDBDTBWPDZDEGPETBGTQHTGJOD"
+          ],
+          [
+            "LKRLYDMZNNADNPRPABSSPTMTmBTCkVND"
+          ],
+          [
+            "kIDRKWDBHDMADSARSLEVESHKD"
+          ],
+          [
+            "Version: v1.2",
+            "Update Date: 2026-01-13"
+          ]
+        ]
+      },
+      "prose_source": "Spin My Drink! game sheet v1.0.pptx",
+      "languages": [
+        "English",
+        "Simplified Chinese",
+        "Russian",
+        "Thai",
+        "Korean",
+        "Turkish",
+        "Spanish",
+        "Japanese",
+        "Vietnamese",
+        "Portuguese"
+      ],
+      "currencies": [
+        "AMD",
+        "ARS",
+        "AUD",
+        "AZN",
+        "BND",
+        "BOB",
+        "BRL",
+        "BYN",
+        "CAD",
+        "CDF",
+        "CHF",
+        "CLP",
+        "COP",
+        "CZK",
+        "DOP",
+        "EUR",
+        "GBP",
+        "GEL",
+        "GHS",
+        "HUF",
+        "IDR",
+        "INR",
+        "IQD",
+        "IRR",
+        "JPY",
+        "KES",
+        "KGS",
+        "KRW",
+        "KZT",
+        "MDL",
+        "MMK",
+        "MXN",
+        "MNT",
+        "MYR",
+        "NGN",
+        "NOK",
+        "NZD",
+        "PEN",
+        "PHP",
+        "PKR",
+        "PLN",
+        "PYG",
+        "RSD",
+        "RUB",
+        "RWF",
+        "SEK",
+        "THB",
+        "TND",
+        "TRY",
+        "TWD",
+        "TZS",
+        "UAH",
+        "UGX",
+        "USD",
+        "UYU",
+        "UZS",
+        "VND",
+        "XAF",
+        "XOF",
+        "ZAR",
+        "ZMW",
+        "AED",
+        "BDT",
+        "BWP",
+        "DZD",
+        "EGP",
+        "ETB",
+        "GTQ",
+        "HTG",
+        "JOD",
+        "LKR",
+        "LYD",
+        "MZN",
+        "NAD",
+        "NPR",
+        "PAB",
+        "SSP",
+        "TMT",
+        "mBTC",
+        "kVND",
+        "kIDR",
+        "KWD",
+        "BHD",
+        "MAD",
+        "SAR",
+        "SLE",
+        "VES",
+        "HKD"
+      ],
+      "sheet_version": "v1.2",
+      "sheet_updated": "2026-01-13"
+    },
+    "the-void": {
+      "source": "ref/WSO asset Techtoniq/The Void/",
+      "sheets": [
+        "The Void game sheet 94.pptx",
+        "The Void game sheet 96.pptx",
+        "The Void game sheet 98.pptx"
+      ],
+      "common": {
+        "layout": "6 x 4",
+        "mechanic": "4096 ways",
+        "max_win": "20000 x bet",
+        "free_spin_cost": "€0.10",
+        "min_bet": "€0.10",
+        "max_bet": "€100"
+      },
+      "variants": [
+        {
+          "id": "thevoid",
+          "rtp": "94.08%",
+          "sd": "6.5",
+          "hit_rate": "30.2%",
+          "avg_feature_win": "39 x bet",
+          "sheets": [
+            "The Void game sheet 94.pptx"
+          ]
+        },
+        {
+          "id": "thevoid-96",
+          "rtp": "96.18%",
+          "sd": "6.7",
+          "hit_rate": "30.7%",
+          "avg_feature_win": "39 x bet",
+          "sheets": [
+            "The Void game sheet 96.pptx"
+          ]
+        },
+        {
+          "id": "thevoid-98",
+          "rtp": "98.06%",
+          "sd": "7.0",
+          "hit_rate": "30.8%",
+          "avg_feature_win": "43 x bet",
+          "sheets": [
+            "The Void game sheet 98.pptx"
+          ]
+        }
+      ],
+      "raw_slides": {
+        "slide1": [
+          [
+            "AVAILABLE ON ALL DEVICES"
+          ],
+          [
+            "ID",
+            "Columns x Rows :",
+            "RTP:",
+            "SD:",
+            "Payout Mechanic:",
+            "Max win (simulated):"
+          ],
+          [
+            "thevoid",
+            "6 x 4",
+            "94.08%",
+            "6.5",
+            "4096 ways",
+            "20000 x bet"
+          ],
+          [
+            "Default Free-Spin Cost:",
+            "Hit Frequency:",
+            "Average Feature Win:",
+            "Default Min Bet:",
+            "Default Max Bet:"
+          ],
+          [
+            "€0.10",
+            "30.2%",
+            "39 x bet",
+            "€0.10",
+            "€100"
+          ]
+        ],
+        "slide2": [
+          [
+            "In the stygian dark of night, the forests of New England stir as a colossal behemoth—muttering, trembling, squirming with an unholy life of its own.",
+            "And within the maw of this dread leviathan, unhallowed flames flicker and wild, discordant drums pound, weaving a sonata of madness and chaos unbound.",
+            "The acolytes of a foul and forbidden cult dance and chant in rabid fervor, offering up living flesh as sacrifice, their hands outstretched to call forth those abhorrent entities whose very glance consigns mortal men to eternal lunacy or instant, annihilating oblivion: the Great Old Ones, who once ruled the cosmos for a trillion trillion years uncounted. ‌The Old Ones were, the Old Ones are, and the Old Ones shall be."
+          ],
+          [
+            "BACKGROUND STORY"
+          ],
+          [
+            "Collect FEATURE"
+          ],
+          [
+            "The Collect feature is triggered when a Collect Symbol appears any where on the reel.",
+            "Each Collect Symbol collects the values of all Cash and Jackpot Symbols currently on the reels.",
+            "Cash, Jackpot, and Collect Symbols do not appear in Call Of The Void."
+          ]
+        ],
+        "slide3": [
+          [
+            "Buy Bonus"
+          ],
+          [
+            "Boost Bet – Activate to increase the chance of triggering the Bonus Games feature, at a cost of 1.5× the selected bet.",
+            "High-roller boost – Activate for approximately a 1 in 10.6 chance to reach the maximum win, at a cost of 2000× the selected bet.",
+            "Buy Bonus Game 1 – 4 Scatters award 12 spins in Call Of The Void or 3 spins in Rise Of R'lyeh, at a cost of 75× the selected bet.",
+            "Buy Bonus Game 2 – 5 Scatters award 20 spins in Call Of The Void or 5 spins in Rise Of R'lyeh, at a cost of 120× the selected bet.",
+            "Buy Bonus Game 3 – 6 Scatters award 30 spins in Call Of The Void or 7 spins in Rise Of R'lyeh, at a cost of 150× the selected bet."
+          ]
+        ],
+        "slide4": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "COLLECT SYMBOL"
+          ],
+          [
+            "CASH SYMBOL"
+          ],
+          [
+            "JACKPOT SYMBOL"
+          ]
+        ],
+        "slide5": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "SCATTER"
+          ],
+          [
+            "WILD"
+          ],
+          [
+            "WILD MULTIPLIER"
+          ]
+        ],
+        "slide6": [
+          [
+            "SYMBOLS"
+          ],
+          [
+            "High Pay Symbol"
+          ],
+          [
+            "Jelly"
+          ]
+        ],
+        "slide7": [
+          [
+            "SUPPORTED LANGUAGES"
+          ],
+          [
+            "English",
+            "Simplified Chinese",
+            "Russian"
+          ],
+          [
+            "Thai",
+            "Korean",
+            "Turkish"
+          ],
+          [
+            "Spanish",
+            "Japanese",
+            "Vietnamese"
+          ],
+          [
+            "Portuguese"
+          ],
+          [
+            "SUPPORTED CURRENCIES"
+          ],
+          [
+            "AMD",
+            "ARS",
+            "AUD",
+            "AZN",
+            "BND",
+            "BOB",
+            "BRL",
+            "BYN",
+            "CAD",
+            "CDF"
+          ],
+          [
+            "CHF",
+            "CLP",
+            "COP",
+            "CZK",
+            "DOP",
+            "EURGBPGELGHSHUF"
+          ],
+          [
+            "IDRINRIQDIRRJPYKESKGSKRWKZTMDL"
+          ],
+          [
+            "MMKMXNMNTMYRNGNNOKNZDPENPHPPKR"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "PLNPYGRSDRUBRWFSEKTHBTNDTRYTWD"
+          ],
+          [
+            "TZSUAHUGXUSDUYUUZSVNDXAFXOFZAR"
+          ],
+          [
+            "ZMWAEDBDTBWPDZDEGPETBGTQHTGJOD"
+          ],
+          [
+            "LKRLYDMZNNADNPRPABSSPTMTmBTCkVND"
+          ],
+          [
+            "kIDRKWDBHDMADSARSLEVESHKD"
+          ],
+          [
+            "Version: v1.2",
+            "Update Date: 2026-02-26"
+          ]
+        ]
+      },
+      "prose_source": "The Void game sheet 94.pptx",
+      "story": "The acolytes of a foul and forbidden cult dance and chant in rabid fervor, offering up living flesh as sacrifice, their hands outstretched to call forth those abhorrent entities whose very glance consigns mortal men to eternal lunacy or instant, annihilating oblivion: the Great Old Ones, who once ruled the cosmos for a trillion trillion years uncounted. ‌The Old Ones were, the Old Ones are, and the Old Ones shall be.",
+      "buy_options": [
+        {
+          "title": "Boost Bet",
+          "cost": "1.5× the selected bet",
+          "body": "Activate to increase the chance of triggering the Bonus Games feature, at a cost of 1.5× the selected bet."
+        },
+        {
+          "title": "High-roller boost",
+          "cost": "2000× the selected bet",
+          "body": "Activate for approximately a 1 in 10.6 chance to reach the maximum win, at a cost of 2000× the selected bet."
+        },
+        {
+          "title": "Buy Bonus Game 1",
+          "cost": "75× the selected bet",
+          "body": "4 Scatters award 12 spins in Call Of The Void or 3 spins in Rise Of R'lyeh, at a cost of 75× the selected bet."
+        },
+        {
+          "title": "Buy Bonus Game 2",
+          "cost": "120× the selected bet",
+          "body": "5 Scatters award 20 spins in Call Of The Void or 5 spins in Rise Of R'lyeh, at a cost of 120× the selected bet."
+        },
+        {
+          "title": "Buy Bonus Game 3",
+          "cost": "150× the selected bet",
+          "body": "6 Scatters award 30 spins in Call Of The Void or 7 spins in Rise Of R'lyeh, at a cost of 150× the selected bet."
+        }
+      ],
+      "languages": [
+        "English",
+        "Simplified Chinese",
+        "Russian",
+        "Thai",
+        "Korean",
+        "Turkish",
+        "Spanish",
+        "Japanese",
+        "Vietnamese",
+        "Portuguese"
+      ],
+      "currencies": [
+        "AMD",
+        "ARS",
+        "AUD",
+        "AZN",
+        "BND",
+        "BOB",
+        "BRL",
+        "BYN",
+        "CAD",
+        "CDF",
+        "CHF",
+        "CLP",
+        "COP",
+        "CZK",
+        "DOP",
+        "EUR",
+        "GBP",
+        "GEL",
+        "GHS",
+        "HUF",
+        "IDR",
+        "INR",
+        "IQD",
+        "IRR",
+        "JPY",
+        "KES",
+        "KGS",
+        "KRW",
+        "KZT",
+        "MDL",
+        "MMK",
+        "MXN",
+        "MNT",
+        "MYR",
+        "NGN",
+        "NOK",
+        "NZD",
+        "PEN",
+        "PHP",
+        "PKR",
+        "PLN",
+        "PYG",
+        "RSD",
+        "RUB",
+        "RWF",
+        "SEK",
+        "THB",
+        "TND",
+        "TRY",
+        "TWD",
+        "TZS",
+        "UAH",
+        "UGX",
+        "USD",
+        "UYU",
+        "UZS",
+        "VND",
+        "XAF",
+        "XOF",
+        "ZAR",
+        "ZMW",
+        "AED",
+        "BDT",
+        "BWP",
+        "DZD",
+        "EGP",
+        "ETB",
+        "GTQ",
+        "HTG",
+        "JOD",
+        "LKR",
+        "LYD",
+        "MZN",
+        "NAD",
+        "NPR",
+        "PAB",
+        "SSP",
+        "TMT",
+        "mBTC",
+        "kVND",
+        "kIDR",
+        "KWD",
+        "BHD",
+        "MAD",
+        "SAR",
+        "SLE",
+        "VES",
+        "HKD"
+      ],
+      "sheet_version": "v1.2",
+      "sheet_updated": "2026-02-26"
+    }
+  }
+}

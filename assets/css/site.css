@@ -1,0 +1,2229 @@
+/* ==========================================================================
+   Wild Sheep — site styles
+   Section order mirrors the XD comp so the WordPress template parts can be
+   lifted out one block at a time. Each banner below names the template part
+   it maps to. See wp/HANDOVER.md.
+   ========================================================================== */
+
+/* == RESET / BASE ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  /* 400 is prose weight everywhere; 700 is the only step up, for emphasis and
+     for UI labels. Nothing on the site sits at 500. The default used to be 500,
+     which meant every prose rule had to declare 400 to undo it — and the ones
+     that forgot (section leads, value-prop bodies, form labels) silently ran a
+     step heavier than the copy beside them. */
+  font-weight: 400;
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+
+/* The UA's own [hidden] rule is weaker than any author `display`, so an element
+   hidden from JS stays on screen if its class sets one. That is what left the
+   library's Show More button painting "Show More (0 left)" — .btn is
+   inline-flex. Symptom is always the same: you set .hidden = true, nothing
+   happens, and there is no error anywhere. */
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2rem);
+}
+.section { padding-block: var(--sec-y); }
+.section--tight { padding-block: var(--sec-y-sm); }
+.band-dark { background: var(--ink); color: var(--white); }
+.band-purple { background: var(--purple); color: var(--white); }
+
+/* Lets a carousel's cards run out past the content column and off the screen
+   instead of being sliced at the column edge. The section clips; the rail
+   inside it does not. `clip` rather than `hidden`: overflow-x:hidden implies
+   overflow-y:auto, which makes a scroll container and would clip vertically
+   too. body already carries overflow-x:hidden, so no scrollbar appears. */
+.bleed-clip { overflow-x: clip; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* == BRAND MARKS ========================================================== */
+/* The logos ship as single-colour artwork and are painted via CSS mask, so one
+   file serves every colourway and `color` alone drives the brand.
+   WordPress port: these four rules are the whole logo system. */
+.mark {
+  display: block;
+  background-color: currentColor;
+  -webkit-mask: var(--mark) center / contain no-repeat;
+          mask: var(--mark) center / contain no-repeat;
+}
+.mark--wordmark { --mark: url('../img/logos/wildsheep.svg');          aspect-ratio: 1684 / 353; }
+.mark--changers { --mark: url('../img/logos/changers-script.svg');    aspect-ratio: 820 / 391; }
+.mark--classic  { --mark: url('../img/logos/wildsheep-classic.png');  aspect-ratio: 820 / 600; }
+.mark--sheep    { --mark: url('../img/logos/sheep-icon.svg');         aspect-ratio: 1 / 1; }
+/* Outline treatment of the horizontal lockup. The supplied export centres the
+   artwork on a 1920x1080 board; the file's viewBox is cropped to the artwork's
+   own bounds so this ratio describes the mark rather than the empty board. */
+.mark--wordmark-outline { --mark: url('../img/logos/wildsheep-outline.svg'); aspect-ratio: 1684.3 / 349; }
+/* Horizontal Origins lockup, for headers on Origins-branded pages.
+   viewBox is cropped to the artwork, so this ratio is the artwork's own. */
+.mark--origins-wide { --mark: url('../img/logos/wildsheep-origins-h.svg'); aspect-ratio: 1686 / 550; }
+/* The Classic equivalent, and the header's mark on Classic-branded pages. True
+   vector, unlike `.mark--classic` below, which is still the raster stack.
+   Supplied as 1685x546 of artwork on a 1920x1080 board; the viewBox in the repo
+   copy is cropped to the artwork, so this ratio is the mark's own. */
+.mark--classic-wide { --mark: url('../img/logos/wildsheep-classic-h.svg'); aspect-ratio: 1685 / 546; }
+/* Stacked lockup — what the brand tile used before it went sub-brand-only. */
+.mark--origins  { --mark: url('../img/logos/wildsheep-origins-stacked.svg'); aspect-ratio: 1277 / 985; }
+/* Sub-brand words alone, for the brand tiles. Both were lifted out of the full
+   lockups rather than supplied separately — see each file's header comment.
+   Origins is true vector; Classic is a raster crop and inherits the pending
+   Classic-SVG caveat, so it is the one mark that will soften on a retina
+   display. Swapping in a real SVG is a URL + aspect-ratio change, nothing else. */
+.mark--origins-word { --mark: url('../img/logos/wildsheep-origins-word.svg'); aspect-ratio: 604.4 / 183; }
+.mark--classic-word { --mark: url('../img/logos/wildsheep-classic-word.png'); aspect-ratio: 479 / 151; }
+
+/* == DISPLAY TYPE ========================================================= */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: var(--lh-tight);
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0;
+}
+.band-dark .display { color: var(--white); }
+.display--xl { font-size: var(--d-xl); }
+.display--lg { font-size: var(--d-lg); }
+.display--md { font-size: var(--d-md); }
+.display--sm { font-size: var(--d-sm); }
+.display--xs { font-size: var(--d-xs); }
+
+.eyebrow {
+  font-size: var(--t-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem;
+}
+/* --t-lg, not --t-body: this is the token's stated job. A lead paragraph that
+   measures the same as the body copy underneath it isn't a lead. Gives the page
+   three clear prose steps — statement 48 / lead 23 / body 18. */
+.section-lead {
+  font-size: var(--t-lg);
+  max-width: 46ch;
+  margin: 1.25rem 0 0;
+}
+
+/* == BUTTONS ============================================================== */
+/* The comp uses one button language throughout: 1px green rule, green label. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.62em 1.15em;
+  border: var(--rule-w) solid var(--green);
+  background: transparent;
+  color: var(--green-dark);
+  font-size: var(--t-btn);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.btn:hover, .btn:focus-visible { background: var(--green); color: var(--ink); }
+.btn--solid { background: var(--green); color: var(--ink); }
+.btn--solid:hover { background: var(--green-dark); color: var(--white); }
+.btn[aria-pressed='true'] { background: var(--green); color: var(--ink); }
+.band-dark .btn { color: var(--green); }
+.band-dark .btn:hover,
+.band-dark .btn[aria-pressed='true'],
+.band-dark .btn--solid { color: var(--ink); }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* Carousel arrows */
+.carousel-nav { display: flex; gap: 0.5rem; margin-top: 1.75rem; }
+.carousel-nav button {
+  width: 2.75rem; height: 2.75rem;
+  display: grid; place-items: center;
+  border: var(--rule-w) solid var(--green);
+  background: transparent;
+  color: var(--green-dark);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.carousel-nav button:hover:not(:disabled) { background: var(--green); color: var(--ink); }
+.carousel-nav button:disabled { opacity: 0.35; cursor: default; }
+.band-dark .carousel-nav button { color: var(--green); }
+
+/* == HEADER =============================================================== */
+/* Two states, both driven by data-scrolled, which initHeader() maintains.
+   At rest the bar is completely absent — no plate, no blur, no rule. The
+   tinted-paper plate used to composite a shade lighter than --paper and left a
+   visible tonal seam across the top of the first fold; the fold has to read as
+   one clean sheet, so nothing paints there until the page moves.
+   No bottom rule in either state — the plate and blur do the separating, and a
+   hairline under the bar reads as a seam of its own. */
+.site-header {
+  position: sticky; top: 0; z-index: 60;
+  background: transparent;
+  transition: background-color var(--dur) var(--ease);
+}
+.site-header[data-scrolled='true'] {
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+/* Menu open: the plate goes, the marks stay. The bar sits above the overlay
+   (z-index 60 vs 50), so a paper plate left behind reads as a strip of the old
+   page pasted across the top of the menu. Only the background is dropped —
+   the logo and the close X still need to be there. */
+body:has(.site-nav[data-open='true']) .site-header {
+  background: transparent;
+  backdrop-filter: none;
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  /* 17px, not 24 — takes the bar from 93px to 79px at a 1920 canvas. Applied in
+     both states, not just scrolled: the header occupies flow space at rest too,
+     so shortening only the scrolled state would jog the page on first scroll. */
+  padding-block: 1.0625rem;
+}
+.site-header__logo {
+  width: clamp(9rem, 11.5vw, 13.5rem); color: var(--ink); display: block;
+  transition: color var(--dur) var(--ease);
+}
+
+/* Overlay header — game pages only.
+   The game hero is a full-bleed gradient that has to start at pixel zero, so at
+   the top of the page the bar disappears entirely and its marks go white over
+   the artwork. `data-scrolled` is already maintained by initHeader() in site.js;
+   this only restyles the two states. Scoped to [data-page='game'] so the landing
+   and library headers, which sit on paper, are untouched. */
+/* Fixed, not sticky: a sticky header still occupies flow space, which would
+   leave a paper strip above the hero and stop the gradient reaching pixel
+   zero. Fixed lifts it out of flow so the artwork runs to the top edge — the
+   hero's top padding is what keeps the copy clear of it. */
+/* The free-branded-game page takes the same treatment for the same reason: it
+   is one purple field from pixel zero, so a sticky header in flow would leave a
+   strip of paper above the band, and ink marks would sit on that strip instead
+   of on the colour. Its section's own top padding (--sec-y) clears the bar. */
+body[data-page='game'] .site-header,
+body[data-page='free-branded-game'] .site-header { position: fixed; left: 0; right: 0; }
+body[data-page='game'] .site-header[data-scrolled='false'] .site-header__logo,
+body[data-page='free-branded-game'] .site-header[data-scrolled='false'] .site-header__logo { color: var(--white); }
+body[data-page='game'] .site-header[data-scrolled='false'] .nav-toggle span,
+body[data-page='free-branded-game'] .site-header[data-scrolled='false'] .nav-toggle span { background: var(--white); }
+/* The Origins lockup is a stacked wordmark, so it needs more height than the
+   single-line WILD SHEEP mark to read at the same optical size. */
+body[data-page='game'] .site-header__logo.is-brand { width: clamp(7.5rem, 9.5vw, 11rem); }
+
+/* Hamburger */
+/* Two bars, which are also the two arms of the close X — there is no third bar
+   to fade out. Flex column + centre, not grid: auto grid rows in a fixed-height
+   box stretch by default, which spread the bars further apart than `gap` and
+   made the arms cross off-centre.
+   The bar centres sit `gap + bar-height` apart, so each arm travels exactly
+   half that to meet on the button's centre. Kept as a calc off the same two
+   values rather than a magic number, so retuning `gap` can't desync it. */
+.nav-toggle {
+  --bar-h: 2px;
+  --bar-gap: 0.5rem;
+  width: 2.75rem; height: 2.75rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: var(--bar-gap);
+  background: none; border: 0; cursor: pointer; padding: 0;
+}
+.nav-toggle span {
+  display: block; width: 2rem; height: var(--bar-h); flex: none;
+  background: var(--ink);
+  transition: transform var(--dur) var(--ease),
+              background-color var(--dur) var(--ease);
+}
+/* Open, the bars sit on the purple overlay — without this they'd be drawn in a
+   colour close to the ground behind them and the X would look like it vanished. */
+.nav-toggle[aria-expanded='true'] span { background: var(--white); }
+.nav-toggle[aria-expanded='true'] span:nth-child(1) {
+  transform: translateY(calc((var(--bar-gap) + var(--bar-h)) / 2)) rotate(45deg);
+}
+.nav-toggle[aria-expanded='true'] span:nth-child(2) {
+  transform: translateY(calc((var(--bar-gap) + var(--bar-h)) / -2)) rotate(-45deg);
+}
+
+.site-nav {
+  position: fixed; inset: 0; z-index: 50;
+  background: var(--purple);
+  display: grid; place-content: center;
+  gap: 1rem; text-align: center;
+  padding: 2rem; overflow-y: auto;
+  opacity: 0; visibility: hidden;
+  transition: opacity var(--dur) var(--ease), visibility var(--dur) var(--ease);
+}
+.site-nav[data-open='true'] { opacity: 1; visibility: visible; }
+.site-nav a {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3rem, 9vw, 11rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--white);
+  transition: color var(--dur) var(--ease);
+}
+/* Green: it is the site's one interaction colour and that outranks the fact
+   that it measures ~2.4:1 on --purple. Deliberate call, not an oversight. */
+.site-nav a:hover { color: var(--green); }
+
+/* == HERO ================================================================= */
+/* The first fold: stacked type with the cast lineup beneath it, the lineup
+   running the full width of the viewport and cropped by the screen edge.
+   No bottom padding — the artwork's own baseline IS the bottom of the fold, so
+   the characters stand ON the dark band's top edge exactly as in the comp. Any
+   padding here would float them above it and open a strip of paper. */
+.hero {
+  /* Half the original top padding — the headline sits closer under the header
+     now that the artwork below it needs the room more than the gap above does. */
+  padding-block: clamp(1.5rem, 3.5vw, 4rem) 0;
+  text-align: center;
+  /* x only — overflow-y stays `visible`, which is what lets the lineup's bottom
+     hang down over the dark band below. `clip` rather than `hidden` so it never
+     implies a scroll container. */
+  overflow-x: clip;
+  /* Lifts the whole fold above the following sections so the overhanging hooves
+     and bottles paint ON the dark band instead of under it. */
+  position: relative;
+  z-index: 1;
+}
+/* The type keeps the content column even though the section no longer does.
+   z-index above the artwork, so the CHANGERS script stays legible over the
+   dragon — the art can no longer sit at z-index: -1, because that would also
+   put it behind the dark band it is supposed to overhang. */
+.hero__type {
+  position: relative; z-index: 1;   /* below .hero__art's 2 — see the note there */
+  display: inline-block;
+  max-width: var(--container);
+  padding-inline: clamp(1.25rem, 4vw, 2rem);
+}
+
+/* The lineup. Pulled UP into the headline by a negative margin so the dragon's
+   wing and neck rise behind GAME CHANGERS the way the comp has them — the
+   artwork's own transparent top is what makes that read as depth rather than a
+   collision. In em of the hero's font-size so the overlap holds at every width.
+   `block` + `margin-inline: auto` centres it; the width is deliberately more
+   than 100% so the outermost characters are cropped by the screen rather than
+   the whole cast being shrunk to fit. */
+.hero__art {
+  /* 126% of the column so the outermost characters are cropped by the screen
+     rather than the whole cast being shrunk to fit, capped at 120rem = 1920px.
+     That cap is the design's target width: at a 1920 viewport the lineup is
+     exactly full-bleed, and only beyond that does it sit inset with paper either
+     side — it is a lineup, not a full-bleed band, and stretching it across an
+     ultrawide screen only coarsens the characters.
+     The cap was 92rem (1472px) for one round, which pinned the artwork from a
+     ~1170px viewport upward and left it looking undersized across the whole
+     normal desktop range. There is deliberately still no `max(100%, …)` floor. */
+  width: min(126%, 120rem);
+  /* Overlap into the headline: enough that the type sits ON the dragon and the
+     two read as one composition, not so much that the wing crowds the letters.
+     Tuned repeatedly — -8% buried the headline, -3% left them looking separate.
+     The extra -15pt is a fixed nudge on top of the proportional one, so it holds
+     the same optical bite at every viewport instead of scaling away on mobile. */
+  margin-top: calc(-5% - 20pt);
+  /* `margin-inline: auto` cannot centre a box WIDER than its container — auto
+     resolves to 0 and the overflow all lands on the right, cropping one side of
+     the cast and none of the other. Half-and-half via the 50% offset instead.
+     The -47.22% rather than -50% is what puts the SHEEP dead-centre instead of
+     the image's bounding box: its hooves sit at x=1071 and x=1634 of 2864, so
+     the sheep's axis is 1352 against the file's 1432 — 2.78% of the width left
+     of centre, which this adds back. */
+  position: relative;
+  left: 50%;
+  transform: translateX(-47.22%);
+  /* ABOVE the headline (z-index 2 against .hero__type's 1), so the cast crosses
+     in front of the type rather than behind it. This is the reverse of an
+     earlier pass and is deliberate: the artwork reads as standing in front of
+     the words. It still sits inside .hero's own stacking context, so the whole
+     fold stays above the dark band it overhangs. */
+  z-index: 2;
+  pointer-events: none;
+}
+/* The artwork has its own table edge: at y=1207 of 1307 the cast is cut flat,
+   and below that line the sheep's hooves, two bottles and a hand hang over. So
+   the dark band's top has to land ON that line — the flat cut disappears behind
+   it and the overhang reads as resting on the surface.
+   That is 100/1307 of the height = 7.65%, and because the image's height is
+   1307/2864 of its width, it comes to 3.49% OF ITS OWN WIDTH. Which is exactly
+   why the wrapper exists: a percentage margin resolves against the containing
+   block's width, so putting it on the img inside a wrapper that is the image's
+   width makes the figure exact at every viewport instead of a tuned guess. */
+/* <picture> is an inline box by default, and a block-level <img> inside an
+   inline parent is a block-in-inline split — browsers cope, but it makes the
+   percentage margin's containing block ambiguous. Blockifying it keeps the
+   wrapper -> picture -> img chain a plain block chain. */
+.hero__art picture { display: block; }
+.hero__art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* The extra 3px past the measured 3.49% hides a hairline of paper that
+     subpixel rounding can leave between the artwork's cut edge and the band as
+     the image rescales responsively. Small enough not to eat into the overhang. */
+  margin-bottom: calc(-3.49% - 3px);
+}
+.hero__line {
+  font-family: var(--font-display);
+  font-weight: 400;
+  /* 353px at a 1920 canvas — measured off the comp's cap height. */
+  font-size: clamp(3rem, 18.4vw, 22.06rem);
+  line-height: 0.86;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0;
+}
+/* On an inverted band the hero type has to be lifted by hand — .hero__line is
+   not a .display, so the rule above doesn't reach it. */
+.band-dark .hero__line { color: var(--white); }
+/* Line 2 is "GAME" + the CHANGERS brush script centred as a single unit, with
+   the script biting back over the word — the composition from the comp.
+   All offsets are in em so they hold at every viewport.
+   The negative margin closes the leading that line-height 0.86 still leaves
+   between the two lines, so GAME sits up tight under GAMES FOR THE. The script
+   is 389px against a 304px line box and now crosses into the line above — that
+   overlap is intended, and it paints on top by source order alone. */
+.hero__line--script {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -0.18em;
+}
+/* GAME sits a word-space below GAMES FOR THE — the same optical gap the type
+   already has between GAMES and FOR (measured: 26.5px of ink-to-ink clearance
+   against a 294px font = 0.09em). The negative margin above pulls the whole
+   line up by 0.18em to place the script, which leaves GAME overlapping the
+   line above by 0.054em, so it comes back down by the sum of the two.
+   `transform`, not margin: the CHANGERS script shares this flex line and must
+   not shift, and transforms don't participate in layout.
+   Now set to half a word-space (0.045em) — 0.144 less the 0.045 being removed. */
+.hero__word { transform: translateY(0.099em); }
+.hero__script {
+  flex: none;
+  width: 2.31em;          /* 815px against the comp's 353px type */
+  margin-left: -0.216em;  /* bites back over the end of "GAME", but clear of
+                             its E — 12px further right than the comp's -0.25em */
+  margin-top: -0.10em;    /* sits a touch above the type's centre */
+  color: var(--purple);
+  pointer-events: none;
+}
+.hero .btn-row { justify-content: center; margin-top: clamp(2rem, 5vw, 4.5rem); }
+
+/* ---- first-fold parallax ------------------------------------------------- */
+/* The headline sinks behind the cast as you scroll: it drifts DOWN (moving up
+   slower than the page, which is what reads as "further away"), shrinks a
+   little, and dissolves. The lineup does not move at all, so the cast stays
+   planted and the words recede behind it — the depth is the DIFFERENCE between
+   the two, not both being animated.
+
+   THE ARTWORK IS DELIBERATELY NOT ANIMATED, and this is the load-bearing part.
+   .hero__art carries a translateX(-47.22%) that centres the SHEEP rather than
+   the file's bounding box, and its img's margin-bottom: -3.49% is what lands
+   the cast's cut edge on the dark band's top so the overhang reads as resting
+   on a surface. Moving it by any amount breaks that alignment the instant the
+   page scrolls, and both values are tuned to the pixel — see the notes above.
+   .hero__type is the free layer: it has position and z-index but no transform.
+
+   The whole effect is ONE number. JS sets --hero-p (0 at rest, 1 by the time
+   the fold has scrolled away) and the composition lives here in CSS, so the
+   motion can be retuned without touching the script.
+
+   Degrades to the static design exactly: --hero-p defaults to 0, which is
+   translateY(0) scale(1) opacity 1 — so if the script never runs, or is blocked,
+   or the reader prefers reduced motion, the fold is what it always was. There is
+   no broken half-state to fall into. */
+@property --hero-p {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: true;
+}
+/* ---- v1: the headline recedes and fades behind the cast ------------------ */
+/* Driven by --hero-p from initHeroParallax(). Inert unless <html> says v1. */
+[data-parallax='v1'] .hero__type {
+  /* translate BEFORE scale, so the type shrinks about its own centre after it
+     has moved rather than being pulled toward the origin as it goes. */
+  transform:
+    translateY(calc(var(--hero-p, 0) * 6rem))
+    scale(calc(1 - var(--hero-p, 0) * 0.06));
+  opacity: calc(1 - var(--hero-p, 0) * 0.88);
+}
+
+/* ---- v2: the headline holds still and the dark band rises over it -------- */
+/* No JavaScript runs per frame here. `position: sticky` is resolved by the
+   compositor, so the headline is pixel-locked to the viewport and cannot jitter
+   the way a JS-positioned element does under a phone's momentum scrolling —
+   which is the main reason this is sticky rather than an extension of v1's
+   scroll handler. JS measures ONE number once (on load and on resize) and never
+   touches the DOM again while scrolling: see initHeroParallax().
+
+   TWO things have to be arranged for this to work, and both are load-bearing.
+
+   1. THE BAND HAS TO PAINT OVER THE HEADLINE, WHICH REVERSES THE FOLD'S PAINT
+      ORDER. In v1 `.hero` carries `position: relative; z-index: 1` to lift the
+      whole fold above the sections after it, so the cast's hooves paint ON the
+      dark band. That also puts the headline above the band, which is exactly
+      what v2 must not do. So here the fold is NOT lifted as a unit: `.hero`
+      goes back to static, `.hero__art` carries the elevation itself (it already
+      has `position: relative; z-index: 2`, now resolved against the page rather
+      than against `.hero`), and the headline drops to `z-index: -1` — behind
+      every block background on the page, the dark band's included.
+      `.hero` must be STATIC, not relative: a positioned box paints above static
+      content, so a relative `.hero` would sit over the band and swallow clicks
+      on the chips inside it.
+
+   2. THE HERO'S CONTENT BOX HAS TO BE TALLER THAN THE FOLD, or the headline
+      unsticks long before the band reaches it. The band's top sits only ~66px
+      above the hero's content-box bottom (that gap is the artwork's overhang),
+      so an unextended hero can cover just 66px of a ~450px headline.
+      The extension MUST BE CONTENT, NOT PADDING. A sticky element is confined
+      to its containing block, and the containing block of an in-flow element is
+      its parent's CONTENT box — padding is outside it. `padding-bottom: 75vh`
+      was tried first and did nothing: the headline still released at 663px,
+      exactly the unpadded content edge. So an empty `::after` supplies the
+      height instead, and the negative `margin-bottom` on `.hero` pulls
+      everything after it back up by the same amount — the LAYOUT IS UNCHANGED,
+      only the sticky range grows. The two values must move together.
+      `.hero` deliberately has no bottom padding either way: real padding there
+      would float the cast off the band. */
+/* Wrapped in no-preference so reduced motion gets the plain fold: the hero keeps
+   its ordinary stacking and extension-free box, and the headline scrolls with
+   the page like everything else. It has to be the WHOLE block, not just the
+   sticky rule — leaving the reversed paint order or the -75vh in place without
+   the pin would be a half-state, and the JS skips its measurement here too. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-parallax='v2'] .hero {
+    position: static;
+    z-index: auto;
+    margin-bottom: -75vh;
+  }
+  /* The content-box extension from note 2. Empty, no background, purely height. */
+  [data-parallax='v2'] .hero::after {
+    content: '';
+    display: block;
+    height: 75vh;
+  }
+  [data-parallax='v2'] .hero__type {
+    position: sticky;
+    /* Its own natural offset, measured once by JS, so it is already at rest on
+       load and never jumps into place. 0 is a harmless fallback: the headline
+       simply scrolls up to the top edge before it pins. */
+    top: var(--hero-stick-top, 0px);
+    z-index: -1;
+  }
+}
+
+/* == PERSONALISATION BAND ================================================= */
+.personalisation__body {
+  font-size: var(--t-lead);
+  font-weight: 300;   /* Light — the one place the big statement earns it */
+  line-height: var(--lh-lead);
+  max-width: 26em;   /* ~3 lines, matching the comp's measure */
+  margin: 0;
+}
+.personalisation__body b { font-weight: 700; }
+.personalisation .btn-row { margin-top: clamp(1.5rem, 3vw, 2.5rem); }
+/* A QUARTER of the fold's rhythm, where everything else in it sits on the full
+   --sec-y. The chips are the carousel's tab strip — chip n selects card n — so
+   they have to read as attached to the thing they drive rather than as a
+   separate block belonging to the statement above. Half the rhythm was still
+   68px at 1440, which left them floating between the two and reading as the
+   end of the statement; a quarter puts them on the carousel (34px at 1440,
+   20px on a phone), which is the tab-strip distance the pairing needs. */
+.personalisation { padding-bottom: calc(var(--sec-y) / 4); }
+
+/* == CAPABILITY CAROUSEL ================================================== */
+/* One card at a time, filling most of the content column, with the next card
+   peeking into the gutter — the section carries .bleed-clip, so a card is only
+   ever cut at the screen edge, never sliced at the column edge.
+   The chips above the band are this carousel's tab strip: chip n selects card
+   n, and driving it with the arrows moves the chips back. See
+   initCapabilityChips() in site.js. */
+.cap-carousel {
+  position: relative;
+  --cap-pad: clamp(1.25rem, 2.9vw, 3.5rem);   /* 56px at a 1920 canvas */
+}
+/* Deliberately NOT overflow:hidden — the clipping lives on the section. */
+.cap-viewport { overflow: visible; }
+.cap-track {
+  display: flex;
+  gap: var(--grid-gap);
+  transition: transform 420ms var(--ease);
+}
+.cap-card {
+  /* ~87% of the 1530px column, so the next card always shows. */
+  flex: 0 0 clamp(17rem, 76vw, 79.7rem);
+  aspect-ratio: 2 / 1;
+  min-height: clamp(20rem, 32vw, 38rem);
+  padding: var(--cap-pad);
+  /* Bottom padding also has to clear the arrows, which sit inside the card. */
+  padding-bottom: calc(var(--cap-pad) + 4.25rem);
+  background: #3A3A3A;
+  position: relative;
+  display: flex; flex-direction: column;
+  overflow: hidden;   /* keeps the art inside the card's own corners */
+}
+.cap-card__title { margin: 0 0 0.75rem; color: var(--white); }
+.cap-card__body { margin: 0; max-width: 42ch; font-size: var(--t-lg); }
+.cap-card__body b { font-weight: 700; }
+
+/* Illustration slot, bottom-right. Same reasoning as .buy-card__symbol on the
+   game page: sized by HEIGHT, not width, because the artwork won't all share an
+   aspect ratio and matching widths would make the squat ones tower. Optional —
+   a capability with no `art` in site.json simply renders without it. */
+.cap-card__art {
+  position: absolute;
+  /* Inset from the card's right edge rather than flush to it — flush read as
+     though the artwork had been cropped by the card rather than placed in it. */
+  right: var(--cap-pad); bottom: 0;
+  height: clamp(11.25rem, 26vw, 26rem); width: auto;
+  pointer-events: none;
+}
+.cap-card:has(.cap-card__art) .cap-card__body { max-width: 34ch; }
+/* A card carrying a link needs its measure back — 34ch breaks the link label
+   across three lines and it stops reading as one phrase. */
+.cap-card:has(.cap-card__link) .cap-card__body { max-width: 42ch; }
+
+/* The arrows live INSIDE the card, bottom-left, as in the reference. The
+   selected card is always flush with the carousel's left edge and the carousel
+   is exactly one card tall, so anchoring to the carousel puts them in the
+   card's own corner without having to move them with the track. */
+.cap-carousel__nav {
+  position: absolute;
+  left: var(--cap-pad); bottom: var(--cap-pad);
+  z-index: 1;
+  margin-top: 0;
+}
+
+/* == VALUE PROPS ========================================================== */
+/* The whole dark fold runs on one rhythm: the gap above the value props and the
+   gap below them both equal the gap from the top of the fold down to the
+   personalisation statement — --sec-y, the site's section rhythm. The section
+   above zeroes its own bottom padding so this is the whole gap, not this plus
+   that.
+   The columns are staggered, so the content box bottom is set by the lowest of
+   them — FAST API INTEGRATION, exactly where the spacing is measured from. */
+.value-props-section { padding-block: var(--sec-y); }
+.cap-carousel-section { padding-bottom: 0; }
+/* Three columns closing out the dark band, each stepped further down the page
+   than the last — the staircase is the composition, not decoration. */
+.value-props {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+/* Wide enough that CERTIFIED MATH MODELS breaks after CERTIFIED rather than
+   again after MATH — every heading here is meant to read as two lines. At 8ch
+   this one alone fell to three and broke the row's rhythm.
+   Own line-height: --lh-tight (0.82) is tuned for the huge stacked headings and
+   sets these two lines almost touching at --d-xs. */
+.value-prop__title { margin: 0 0 0.9rem; max-width: 12ch; line-height: 0.95; }
+.value-prop__body { margin: 0; max-width: 34ch; }
+/* Green because green is the site's one interaction colour. A text link rather
+   than a .btn: a boxed button under one of three equal columns would unbalance
+   the row and compete with the page's real CTAs. Optional — a value prop with
+   no `link` in site.json renders without it.
+   `inline-flex` with no top margin: it is rendered inside the paragraph, so it
+   runs on as the last phrase of the sentence and wraps with the copy rather
+   than sitting under it as a separate block. The arrow slides out on hover;
+   `gap` animates, so the label itself never moves. */
+/* Shared with the capability card's link (.cap-card__link carries this class
+   too), so the two read as one affordance rather than two similar ones. */
+.value-prop__link {
+  display: inline-flex; align-items: center; gap: 0.4em;
+  margin-left: 0.4em;
+  color: var(--green);
+  font-weight: 700;
+  transition: gap var(--dur) var(--ease);
+}
+.value-prop__link:hover { gap: 0.75em; }
+.value-prop__link svg { flex: none; }
+.value-prop:nth-child(2) { margin-top: clamp(1.25rem, 3.4vw, 4rem); }
+.value-prop:nth-child(3) { margin-top: clamp(2.5rem, 6.8vw, 8rem); }
+
+/* == BRAND TILES ========================================================== */
+/* The two lockups read as a pair, so they gather either side of the seam at a
+   fixed distance from it rather than floating in the centre of their own half.
+   --tile-gap is that distance and is the only number to tune.
+   Flex, not a 1fr 1fr grid: the pair reacts by giving one tile more of the row
+   and the other less, which slides the seam across. flex-grow animates, so the
+   transition below is all the motion needs — nothing is transformed or
+   repainted, and the two tiles always add up to the full width. */
+.brand-tiles {
+  display: flex;
+  --tile-gap: clamp(1.5rem, 4.7vw, 5.625rem);   /* 90px at a 1920 canvas */
+  --mark-h:   clamp(4rem, 7vw, 8.4rem);         /* 134px at a 1920 canvas */
+  --tile-open: 1.18;
+  --tile-shut: 0.82;
+}
+.brand-tile {
+  flex: 1 1 0;
+  position: relative;   /* anchor for the hover word and tagline; moves nothing */
+  display: grid; place-items: center;
+  min-height: clamp(14rem, 22vw, 26rem);
+  padding: 2rem;
+  color: var(--white);
+  overflow: hidden;
+  transition: flex-grow var(--dur) var(--ease);
+}
+.brand-tile:nth-child(1) { justify-items: end;   padding-right: var(--tile-gap); }
+.brand-tile:nth-child(2) { justify-items: start; padding-left:  var(--tile-gap); }
+
+/* Pointer: hovering one tile pushes the other aside. Scoped to hover-capable
+   devices so a touch tap doesn't leave a tile stuck open — touch is driven by
+   [data-open] instead, set by initBrandTiles() in site.js. */
+@media (hover: hover) {
+  .brand-tiles:hover .brand-tile { flex-grow: var(--tile-shut); }
+  .brand-tiles .brand-tile:hover { flex-grow: var(--tile-open); }
+}
+/* Both selectors carry the :has() prefix so the open tile stays the more
+   specific of the two — .brand-tiles:has(…) .brand-tile alone outranks a bare
+   .brand-tile[data-open], which left both tiles shut and nothing moving. */
+.brand-tiles:has([data-open='true']) .brand-tile { flex-grow: var(--tile-shut); }
+.brand-tiles:has([data-open='true']) .brand-tile[data-open='true'] { flex-grow: var(--tile-open); }
+
+/* Hover swaps the full lockup for the sub-brand word alone and fades a tagline
+   in beneath it. Everything about the RESTING tile is untouched by this: the
+   lockup is the only in-flow child, so `place-items: center` on the tile keeps
+   centring it exactly as before, and the whole hover group is out of flow. */
+/* Sized by height so the stacked Origins and Classic lockups read as equals. */
+.brand-tile .mark { height: var(--mark-h); width: auto; }
+
+/* Word and tagline share one wrapper so the pair is centred as a single block.
+   Centring the wrapper rather than positioning each piece is what makes this
+   hold when the copy changes — no arithmetic over the word's height plus the
+   tagline's line count, which would silently go wrong on a re-word. */
+.brand-tile__hover {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  gap: clamp(0.4rem, 0.8vw, 0.9rem);
+  opacity: 0;
+  visibility: hidden;
+  /* translate first, then scale, so the group grows about its own centre and
+     stays centred. Same property carries both, so they compose here. */
+  transform: translateY(-50%);
+  transition: opacity var(--dur) var(--ease),
+              visibility var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
+}
+.brand-tile:nth-child(1) .brand-tile__hover { right: var(--tile-gap); justify-items: end; }
+.brand-tile:nth-child(2) .brand-tile__hover { left:  var(--tile-gap); justify-items: start; }
+.brand-tile:hover .brand-tile__hover,
+.brand-tile[data-open='true'] .brand-tile__hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) scale(1.06);
+}
+
+/* The word needs its OWN height, not the lockup's: it is ~3.3:1 against the
+   lockup's ~1.3:1, so at the same height it would be three times as wide.
+   The .brand-tile prefix and the source order both matter — `.brand-tile .mark`
+   above is the same (0,2,0) specificity and would otherwise win. */
+.brand-tile .brand-tile__mark--hover { height: clamp(0.8rem, 1.75vw, 2.1rem); }
+
+/* Placeholder hover — brightness alone was invisible on a flat brand colour.
+   The lockup steps forward; swap this for the real treatment when it lands. */
+.brand-tile__mark--rest {
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.brand-tile:hover .brand-tile__mark--rest,
+.brand-tile[data-open='true'] .brand-tile__mark--rest { opacity: 0; transform: scale(1.06); }
+
+/* A flow child of the hover wrapper, which owns the fade. min-content puts one
+   word per line, which is also what breaks "battle-tested" at its hyphen;
+   justify-items places the box and text-align sets the rag away from the seam. */
+.brand-tile__tagline {
+  margin: 0;
+  max-width: min-content;
+  font-size: clamp(0.8rem, 1.6vw, 2rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+.brand-tile:nth-child(1) .brand-tile__tagline { text-align: right; }
+.brand-tile:nth-child(2) .brand-tile__tagline { text-align: left; }
+
+/* == GAME GRID / CARDS ==================================================== */
+/* The library grid promotes its top games in place rather than in a separate
+   shelf above it: the first four tiles run two-up at double size, everything
+   after them three-up. SIX columns is what lets both tiers share one grid —
+   3+3 gives two per row, 2+2+2 gives three — and it means the small tiles keep
+   exactly their old width (2 of 6 == 1 of 3).
+   Which four is deliberately POSITIONAL, not a flag on the data: render()
+   rewrites the grid's innerHTML on every filter/search/sort, so :nth-child
+   re-evaluates itself and the two big rows are never left half-empty. Filter to
+   Classic and you get the top four Classic games. */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--grid-gap);
+}
+/* Scoped to .game-grid's children on purpose, NOT bare .game-card. The card is
+   shared with the landing page's rails, and .rail-track is itself a grid — a
+   loose grid-column here would land on every Hot Games and Upcomings tile and
+   flatten both carousels. .game-grid exists only on the library page. */
+.game-grid > .game-card { grid-column: span 2; }                    /* three-up */
+.game-grid > .game-card:nth-child(-n + 4) { grid-column: span 3; }  /* two-up   */
+/* Big tiles keep 16/10 like the rest, so they scale whole — 1.5x the width and
+   1.5x the height (span 3 against span 2, not double). A wider ratio would make
+   object-fit:cover crop the artwork, and every thumbnail has the game's own
+   logo baked into it. */
+.game-grid > .game-card:nth-child(-n + 4) .game-card__title { font-size: var(--d-2xs); }
+.game-card { position: relative; display: block; overflow: hidden; background: var(--ink); }
+/* An upcoming teaser has no game page, so its tile is a span. It keeps the card's
+   look but nothing about it should suggest it is clickable. */
+.game-card--teaser { cursor: default; }
+.game-card--teaser:hover .game-card__media img { transform: none; }
+/* These are spans (so the whole card can be one <a>) and must be made blocks
+   for aspect-ratio to reserve the art's space before the image loads. */
+.game-card__media { display: block; aspect-ratio: 16 / 10; overflow: hidden; }
+.game-card__media img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 520ms var(--ease);
+}
+.game-card:hover .game-card__media img { transform: scale(1.05); }
+
+/* Title/meta strip revealed on hover — keeps the comp's clean grid at rest. */
+.game-card__meta {
+  position: absolute; inset: auto 0 0 0;
+  padding: 1rem 1.1rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.88), rgba(0,0,0,0));
+  color: var(--white);
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+.game-card:hover .game-card__meta,
+.game-card:focus-visible .game-card__meta { transform: translateY(0); opacity: 1; }
+.game-card__title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2vw, 2.25rem);
+  line-height: 0.9; text-transform: uppercase; margin: 0;
+}
+/* This carries a sentence now, not a "SLOTS · ORIGINS" label, so it drops the
+   uppercase/letter-spaced meta treatment — tracked-out caps are unreadable at
+   this size over more than three words. Prose weight, sentence case, and capped
+   at two lines so a long line can never push the title out of the card. */
+.game-card__tags {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  /* Body size, not --t-small: this is the line that has to sell the game, and
+     at 13px it read as a caption under the title rather than as the pitch. */
+  font-size: var(--t-body);
+  line-height: 1.4;
+  opacity: 0.92;
+  margin: 0.45rem 0 0;
+}
+
+.game-card__flag {
+  position: absolute; top: 0.75rem; left: 0.75rem;
+  z-index: 1;
+  padding: 0.3em 0.7em;
+  background: var(--green); color: var(--ink);
+  font-size: var(--t-small); font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+/* Purple, as in the brochure, so a new release reads differently at a glance
+   from the green "Coming soon" that sits in the same corner. */
+.game-card__flag--new { background: var(--purple); color: var(--white); }
+
+/* Upcoming cards show the date under the art rather than on hover. */
+.upcoming-card__date { margin: 0.85rem 0 0; }
+.upcoming-card__date b { display: block; font-weight: 700; }
+
+/* A slot whose art is still a character render, not a finished 3:2 tile: the
+   subject is cut out to alpha and floated on brand purple instead of being
+   cropped. Same outer footprint as every other card — the 16/10 box is
+   inherited — so the rail steps by one card width whichever kind it holds.
+   `contain`, and sized by HEIGHT: the four renders run from 428x600 to 480x500,
+   and matching their WIDTHS would make the squat ones tower over the tall ones.
+   Fitting them all to one height is what makes the set read as consistent. */
+/* The padding is the ONLY thing setting the subject's size here, because the
+   image is fitted by height to this box's content area — so widening the inset
+   shrinks the render and adds the margin in one move. It was 1.6vw (23px at
+   1440) against a 248px-tall card, which left the cut-outs at 81% of the card's
+   height and all but touching the purple's top and bottom edges. At 2.5vw they
+   sit at ~68%, reading as placed on the ground rather than cropped by it.
+   Only the vertical inset is doing any work — fitted by height, these clear
+   100px+ either side already — but keeping it uniform is what makes the corners
+   look even. */
+.game-card__media--cutout {
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 3.2vw, 3.25rem);
+}
+/* height: auto is NOT wanted here — see rule 4 in CLAUDE.md, which is about an
+   <img> carrying CSS aspect-ratio. This one has none; it is fitted to a
+   definite-height flex line, which is what makes `max-height: 100%` resolve. */
+.game-card__media--cutout img {
+  width: auto; height: 100%;
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+}
+
+/* == HOT GAMES / UPCOMINGS carousels ====================================== */
+.rail-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap; margin-bottom: clamp(1.5rem, 2.6vw, 2.5rem);
+}
+.rail { overflow: hidden; }
+.rail-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(15rem, 27.5vw, 25.5rem);
+  gap: var(--grid-gap);
+  transition: transform 420ms var(--ease);
+}
+/* Hot Games leads the page, so its tiles are the larger of the two rails —
+   Upcomings keeps the default width and reads as the quieter shelf. */
+.rail-track--lg { grid-auto-columns: clamp(18rem, 42vw, 40rem); }
+
+/* Hot Games runs uncropped: its section carries .bleed-clip, so the rail itself
+   must not clip or the cards would still be sliced at the column edge. */
+#hot-games .rail { overflow: visible; }
+
+/* Upcomings is a contained island, so this rail DOES clip — at the island's own
+   edge. Letting these cards bleed to the screen would break the panel.
+   The inset is the panel's own padding rather than a narrowed inner container,
+   so it's one known value the rail can cancel.
+   Vertical padding is --sec-y so the word UPCOMINGS sits the same distance
+   inside the dark ground as the gap between the brand tiles and HOT GAMES —
+   this whole stretch runs on the section rhythm. */
+.upcomings-panel {
+  --panel-pad: clamp(1.25rem, 3vw, 3.75rem);
+  background: var(--ink);
+  color: var(--white);
+  padding: var(--sec-y) var(--panel-pad);
+}
+/* The library page's copy of the panel sits between the filter bar and the
+   grid, so it is not on the landing page's --sec-y section rhythm and the full
+   180px of vertical padding would push the grid most of a screen down. Only the
+   breathing room changes; the island, the crop and the rail are the same. */
+.upcomings-panel--inset { padding-block: var(--sec-y-sm); }
+.library-upcomings { margin-top: clamp(1.5rem, 3vw, 3rem); }
+
+/* The rail stretches to BOTH panel edges so cards are cropped by the dark
+   ground itself at either end — a card leaving to the left stays visible until
+   the panel edge instead of vanishing early at the heading's margin.
+   The margin goes on [data-rail], not on .rail — initRail() measures this
+   element to work out how far it can travel, so the box it measures has to be
+   the box the cards are actually visible in. */
+.upcomings-rail { margin-inline: calc(-1 * var(--panel-pad)); }
+/* Padding, not margin: the track still STARTS aligned with the heading, but
+   .rail clips at its border box, which is now the panel's own edge. */
+.upcomings-rail .rail { padding-left: var(--panel-pad); }
+/* The negative margin above would otherwise drag the arrows off that margin. */
+.upcomings-rail .carousel-nav { margin-left: var(--panel-pad); }
+
+/* == PROMOTION TOOLS ====================================================== */
+/* The purple band starts flush against the Upcomings island above it, then its
+   background runs UP behind that island. The rise is --sec-y because that is
+   the panel's own bottom padding, which is exactly the distance from the
+   carousel arrows down to the panel's edge — so the purple's top lands on the
+   arrows' baseline at every width, with no literal to keep in sync.
+   Negative margin plus matching padding moves only the background: the heading
+   and cards stay where they were. z-index pairs with #upcomings so the dark
+   island paints over the purple and only the gutters either side show it. */
+#promotion-tools {
+  position: relative;
+  z-index: 0;
+  margin-top: calc(-1 * var(--sec-y));
+  padding-top: calc(var(--sec-y) * 2);
+}
+#upcomings { position: relative; z-index: 1; }
+/* The whole fold is a full-bleed purple field, so the cards can't be purple
+   blocks — they become outlined panels. Note these deliberately do NOT use
+   --rule-w: a hairline at half opacity reads as a quiet container, where the
+   2px button rule would read as six buttons competing with the real CTAs. */
+.band-purple .display,
+.band-purple .section-lead { color: var(--white); }
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+  margin-top: clamp(1.5rem, 2.6vw, 2.5rem);
+}
+/* One custom property drives the rule AND the icon's stroke, so the two can't
+   drift apart — they are one graphic element that happens to be drawn twice. */
+.promo-card {
+  --card-line: var(--rule-invert-50);
+  --card-line-w: 1px;
+  --card-pad: clamp(1.1rem, 1.5vw, 1.75rem);
+  position: relative;
+  border: var(--card-line-w) solid var(--card-line);
+  background: transparent;
+  color: var(--white);
+  padding: var(--card-pad);
+  min-height: clamp(15rem, 21vw, 21rem);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  transition: transform var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.promo-card:hover { --card-line: var(--white); transform: translateY(-4px); }
+
+/* Top-right, on the same optical margin as the copy in the opposite corner.
+   vector-effect keeps the stroke at exactly --card-line-w however the 24x24
+   viewBox is scaled — without it the stroke scales with the box and lands at
+   ~2.5px against a 1px border, which is the whole point of this treatment. */
+.promo-card__icon {
+  position: absolute;
+  top: var(--card-pad); right: var(--card-pad);
+  width: clamp(1.75rem, 2.6vw, 2.75rem); height: auto;
+  color: var(--card-line);
+  transition: color var(--dur) var(--ease);
+  pointer-events: none;
+}
+.promo-card__icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--card-line-w);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.promo-card__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 2.5vw, 3rem);
+  line-height: 0.9; text-transform: uppercase; margin: 0 0 0.5rem;
+}
+.promo-card__body { margin: 0; }
+
+/* == CONTACT ============================================================== */
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 6rem); align-items: start;
+}
+.contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem 1.5rem; }
+.field { position: relative; display: flex; flex-direction: column; }
+.field--full { grid-column: 1 / -1; }
+.field label {
+  order: 1;
+  font-size: var(--t-body); color: #7C7C7C;
+  transition: color var(--dur) var(--ease);
+}
+.field input, .field textarea {
+  order: 2;
+  border: 0; border-bottom: 1px solid var(--ink);
+  background: transparent; padding: 0.5rem 0 0.6rem;
+  font: inherit; color: var(--ink);
+  border-radius: 0;
+}
+.field textarea { resize: vertical; min-height: 6.5rem; }
+.field input:focus, .field textarea:focus { outline: none; border-bottom-color: var(--green-dark); border-bottom-width: 2px; }
+.field:focus-within label { color: var(--green-dark); }
+
+/* Inverted — the demo form and the footer sit on the dark band. Everything goes
+   white except the green submit button, which keeps its own rule, and the
+   CHANGERS script, which stays brand purple. */
+.band-dark .field label,
+.band-purple .field label { color: #B9B9B9; }
+.band-dark .field input,
+.band-dark .field textarea,
+.band-purple .field input,
+.band-purple .field textarea { border-bottom-color: var(--white); color: var(--white); }
+.band-dark .field input:focus,
+.band-dark .field textarea:focus,
+.band-purple .field input:focus,
+.band-purple .field textarea:focus { border-bottom-color: var(--green); }
+.band-dark .field:focus-within label,
+.band-purple .field:focus-within label { color: var(--green); }
+/* Left, not right: the form's fields are all ragged-left, and a submit button
+   parked on the far right sat at the end of a long empty row with nothing above
+   it to align to. `start` puts it under the first field's edge. */
+.contact-form .btn { grid-column: 1 / -1; justify-self: start; }
+.form-status { grid-column: 1 / -1; margin: 0; font-weight: 700; }
+
+/* The Origins rebrand form is the same purple as the footer beneath it, so the
+   two have to meet with nothing between them — see the note on the game page's
+   footer margin in game.html. Its own bottom padding closes the band. */
+#request-demo.band-purple + .site-footer,
+#request-demo.band-purple { margin-bottom: 0; }
+
+/* == FOOTER =============================================================== */
+/* Carries .band-dark on every page — it is shared chrome, so it inverts
+   everywhere or nowhere. The wordmark stays purple by request.
+
+   Four custom properties, one per thing the ground affects: the ground itself,
+   the type on it, the quiet note, and the wordmark. They exist so a game page
+   can repaint the whole footer in its range's colour by setting ONE attribute,
+   with the palettes staying here in CSS rather than being assembled in JS —
+   see [data-footer-brand] below. The defaults reproduce the dark footer
+   exactly, so any page that sets nothing is unaffected. */
+.site-footer {
+  --footer-bg:   var(--ink);
+  --footer-ink:  var(--white);
+  --footer-note: #9A9A9A;
+  --footer-mark: var(--purple);
+  padding-block: clamp(3.25rem, 6.5vw, 6.5rem) clamp(1.5rem, 3vw, 3rem);
+}
+/* Both selectors are one class deep, so this would come down to source order
+   against .band-dark. Qualified rather than left to chance. */
+.site-footer.band-dark { background: var(--footer-bg); color: var(--footer-ink); }
+
+/* A game page paints its footer in its own range's colour. Origins takes white
+   type, as the Engagement Tools band already does on the same purple. Classic
+   takes INK type instead: #FF932E is a light colour and white on it measures
+   2.2:1, well under the floor, while ink clears 6:1. The range decides the
+   ground; the ground decides the type. */
+.site-footer[data-footer-brand='origins'] {
+  --footer-bg: var(--purple);
+  --footer-note: rgba(255, 255, 255, 0.78);
+  --footer-mark: var(--white);
+}
+/* White type on the orange, matching the purple footer, by explicit request.
+   NOTE for anyone re-deriving this: it does not meet WCAG AA. #FFFFFF on
+   #FF932E measures ~2.2:1, against a 4.5:1 floor for body text — the fine print
+   in this footer is --t-small, so it is the strictest case on the site. An
+   earlier pass used --ink here (6.1:1) for that reason; this is a deliberate
+   brand decision that overrides it, not an oversight to be "fixed" back. */
+.site-footer[data-footer-brand='classic'] {
+  --footer-bg: var(--orange);
+  --footer-ink: var(--white);
+  --footer-note: rgba(255, 255, 255, 0.82);
+  --footer-mark: var(--white);
+}
+
+/* One column at EVERY width: wordmark, blurb, then the menu beneath it. This
+   used to be two columns with the menu hard right, wrapping to a stack only
+   under 720px — so the footer read as two different designs depending on the
+   screen. The stack is the one that works, so it is now the only one.
+   `flex-direction: column` means flex-basis would size the brand's HEIGHT, so
+   the old `flex: 1 1 22rem` had to go with it; the blurb carries its own
+   `max-width: 38ch` and is the only thing that needed a measure. */
+.site-footer__top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+.site-footer__brand { flex: none; }
+/* The mark is `display: block` inside a flex column, so it needs its own cap or
+   it fills the column — gotcha #21, in a new layout. */
+.site-footer__logo {
+  color: var(--footer-mark);
+  max-width: clamp(11rem, 22vw, 20rem);
+}
+.site-footer__blurb {
+  margin: clamp(1rem, 2vw, 1.5rem) 0 0;
+  max-width: 38ch;
+  font-size: var(--t-small);
+  color: var(--footer-note);
+}
+
+/* The site menu, repeated as the footer menu. Rendered from the SAME `nav`
+   array in site.json that the header menu uses, so there is no second list to
+   keep in step — see initFooter() in site.js.
+   Sits under the mark, left-aligned to the same edge as the wordmark and the
+   blurb, so the whole footer reads as one left-hung column. */
+/* ONE straight row of four on desktop; 2x2 from 1024px down (see the media
+   query). `nav` carries exactly four entries, and the row has room to spare —
+   measured at 1440 it needs 526px of the 1376 available.
+
+   `grid-auto-flow: column` against an EXPLICIT `grid-template-rows` is what
+   makes the two states the only two possible: the row count is stated, so the
+   items can only ever divide 4-across or 2x2. A wrapping flex row or an
+   `auto-fit` grid would break to **3+1** at the widths in between, which is the
+   one arrangement this must never produce.
+   Column flow also fills top-to-bottom then across, so in the 2x2 state the
+   pairs read Home / Game Library, then Request Demo / Download Brochure —
+   source order down each column. Default row flow would deal them across and
+   break that order. */
+.site-footer__nav {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: auto;
+  justify-content: start;
+  justify-items: start;
+  text-align: left;
+  gap: clamp(0.5rem, 1vw, 0.85rem) clamp(1.5rem, 3.5vw, 3.5rem);
+  flex: none;
+}
+.site-footer__nav a {
+  font-family: var(--font-display);
+  font-weight: 400;              /* SCHABO is 400-only — see rule 1 in CLAUDE.md */
+  /* A step up from --d-2xs (40px cap). Halving the list's height left the menu
+     looking small beside the wordmark; this is the same clamp shape one notch
+     larger, still short of --d-xs (65px), which would out-shout the mark. */
+  font-size: clamp(1.75rem, 2.6vw, 3.125rem);
+  line-height: var(--lh-tight);
+  text-transform: uppercase;
+  color: var(--footer-ink);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease);
+}
+/* Green, as everywhere else. The site has one interaction colour and it holds
+   here for the same reason it holds in the overlay menu, brand ground or not. */
+.site-footer__nav a:hover,
+.site-footer__nav a:focus-visible { color: var(--green); }
+/* The closing strip: regulatory line, optional legal links, hosting note and
+   copyright. Separated from the top row by a hairline in the footer's own ink
+   so it reads as fine print without needing a second colour. */
+.site-footer__bottom {
+  padding-top: clamp(1.25rem, 2.5vw, 2rem);
+  border-top: 1px solid color-mix(in srgb, var(--footer-ink) 22%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.site-footer__note,
+.site-footer__copy {
+  margin: 0;
+  font-size: var(--t-small); color: var(--footer-note);
+}
+/* The 18+ / responsible-gambling line. Sits at full contrast rather than in the
+   note colour: it is a compliance statement, not a footnote, and it is the one
+   line in the footer that must stay legible on every ground. */
+.site-footer__responsible {
+  margin: 0 0 0.25rem;
+  font-size: var(--t-small);
+  color: var(--footer-ink);
+}
+.site-footer__responsible b { font-weight: 700; }
+.site-footer__responsible span { opacity: 0.45; padding-inline: 0.15em; }
+.site-footer__responsible a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur) var(--ease);
+}
+.site-footer__responsible a:hover,
+.site-footer__responsible a:focus-visible { color: var(--green); }
+
+/* Privacy / Terms / Cookies, when those pages exist. Hidden until then. */
+.site-footer__legal {
+  display: flex; flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  list-style: none; margin: 0; padding: 0;
+  font-size: var(--t-small);
+}
+.site-footer__legal a { color: var(--footer-note); }
+.site-footer__legal a:hover { color: var(--green); }
+
+/* == FREE BRANDED GAME PAGE =============================================== */
+/* One purple field, top to bottom, handing straight off to a purple footer.
+   Everything here inherits the inverted treatment .band-purple already sets up
+   for the game page's rebrand form, so there is no second palette to keep. */
+.fbg__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: var(--t-small); font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+.fbg__title { color: var(--white); margin: 0; }
+/* --t-lead is the site's one standfirst size, and 300 is the weight reserved
+   for it — see the weight note in tokens.css. */
+.fbg__lead {
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+  max-width: 34ch;
+  font-size: var(--t-lead); font-weight: 300; line-height: var(--lh-lead);
+  color: var(--white);
+}
+/* Three statements, not a bulleted list — the markers are dropped and each item
+   carries its own heading, so they read as sections rather than as points. */
+.fbg__points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin: var(--sec-y-sm) 0 0; padding: 0;
+  list-style: none;
+}
+.fbg__points li { border-top: var(--rule-w) solid var(--rule-invert-50); padding-top: 1.25rem; }
+.fbg__point-title {
+  font-family: var(--font-display); font-weight: 400;  /* SCHABO is 400-only */
+  font-size: var(--d-2xs); line-height: var(--lh-tight);
+  text-transform: uppercase; color: var(--white);
+  margin: 0 0 0.75rem;
+}
+.fbg__points p { margin: 0; color: rgba(255, 255, 255, 0.86); }
+/* The form sits in its own measure rather than the full 1530px column: a row of
+   inputs that wide stops reading as a form. */
+.fbg__form { margin: var(--sec-y) 0 0; max-width: 46rem; }
+.fbg__form-title { color: var(--white); margin: 0 0 clamp(1.5rem, 3vw, 2.5rem); }
+
+@media (max-width: 900px) {
+  .fbg__points { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
+/* == GAME LIBRARY PAGE ==================================================== */
+.library-head { padding-block: clamp(2rem, 4vw, 4.5rem) clamp(1.5rem, 3vw, 3rem); }
+.library-head .display--xl { max-width: 8ch; }
+
+.filter-bar {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+  margin-top: clamp(1.5rem, 3vw, 3rem);
+}
+.filter-group__label { font-size: var(--t-lg); font-weight: 700; margin: 0 0 0.75rem; }
+.filter-tools { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+.search {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #E9E9E9; padding: 0.5rem 0.9rem;
+  min-width: clamp(12rem, 20vw, 18.5rem);
+}
+.search input { border: 0; background: transparent; font: inherit; width: 100%; padding: 0.25rem 0; }
+.search input:focus { outline: none; }
+.search svg { color: var(--green-dark); flex: none; }
+
+.select-sort { position: relative; }
+.select-sort select {
+  appearance: none;
+  padding: 0.62em 2.4em 0.62em 2.2em;
+  border: var(--rule-w) solid var(--green); background: transparent;
+  color: var(--green-dark); font-size: var(--t-btn); font-weight: 700;
+  cursor: pointer; border-radius: 0;
+}
+.select-sort::before {
+  content: '⇅'; position: absolute; left: 0.9em; top: 50%;
+  transform: translateY(-50%); color: var(--green-dark); pointer-events: none;
+}
+
+.library-grid { margin-top: clamp(2rem, 4.7vw, 5.625rem); }
+.library-actions {
+  display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+  margin-top: clamp(2rem, 3.6vw, 4.25rem);
+}
+/* The count leads .library-grid rather than trailing .library-head, so that it
+   travels with the grid it describes now that the Upcomings shelf sits between
+   the two. Space ABOVE it therefore comes from .library-grid's own margin —
+   this only has to open the gap down to the first row of tiles. */
+.result-count { margin: 0 0 clamp(1rem, 2vw, 2rem); font-weight: 700; }
+.no-results { margin: clamp(3rem, 6vw, 6rem) 0; text-align: center; }
+
+/* == GAME DETAIL PAGE ===================================================== */
+/* Built from the Techtoniq marketing sheets. The sheets' own language is
+   rounded lilac cards; the site's is flat blocks and SCHABO display type, so
+   the content is re-set in the site's language rather than copied across.
+   Every block below is optional — see `_meta.detail_blocks` in games.json. */
+
+/* ---- hero ---------------------------------------------------------------- */
+/* One field, edge to edge. `__band` carries the artwork and owns the clipping.
+   The XD mockup had the logo bleed past the band's bottom edge onto the paper
+   below, and the hero reserved that same distance as `padding-bottom` so the
+   bleed had somewhere to land. In practice that reserve read as a slab of dead
+   paper between the buttons and the spec band, so the bleed is gone: the band
+   now fills the hero and the logo is composed INSIDE it, centred in the empty
+   half beside the copy. `--bleed` and `.game-hero--bleed` went with it. */
+.game-hero {
+  position: relative;
+  background: var(--paper);
+  color: var(--white);
+  /* Top padding clears the overlaid transparent header. Tuned so the band
+     lands near the mockup's 599px at a 1920 canvas. */
+  padding-top: clamp(6.5rem, 10.5vw, 12.5rem);
+  padding-bottom: clamp(2.5rem, 4.5vw, 5rem);
+}
+/* Watched by an IntersectionObserver to drive the overlay header — see the
+   comment in game.html. 8px tall so it matches initHeader's scrollY > 8. */
+.hero-sentinel {
+  position: absolute; top: 0; left: 0;
+  width: 1px; height: 8px;
+  pointer-events: none;
+}
+.game-hero__band {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  background: var(--hero-base);
+}
+.game-hero__backdrop {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+/* Vertical, not horizontal: the mockup samples identically across x at the top.
+   Stops are the alpha curve read off the comp — solid to ~10%, then a long
+   shallow hold through the midtones before falling away sharply past 42%. A
+   simple two-stop fade clears far too early and washes the artwork out. */
+/* Two layers on one pseudo-element, so paint order is explicit: the brand
+   gradient is listed first and therefore sits on top, with the readability
+   scrim beneath it. They cannot be split across ::before and ::after — a
+   pseudo-element ::before is inserted BEFORE the backdrop <img>, so a scrim
+   there would paint under the artwork it is meant to darken.
+
+   The scrim exists because the brand gradient has fully cleared by 64% and the
+   copy sits below that, directly on whatever the artwork happens to be. Across
+   the catalogue that ranges from The Void's night forest to Wolf Bonanza's
+   midday desert and the Joker series' lit reels, where white summary copy and
+   the green Demo Play button were all washing out.
+
+   Its direction has to follow the layout, so it lives in `--hero-scrim-layer`
+   and the responsive block swaps the whole layer rather than trying to re-angle
+   one. Two-up, the copy is in the left half and the scrim runs left-to-right,
+   stopping before the logo so it never touches the key art. Stacked, the copy
+   spans the full width and there is no clear side to shade, so it runs bottom-up
+   instead — a horizontal scrim there covers the artwork and misses the text. */
+.game-hero__band::after {
+  content: ''; position: absolute; inset: 0;
+  --hero-scrim-layer: linear-gradient(90deg,
+      var(--hero-scrim) 0%,
+      color-mix(in srgb, var(--hero-scrim) 76%, transparent) 28%,
+      color-mix(in srgb, var(--hero-scrim) 22%, transparent) 50%,
+      transparent 66%);
+  background:
+    linear-gradient(180deg,
+      var(--brand, var(--purple)) 0%,
+      var(--brand, var(--purple)) 10%,
+      color-mix(in srgb, var(--brand, var(--purple)) 79%, transparent) 25%,
+      color-mix(in srgb, var(--brand, var(--purple)) 55%, transparent) 42%,
+      color-mix(in srgb, var(--brand, var(--purple)) 6%,  transparent) 58%,
+      transparent 64%),
+    var(--hero-scrim-layer);
+}
+.game-hero__inner {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+  /* Clears the edge arrows. .container's own padding caps at 2rem and an arrow
+     occupies ~4.4rem from the edge, so at 1280 the disc sat on the copy. max()
+     takes whichever is larger — above ~1600px the content column's gutter
+     already clears them and this reserves nothing. */
+  padding-inline: max(5.25rem, clamp(1.25rem, 4vw, 2rem));
+}
+.game-hero .display { color: var(--white); }
+/* The copy column is the tallest thing in the row on most titles, so it sets
+   the band's height — which left the Demo Play button sitting exactly on the
+   band's hard bottom edge, 0px of clearance. Padding here grows the band with
+   the copy instead of cropping against it. */
+.game-hero__copy { padding-bottom: clamp(1.5rem, 3vw, 3rem); }
+
+.game-hero__tagline {
+  font-size: var(--t-xl); font-weight: 700;
+  margin: clamp(0.9rem, 1.8vw, 1.5rem) 0 0.75rem;
+}
+/* Line breaks come from `tagline_lines` in the data, so no measure limit here
+   — a max-width would reintroduce breaks the copywriter didn't choose. */
+.game-hero__tagline span { display: block; }
+.game-hero__summary { font-size: var(--t-lg); margin: 0; max-width: 42ch; }
+.game-hero .btn-row { margin-top: clamp(1.5rem, 2.6vw, 2.5rem); }
+
+/* Every game page opens at the same height. The copy column varies — taglines
+   run to one or two lines, summaries to two or four — and with the logo slot now
+   fixed above, this floor is the only other thing needed to stop the fold
+   breathing in and out as you step through the catalogue with the arrows.
+   A floor, not a fixed height: a title whose copy genuinely runs long still
+   grows rather than clipping. */
+.game-hero {
+  min-height: clamp(30rem, 44vw, 42rem);
+  /* .game-hero__inner is the only child in flow — the band and the arrows are
+     both absolute — so centring here parks the content in the middle of a fold
+     that is now taller than most of the copy in it, instead of hugging the top. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Prev / next through the catalogue, pinned to the hero's own edges rather than
+   to the content column — the column is inset by up to 195px, and an arrow that
+   far in reads as part of the copy instead of as page furniture.
+   z-index clears the band's gradient ::after, which sits above the artwork. */
+.game-hero__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: clamp(0.6rem, 1vw, 0.9rem);
+  color: var(--white);
+  /* A disc rather than the site's square button language: this is navigation
+     furniture over artwork, not a CTA, and the green rule would compete with
+     the real Demo Play button a few centimetres away. */
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--rule-invert-50);
+  border-radius: 50%;
+  backdrop-filter: blur(6px);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.game-hero__nav--prev { left: clamp(0.5rem, 1.5vw, 1.75rem); }
+.game-hero__nav--next { right: clamp(0.5rem, 1.5vw, 1.75rem); flex-direction: row-reverse; }
+
+/* The copy column has to clear the arrows. .container's own padding is only 2rem
+   at its cap, and the arrow occupies ~4.4rem from the viewport edge, so at
+   1280 the disc sat on top of the meta line. max() takes whichever is larger:
+   above ~1600px the content column's gutter is already wider than the arrow
+   zone and this reserves nothing. */
+.game-hero__nav:hover,
+.game-hero__nav:focus-visible {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: var(--green);
+  border-radius: 2rem;
+}
+/* The title rides along on hover only. `max-width` animates from zero rather
+   than `display` toggling, so the disc grows into a pill instead of jumping. */
+.game-hero__nav-title {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  font-size: var(--t-small);
+  font-weight: 700;
+  transition: max-width 320ms var(--ease), opacity var(--dur) var(--ease);
+}
+.game-hero__nav:hover .game-hero__nav-title,
+.game-hero__nav:focus-visible .game-hero__nav-title {
+  max-width: 12rem;
+  opacity: 1;
+}
+/* Touch has no hover, and a permanently-open pill would sit over the artwork on
+   the narrowest screens. Discs only. */
+@media (hover: none) {
+  .game-hero__nav-title { display: none; }
+}
+
+.game-hero__art { width: 100%; height: auto; justify-self: center; }
+/* The logo is a lit object on transparency — its glow does the separating, so
+   it needs no plate. It sits centred in its own half of the fold rather than
+   crossing the bottom edge, which is what let the band close up behind it.
+   Every logo is trimmed to its own alpha bounds on the way into the repo, so
+   max-width describes the artwork rather than an empty canvas around it — and
+   because it no longer bleeds, it can afford to be bigger than it was. */
+.game-hero__art--logo {
+  /* A definite SLOT, not a width cap — the same lesson as .symbol__art and
+     .buy-card__symbol. Capped by width alone, a squat lockup rendered 517x192
+     and a tall one 517x573 on the same page width: the tall ones dominated,
+     the squat ones looked like an afterthought, and each one set a different
+     hero height. A fixed height with object-fit: contain gives every logo the
+     same footprint to fill, whatever its aspect ratio, and takes the hero's
+     height out of the artwork's hands.
+     `height` here is a real declaration, not the presentational attribute rule
+     4 warns about — there is no CSS aspect-ratio on this image to cancel. */
+  width: 100%;
+  max-width: clamp(15rem, 40vw, 40rem);
+  height: clamp(11rem, 21vw, 20rem);
+  object-fit: contain;
+  align-self: center;
+}
+
+/* ---- spec band ----------------------------------------------------------- */
+/* Asymmetric on purpose. Every other section on the site opens on paper with
+   something above it, but this one butts straight onto the hero's hard bottom
+   edge (the hero hands off at 0px — see .game-hero__band), so a full --sec-y
+   of dark ground before a --d-2xs label read as a blank slab rather than as
+   breathing room. The BOTTOM keeps --sec-y: that edge does the ordinary job of
+   closing the band off from the story section below it. */
+#spec { padding-top: var(--sec-y-sm); }
+
+/* A quiet label rather than a section headline — the figures are the content
+   here, so the heading steps back and the numbers carry the size.
+   --purple-light, not --purple: on the --ink band #9445FF measures 2.95:1,
+   under the 3:1 large-text floor, while #A15EFD clears it at 3.65:1. */
+/* Needs the .band-dark prefix to outrank `.band-dark .display { color: white }`. */
+.band-dark .spec-band__title {
+  font-size: var(--d-2xs);
+  color: var(--purple-light);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+/* Classic takes its own range colour here, the same way the footer does.
+   --orange needs no lightening on the dark band the way --purple did: it
+   measures 7.4:1 on --ink, where #9445FF managed only 2.95:1 and had to become
+   --purple-light. The ID selector is what outranks the rule above. */
+#spec[data-brand='classic'] .spec-band__title { color: var(--orange); }
+
+/* Flex rather than a 1fr 1fr grid: on the full 1530px column the two figures
+   would sit half a screen apart and stop reading as a pair. */
+.spec-headline {
+  display: flex; flex-wrap: wrap;
+  gap: clamp(1.5rem, 5vw, 5.5rem);
+  align-items: flex-start;
+}
+.stat__label {
+  font-size: var(--t-small); font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: #9A9A9A; margin: 0 0 0.5rem;
+}
+.stat__value {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: var(--d-md); line-height: var(--lh-tight);
+  text-transform: uppercase; color: var(--white); margin: 0;
+}
+
+/* Every certified RTP on one line, all at the headline size and all in the same
+   colour. The brochure sets the shipping band large and the alternates small and
+   lilac; here they are peers, because the page has nothing else that changes
+   with the band — one set of figures serves all three, so ranking one of them
+   typographically would imply a difference that doesn't exist.
+   Wraps rather than shrinking: three figures at --d-md do not fit a phone. */
+.stat__value--row {
+  display: flex; flex-wrap: wrap;
+  column-gap: clamp(0.6rem, 1.6vw, 1.6rem);
+}
+.stat__note {
+  margin: 0.5rem 0 0;
+  font-size: var(--t-small); color: #9A9A9A;
+  letter-spacing: 0.04em;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.5rem, 2.6vw, 2.5rem) var(--grid-gap);
+  margin: clamp(2.5rem, 5vw, 4.5rem) 0 0;
+}
+.spec-grid div { border-top: 1px solid var(--rule-invert); padding-top: 0.85rem; }
+.spec-grid dt {
+  font-size: var(--t-small); font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: #9A9A9A; margin: 0 0 0.4rem;
+}
+.spec-grid dd { font-size: var(--t-lg); font-weight: 700; margin: 0; }
+
+/* Operator-configurable toggles. Deliberately NOT chips: a green rule and
+   padding is this site's button language, and these are statements of fact
+   about the game, not controls. Tick plus label only. */
+.spec-options {
+  display: flex; flex-wrap: wrap;
+  gap: 0.85rem clamp(1.5rem, 3.5vw, 3.5rem);
+  margin: clamp(2rem, 4vw, 3.5rem) 0 0; padding: 0; list-style: none;
+}
+.spec-options li {
+  display: flex; align-items: center; gap: 0.6em;
+  font-size: var(--t-body); font-weight: 700; line-height: 1.2;
+}
+/* Sized here, not by the SVG's width/height attributes, so one value drives
+   both icons. The mark is the thing being read at a glance, so it carries more
+   weight than the label beside it. */
+.spec-options svg {
+  flex: none;
+  width: clamp(1.5rem, 1.95vw, 1.875rem); height: auto;
+  color: var(--green);
+}
+/* An option the game does not support: grey cross, and the label steps back so
+   the row still scans as "not this one" without shouting. */
+.spec-options .is-off { color: #9A9A9A; }
+.spec-options .is-off svg { color: #6E6E6E; }
+
+/* Distribution reach. Two long comma-lists, so they get their own two-column
+   block below the grid rather than a cell inside it — 88 currency codes in a
+   quarter-width cell would set as a ragged tower. */
+.spec-reach {
+  display: grid; grid-template-columns: 1fr 2fr;
+  gap: clamp(1.5rem, 2.6vw, 2.5rem) clamp(1.5rem, 3vw, 3rem);
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+.spec-reach div { border-top: 1px solid var(--rule-invert); padding-top: 0.85rem; }
+.spec-reach dt {
+  font-size: var(--t-small); font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: #9A9A9A; margin: 0 0 0.4rem;
+}
+.spec-reach dt b { color: var(--white); }
+.spec-reach dd {
+  margin: 0; font-size: var(--t-small); line-height: 1.7; color: #C9C9C9;
+}
+
+/* Shown only for titles whose one-sheet hasn't been transcribed yet. Inside
+   the band and quiet — as a paper banner above it, this was the first thing
+   under the hero on two thirds of the catalogue. */
+.spec-provisional {
+  margin: clamp(2rem, 4vw, 3.5rem) 0 0;
+  padding-left: 0.9rem;
+  border-left: var(--rule-w) solid var(--purple-light);
+  font-size: var(--t-small); color: #9A9A9A; max-width: 62ch;
+}
+
+/* ---- story + core features + screenshots ---------------------------------- */
+/* One section: the story, what drives it, and what it looks like in play. The
+   faint tint separates it from the paper above and below without a hard band. */
+.story { background: var(--paper-tint); }
+.story-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: center;
+  margin-top: clamp(1rem, 2vw, 1.75rem);
+}
+.story__prose { font-size: var(--t-lg); max-width: 46ch; }
+.story__prose p { margin: 0; }
+.story__prose p + p { margin-top: 0.8em; }
+
+/* No cast to sit beside, so the prose runs as two text columns rather than
+   leaving two thirds of the row empty next to a 46ch measure. `columns` with a
+   column-width does the responsive step on its own: below roughly twice that
+   width it collapses to one column, so there is no breakpoint to maintain. */
+.story-grid--solo { grid-template-columns: 1fr; }
+.story-grid--solo .story__prose {
+  max-width: none;
+  columns: 2 30ch;
+  column-gap: clamp(2rem, 5vw, 6rem);
+}
+/* Otherwise a paragraph can be split across the column break with its first
+   line stranded at the foot of column one. */
+.story-grid--solo .story__prose p { break-inside: avoid; }
+
+/* The cast. Decorative, so the images are aria-hidden in the markup. Each
+   drifts on its own offset; transform only, and the global
+   prefers-reduced-motion rule stops it dead. */
+.story__cast {
+  display: flex; justify-content: center; align-items: flex-end;
+  gap: clamp(1rem, 4.5vw, 5rem);
+}
+.story__cast img {
+  width: clamp(4rem, 9.5vw, 9.5rem); height: auto;
+  animation: blob-float 5s var(--ease) infinite alternate;
+}
+/* Uneven baseline — four blobs on one flat line read as a toolbar, not a cast.
+   Offsets are margin, not transform, so they don't fight the animation, and
+   the durations are staggered so the four never drift as one block. */
+.story__cast img:nth-child(2) {
+  margin-bottom: clamp(1rem, 3vw, 3rem);
+  animation-duration: 6.2s; animation-delay: -1.4s;
+}
+.story__cast img:nth-child(3) {
+  margin-bottom: clamp(0.4rem, 1vw, 1rem);
+  animation-duration: 5.6s; animation-delay: -2.9s;
+}
+.story__cast img:nth-child(4) {
+  margin-bottom: clamp(1.5rem, 4.5vw, 4.5rem);
+  animation-duration: 6.8s; animation-delay: -0.7s;
+}
+@keyframes blob-float {
+  from { transform: translateY(0) rotate(-1.5deg); }
+  to   { transform: translateY(-14px) rotate(1.5deg); }
+}
+
+/* 20% off the section rhythm here on request — Core Features sits inside the
+   story section rather than starting a new one, so it does not need a full
+   section's worth of air above it. */
+.feature-block { margin-top: clamp(2rem, 4.8vw, 4.8rem); }
+/* auto-fit, not a fixed count: the catalogue runs from one feature (The Void)
+   to four (High Roller's Cash). A fixed three-up strands a single card in the
+   first third — which is exactly how the old stacked list failed. The min()
+   guard stops the track exceeding the container on a narrow screen. */
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: var(--grid-gap);
+  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0; padding: 0; list-style: none;
+}
+.feature-cards li {
+  background: var(--paper);
+  border-top: var(--rule-w) solid var(--green);
+  padding: clamp(1.25rem, 1.9vw, 2rem);
+}
+.feature-cards h3 {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: var(--d-2xs); line-height: var(--lh-tight);
+  text-transform: uppercase; margin: 0 0 0.6rem;
+}
+.feature-cards p { margin: 0; }
+.feature-cards p + p { margin-top: 0.7em; }
+
+.shot-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--grid-gap);
+  align-items: start;   /* ratios now differ per shot, so share a top edge */
+  margin-top: clamp(2.5rem, 6vw, 6rem);
+}
+.shot { margin: 0; }
+/* No forced aspect-ratio and no `cover`. These used to be cropped to 2:1, which
+   is fine for a desktop reel capture and destroys a phone one — Spin My Drink's
+   screenshots are 610x900, and 2:1 threw away two thirds of the picture. Each
+   shot now keeps its own ratio. */
+.shot img {
+  display: block;
+  width: 100%; height: auto;
+  background: var(--ink);
+}
+/* A portrait capture is a phone screen: showing it at the full column width
+   would blow it up to something taller than the viewport, so it is capped by
+   HEIGHT and centred in its cell instead. `.shot--portrait` is decided at render
+   time from the stored `w`/`h`, so the class is on the element from the first
+   paint rather than arriving after the image loads.
+   `height: auto` above is what keeps the width/height ATTRIBUTES acting as a
+   ratio hint rather than a fixed size — CLAUDE.md rule 4, same trap. */
+.shot--portrait img {
+  /* A definite WIDTH, not `width: auto` with a max-height. Auto width gave the
+     element a zero-width box, so a lazy image below the fold never intersected
+     the viewport, never loaded, and stayed zero — the box and the load waiting
+     on each other. Width plus the intrinsic ratio reserves the height instead. */
+  width: min(100%, 22rem);
+  margin-inline: auto;
+}
+.shot figcaption {
+  margin: 0.85rem 0 0;
+  font-size: var(--t-small); letter-spacing: 0.08em; text-transform: uppercase;
+  color: #7C7C7C;
+}
+
+/* ---- symbols -------------------------------------------------------------- */
+/* The paytable and feature symbols off the sheet's symbol slides. */
+/* Ruled, not gapped. Each cell closes its OWN right and bottom edge and the
+   container closes the top and left, so every interior line is painted once and
+   shared by two cells, however the auto-fill wraps.
+
+   The direction matters, and getting it backwards is what made this look broken.
+   With the lines on the cell's top/left and the closing edges on the container,
+   a ragged last row leaves the container's bottom rule running on under empty
+   space and its right rule hanging past the final cell — an open box with stubs
+   in it. Owning right+bottom instead means an empty cell simply draws nothing:
+   the last row ends where the symbols end, and the grid closes itself at every
+   count without knowing how many columns auto-fill chose.
+
+   `gap` would break the whole scheme — space where the shared line needs to be,
+   so each cell draws its own and every interior rule doubles.
+   The colour is deliberately weaker than --rule: alignment scaffolding, not a
+   table anyone is meant to notice. */
+.symbol-grid {
+  --symbol-rule: color-mix(in srgb, var(--ink) 9%, transparent);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  gap: 0;
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; padding: 0; list-style: none;
+  border-top: 1px solid var(--symbol-rule);
+  border-left: 1px solid var(--symbol-rule);
+}
+.symbol {
+  /* Both shared with .symbol__note, which has to land exactly on the art slot. */
+  --symbol-pad: clamp(1rem, 1.8vw, 1.6rem);
+  --symbol-art-h: clamp(5rem, 8vw, 7.5rem);
+  display: flex; flex-direction: column;
+  padding: var(--symbol-pad);
+  border-right: 1px solid var(--symbol-rule);
+  border-bottom: 1px solid var(--symbol-rule);
+}
+/* A fixed-height slot with the art contained inside it. The packs mix near-
+   square tiles with tall portraits and trimming them to their alpha bounds
+   leaves every file a different shape, so the slot — not the file — sets the
+   rhythm. Without it the row baselines wander by ~40px. */
+/* flex, NOT `grid` + `place-items: center`. The cap that does the work here is
+   `max-height: 100%` on the image, and against a grid area that percentage
+   resolved to nothing — the symbols rendered at natural size and the tall ones
+   overflowed the slot into their own labels. Against a definite-height flex
+   container it resolves, so the art is contained and the aspect is kept. */
+.symbol__art {
+  display: flex; align-items: center; justify-content: center;
+  height: var(--symbol-art-h);
+  margin-bottom: 0.9rem;
+}
+.symbol__art img {
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;   /* contain within the slot, never upscale */
+}
+.symbol__name {
+  font-size: var(--t-small); font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin: 0;
+}
+
+/* ---- the description overlay ---------------------------------------------
+   The note used to print under every name, which set the height of a whole row
+   from whichever cell happened to carry a paragraph — most cells were empty
+   space holding a rule apart. It is a reveal now: hover on a pointer, tap on
+   touch. Only cells that HAVE a note become interactive, so the affordance
+   never lies about a cell that has nothing to say. */
+.symbol--has-note { position: relative; }
+/* The button is the whole cell, but it looks like nothing — the cell already
+   carries the art and name, and this only has to make them focusable and
+   tappable. It is a real <button>, so keyboard and screen readers get the
+   reveal for free rather than needing a parallel affordance. */
+.symbol__toggle {
+  position: absolute; inset: 0;
+  width: 100%;
+  background: none; border: 0; padding: 0;
+  font: inherit; color: inherit;
+  cursor: pointer;
+  z-index: 1;
+}
+/* The marker after the name. A small ring rather than a glyph, so it reads as a
+   affordance at 13px where an "i" or "?" would just be noise. currentColor, so
+   it inherits whatever the name is set in. */
+.symbol__name::after {
+  content: '';
+  display: none;
+  width: 0.72em; height: 0.72em;
+  margin-left: 0.45em;
+  vertical-align: -0.02em;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.45;
+  transition: opacity var(--dur) var(--ease);
+}
+.symbol--has-note .symbol__name::after { display: inline-block; }
+.symbol--has-note:hover .symbol__name::after,
+.symbol--is-open .symbol__name::after { opacity: 1; }
+
+/* A panel over the cell that GROWS to fit its text rather than clipping or
+   scrolling it. `min-height: 100%` with `bottom: auto` is what does it: it
+   covers the tile at minimum, and the longest note — Cursed's Wild, 130
+   characters into a ~180px column — simply extends past the bottom edge over
+   the row beneath. Two earlier shapes both failed on that note: confined to the
+   art slot it had to scroll (174px of text in an 80px box), and pinned to the
+   cell with room reserved for the name it overlapped the name instead.
+   The grid does not clip, so the overflow just works; the shadow is what stops
+   the panel reading as part of the tile below it. */
+.symbol__note {
+  position: absolute;
+  inset: 0 0 auto 0;
+  min-height: 100%;
+  z-index: 4;
+  margin: 0;
+  display: flex; align-items: center;
+  padding: var(--symbol-pad);
+  background: var(--ink);
+  color: var(--white);
+  font-size: var(--t-small);
+  line-height: 1.45;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  opacity: 0; visibility: hidden;
+  transition: opacity var(--dur) var(--ease), visibility var(--dur) var(--ease);
+  pointer-events: none;          /* never swallows the toggle underneath it */
+}
+/* The open cell keeps its own stacking context above its neighbours, or a later
+   sibling's border paints over the panel's edge. */
+.symbol--is-open,
+.symbol--has-note:hover { z-index: 3; }
+/* Pointer devices reveal on hover; touch has no hover and drives .symbol--is-open
+   from the tap handler instead. Both end at the same rule. */
+@media (hover: hover) {
+  .symbol--has-note:hover .symbol__note { opacity: 1; visibility: visible; }
+}
+.symbol--is-open .symbol__note,
+.symbol__toggle:focus-visible ~ .symbol__note { opacity: 1; visibility: visible; }
+/* The focus ring has to sit on the cell, not on an invisible full-bleed button
+   whose outline would be hidden under the note that just appeared. */
+.symbol__toggle:focus-visible { outline: none; }
+.symbol--has-note:has(.symbol__toggle:focus-visible) { outline: 2px solid var(--green); outline-offset: -2px; }
+
+/* ---- buy-bonus carousel -------------------------------------------------- */
+/* Same rail machinery as Hot Games; cards borrow the promo-card language. */
+.buy-card {
+  position: relative; overflow: hidden;
+  background: var(--purple); color: var(--white);
+  padding: clamp(1.5rem, 2.1vw, 2.25rem);
+  min-height: clamp(14rem, 18vw, 18rem);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+/* The game's own symbol for this buy, anchored bottom-right and kept whole.
+   Sized by HEIGHT, not width: the pack mixes 200x200 tiles with 268x360
+   portraits, and matching widths would make the square ones tower over the
+   rest. Bleeding it past the corner was worse still — the square gold tiles
+   read as cropped by mistake rather than as deliberate artwork. */
+.buy-card__symbol {
+  position: absolute;
+  right: clamp(0.75rem, 1.2vw, 1.25rem);
+  bottom: clamp(0.75rem, 1.2vw, 1.25rem);
+  height: clamp(4.5rem, 7.5vw, 8rem); width: auto;
+  pointer-events: none;
+}
+.buy-card__title {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(1.75rem, 2.5vw, 3rem);
+  line-height: 0.9; text-transform: uppercase; margin: 0 0 0.6rem;
+}
+.buy-card__body { margin: 0; }
+/* Keeps the text clear of the symbol's corner. */
+.buy-card:has(.buy-card__symbol) .buy-card__body { max-width: 68%; }
+.buy-card__cost {
+  position: relative;   /* above the symbol art */
+  align-self: flex-start;
+  margin: 1.25rem 0 0;
+  padding: 0.35em 0.8em;
+  background: var(--green); color: var(--ink);
+  font-size: var(--t-small); font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* ---- unreleased title ----------------------------------------------------- */
+/* What `?g=` answers with for a game that hasn't launched. Nothing links here —
+   its cards are spans everywhere — but the URL may be bookmarked or shared, so
+   it resolves to the date and a route onward rather than to an empty one-sheet.
+   Ordinary paper section: `data-page` is switched off `game` in the template, so
+   the fixed white-marked header is not in play. */
+/* The measure is capped on the children, NOT on .teaser-page itself — that
+   element carries .container, whose `margin-inline: auto` would then centre the
+   whole block instead of leaving it on the column's left edge like every other
+   section on the site. */
+.teaser-page > * { max-width: 46rem; }
+.teaser-page .display { margin-top: 0.4rem; }
+.teaser-page__note {
+  margin: clamp(1rem, 2vw, 1.5rem) 0 0;
+  font-size: var(--t-lg); color: #5F5F5F;
+}
+.teaser-page .btn-row { margin-top: clamp(1.5rem, 3vw, 2.5rem); }
+
+/* ---- demo play ------------------------------------------------------------ */
+/* The section is the frame and nothing else — no heading, no lead — so the only
+   spacing that matters is the air around the frame, and it has to be the same
+   above and below.
+
+   Owning it here is not enough on its own: whatever sits above (#buy-bonus,
+   #symbols, or the story) contributes its own bottom padding, and margins do NOT
+   collapse against padding — they stack on it. So the neighbours give theirs up
+   and #demo owns the entire gap on both sides. That is what makes the two
+   distances one declared value instead of two different sums, and it holds
+   whichever of the three optional sections happens to precede it. */
+#demo {
+  /* Doubled from clamp(2.5rem, 5vw, 5rem) — 72px read as cramped once the frame
+     went full-column width, especially where a purple band starts right after. */
+  --demo-air: clamp(5rem, 10vw, 10rem);
+  padding-block: 0;
+  margin-block: var(--demo-air);
+}
+/* Whatever section immediately precedes the frame stops paying for the gap —
+   but ONLY if it is a plain paper section, where that padding is invisible
+   whitespace. On a COLOURED BAND the same padding is the band's inner margin,
+   and stripping it crops the content against the band's edge: on Classic pages
+   #spec is the section before #demo, and the Free Rounds / Bet Limits row ended
+   up flush on the dark band's bottom edge with nothing under it.
+   Excluding the bands still gives the same visible result, because what the eye
+   measures above the frame is the distance from the band's EDGE — and that is
+   --demo-air either way. */
+main > section:has(+ #demo):not(.band-dark):not(.band-purple) { padding-bottom: 0; }
+/* One frame, two states: a placeholder until `demo_url` is filled in, then the
+   same frame renders the live embed. Sized by aspect-ratio so it reserves its
+   space before anything loads. */
+.demo-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  /* Was capped at 60rem while the section carried a visible heading and lead to
+     balance it. Those are gone, so the frame IS the section and can take the
+     full content column. */
+  max-width: var(--container);
+  margin: 0 auto;
+  border: var(--rule-w) solid var(--green);
+  background: var(--ink);
+  overflow: hidden;
+}
+.demo-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.demo-frame__empty {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.85rem;
+  color: var(--white); text-align: center; padding: 1.5rem;
+}
+.demo-frame__play {
+  width: clamp(3.5rem, 5vw, 5rem); aspect-ratio: 1;
+  display: grid; place-items: center;
+  border: var(--rule-w) solid var(--green); border-radius: 50%;
+  color: var(--green);
+}
+.demo-frame__note {
+  margin: 0; font-size: var(--t-small);
+  letter-spacing: 0.14em; text-transform: uppercase; color: #9A9A9A;
+}
+
+/* == RESPONSIVE =========================================================== */
+@media (max-width: 1024px) {
+  /* Tablet and below: the footer menu folds from one straight row of four to
+     2x2. Stating two rows keeps it a clean pair of pairs — there is no width at
+     which it can land on 3+1. Four across still fits here on paper (it needs
+     ~388px of ~961), but four condensed lockups strung across a tablet read as
+     a strip of small print rather than as a menu. */
+  .site-footer__nav { grid-template-rows: repeat(2, auto); }
+  .value-props, .promo-grid { grid-template-columns: repeat(2, 1fr); }
+  .value-prop:nth-child(2), .value-prop:nth-child(3) { margin-top: 0; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .personalisation__body { max-width: none; }
+  .spec-grid { grid-template-columns: repeat(2, 1fr); }
+  /* The currency list is the long one, so it gets the full width rather than
+     two thirds of a narrowed column. */
+  .spec-reach { grid-template-columns: 1fr; }
+  .story-grid,
+  .story-grid--solo { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .game-hero__inner { grid-template-columns: 1fr; }
+  /* Art leads on narrow screens — it identifies the title faster than type.
+     Stacked, it sits above the copy, so it can't bleed past the band; the
+     negative margin is dropped and the bleed handled by the band instead. */
+  .game-hero__art {
+    grid-row: 1; justify-self: center;
+    max-width: clamp(12rem, 55vw, 22rem);
+  }
+  .game-hero__art--logo { align-self: auto; }
+  .game-hero {
+    padding-bottom: clamp(2rem, 6vw, 4rem);
+    /* Stacked, the fold is logo slot + copy, so it tracks the copy's length and
+       the desktop floor (which is vw-based) no longer binds — heights ran 615 to
+       723 across the catalogue at 375. A flat floor for the whole stacked range
+       instead: it clears the tallest, and because the hero centres its content
+       the slack spreads above and below rather than pooling at the bottom. */
+    min-height: 46rem;
+  }
+  /* Copy spans the full width once stacked, so the scrim shades from the bottom
+     up instead of from the left — see the note on --hero-scrim-layer. */
+  .game-hero__band::after {
+    --hero-scrim-layer: linear-gradient(0deg,
+        var(--hero-scrim) 0%,
+        color-mix(in srgb, var(--hero-scrim) 88%, transparent) 34%,
+        color-mix(in srgb, var(--hero-scrim) 55%, transparent) 60%,
+        color-mix(in srgb, var(--hero-scrim) 20%, transparent) 80%,
+        transparent 100%);
+  }
+  .game-hero__summary { max-width: none; }
+  .shot-grid { grid-template-columns: 1fr; }
+  /* Four blobs across a phone would be thumbnails; two rows reads better. */
+  .story__cast { flex-wrap: wrap; gap: 1rem 8%; }
+  .story__cast img { width: 26%; }
+  .buy-card:has(.buy-card__symbol) .buy-card__body { max-width: 100%; }
+  /* Symbol tiles get tighter but stay multi-column: they are recognised by the
+     art, and one per row turns the paytable into a scroll. */
+  .symbol-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 7.5rem), 1fr)); }
+
+  /* ---- spec band: put back the air the clamps gave up -------------------- */
+  /* Measured at 1440 against 375, the band's spacing halves while its type
+     does not move at all: section padding x1.87, grid top margin x1.80, row
+     gap x1.56 — but dt (13px), dd (18px), the cell's top padding (13.6px) and
+     the label-to-value gap (6.4px) are IDENTICAL at both widths, because they
+     are flat rem values rather than clamps. So a phone renders desktop-sized
+     text in half the desktop's space, which is what reads as cramped.
+     These are the same relationships re-tuned for that fixed type: roughly
+     2x the 18px value size between rows, and half that inside a cell.
+     Nothing here is a clamp — below this breakpoint the type is flat, so the
+     spacing that serves it should be flat too. */
+  .spec-grid {
+    margin-top: 3.5rem;
+    row-gap: 2.25rem;          /* 36px between rows of 18px values */
+  }
+  .spec-grid div { padding-top: 1.15rem; }   /* rule to label */
+  .spec-grid dt  { margin-bottom: 0.55rem; } /* label to value */
+  .spec-options {
+    margin-top: 2.75rem;
+    row-gap: 1.15rem;          /* the ticks are 40px discs; 13.6px stacked them */
+  }
+  .band-dark .spec-band__title { margin-bottom: 2rem; }
+  .stat__label { margin-bottom: 0.65rem; }
+  .stat__note  { margin-top: 0.75rem; }
+}
+@media (max-width: 720px) {
+  /* Two columns, and the big four take both — full width each, so the top games
+     still read as top games on a phone. */
+  .game-grid { grid-template-columns: repeat(2, 1fr); }
+  .game-grid > .game-card { grid-column: span 1; }
+  .game-grid > .game-card:nth-child(-n + 4) { grid-column: span 2; }
+  .value-props, .promo-grid { grid-template-columns: 1fr; }
+  /* Stacked, the three props are the only thing in the dark fold's closing
+     section, and the desktop numbers do not survive the change of axis: 24px
+     between them is a column gap doing duty as a paragraph break, and 80px of
+     band either side is what --sec-y's floor gives a phone. Tripled, per the
+     client — 72px between, 240px before and after — so each prop reads as its
+     own statement rather than as one block of three, and the band that holds
+     them is unmistakably a section rather than a run-on from the carousel. */
+  .value-props { gap: 4.5rem; }
+  .value-props-section { padding-block: 15rem; }
+  /* .brand-tiles deliberately stays a two-up row at every width — the pair only
+     reads as a pair while the seam is vertical, and at 375px each lockup still
+     has ~130px of clear space even at the shrunk ratio. */
+  .contact-form { grid-template-columns: 1fr; }
+  .filter-bar { align-items: stretch; }
+  .filter-tools { width: 100%; }
+  .search { flex: 1; min-width: 0; }
+  /* Game meta is hover-only on desktop; on touch it must always be readable.
+     `display: block` is LOAD-BEARING and is hard rule 5 in a new place: this is
+     a <span>, and the base rule blockifies it only as a side effect of
+     `position: absolute`. Take the absolute away and it reverts to inline — at
+     which point its horizontal padding stops indenting the block-level title
+     inside it, and the game name sits flush against the card's edge. */
+  .game-card__meta {
+    display: block;
+    position: static; transform: none; opacity: 1;
+    background: var(--ink);
+    padding: 1rem 1.15rem 1.15rem;
+  }
+
+  /* ---- mobile-only sizing ------------------------------------------------ */
+  /* The overlay menu is the whole screen on a phone, so the links can take it.
+     At 375 this is ~64px against the 48px the shared clamp bottomed out at. */
+  .site-nav { gap: clamp(1rem, 3.5vw, 1.75rem); padding: 1.5rem; }
+  .site-nav a { font-size: clamp(3.5rem, 17vw, 6rem); line-height: 0.95; }
+
+  /* The hero headline carries the fold on a phone, where there is no artwork
+     beside it to share the work. */
+  /* Wider AND bigger: the headline is the fold's only type now, so it takes the
+     screen. The reduced inline padding is what buys the extra width. */
+  .hero__line { font-size: clamp(4rem, 25.5vw, 22.06rem); }
+  .hero__type { padding-inline: 0.75rem; }
+  /* The lineup goes WIDER on a phone, not narrower: at 100% the cast would be a
+     strip of thumbnails. Overflowing the viewport and letting the screen crop
+     the outermost characters keeps the ones in the middle at a readable size —
+     which is what the section's overflow-x: clip is there to allow. */
+  /* 150%, not 190%: the wider setting cropped so hard that only the middle few
+     characters survived. This still lets the screen cut the outermost ones —
+     which is the point — while showing appreciably more of the cast. */
+  .hero__art { width: 150%; margin-top: calc(-4% - 20pt); }
+
+  /* The dark fold's reserved art slot is CLOSED. It held 128px at 375 for
+     artwork that was never supplied, and because it sits between the chips and
+     the carousel it was 128px of the 148px gap between them — an invisible hole
+     separating a tab strip from the panel it drives. Removed 2026-08-30 on the
+     client's call that the art is not coming.
+     The div is still in index.html, so restoring the reservation is this one
+     rule and nothing else: min-height: clamp(8rem, 30vw, 14rem). */
+  .personalisation__art-slot { min-height: 0; }
+
+  /* Both lockups step up: at 375 the shared clamp bottomed out at 64px, which
+     left the tiles mostly empty ground. */
+  .brand-tiles { --mark-h: clamp(5.5rem, 22vw, 8.4rem); }
+  /* The open state was the worse offender — the sub-brand word bottomed out at
+     12.8px and the tagline at 12.8px, both unreadable at arm's length. */
+  .brand-tile .brand-tile__mark--hover { height: clamp(1.5rem, 6vw, 2.1rem); }
+  .brand-tile__tagline { font-size: clamp(1rem, 4.2vw, 2rem); }
+
+  /* The capability card gets taller so the sheep has somewhere to stand, and the
+     sheep grows into it. It stays flush to the card's right edge here (unlike
+     desktop, which insets it) because that is the only way to gain size on a
+     285px card without running into the arrows: they end 112px in, and the
+     WIDEST of the four illustrations at this height still leaves a clear gap.
+     The two then read as one bottom row — arrows left, sheep beside them. */
+  .cap-card { min-height: 25rem; }
+  .cap-card__art { right: 0; height: 11.25rem; }
+
+  /* No footer override here any more: the base rule stacks and left-aligns at
+     every width, so what used to be the mobile exception is now the design. */
+
+  /* Stacked, the arrows ride beside the LOGO rather than the copy — so the copy
+     column reserves nothing and goes back to the ordinary container gutter.
+     --hero-nav-y is measured from the artwork by game.html and set on the hero;
+     it cannot be a CSS value because each title's logo has its own aspect ratio
+     and therefore its own height. 50% is the fallback if that never runs. */
+  .game-hero__inner { padding-inline: clamp(1.25rem, 4vw, 2rem); }
+  .game-hero__nav { top: var(--hero-nav-y, 50%); }
+
+  /* A fixed square, not padding around a 14x22 icon — the tall glyph was making
+     the disc 35x43 and it read as a stretched oval. */
+  .game-hero__nav {
+    width: 2.75rem; height: 2.75rem;
+    padding: 0;
+    justify-content: center;
+  }
+}
+@media (max-width: 460px) {
+  /* Single column, so the size distinction has nowhere left to go. */
+  .game-grid { grid-template-columns: 1fr; }
+  .game-grid > .game-card,
+  .game-grid > .game-card:nth-child(-n + 4) { grid-column: span 1; }
+}

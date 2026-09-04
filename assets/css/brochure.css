@@ -1,0 +1,746 @@
+/* ==========================================================================
+   Wild Sheep — brochure
+   An A4 document rendered from the same games.json the site runs on, laid out
+   in HTML/CSS so the design is editable without touching a PDF library.
+   The browser's print engine turns it into a vector PDF with live fonts.
+
+   WordPress port: this exact stylesheet + markup is what the server-side
+   renderer (Dompdf / mPDF / headless Chrome) consumes for one-click download.
+   See wp/HANDOVER.md.
+   ========================================================================== */
+
+/* MARGIN ZERO, AND THAT IS THE FIX FOR THE BROWSER'S PRINT FURNITURE.
+   Safari and Chrome draw their own header and footer — document title, date,
+   page URL, "Page 7 of 29" — INSIDE the @page margin. With a 14mm/15mm margin
+   there was room for them, which is where the white border with a localhost
+   link in the corner came from. At margin 0 there is nowhere to draw them, so
+   they are suppressed, and the sheets bleed to the paper edge as intended.
+   The page's own inset moves into .sheet__pad instead. */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+.brochure {
+  /* The FULL page, not the old 180mm content box — the sheet now is the paper,
+     so the on-screen preview is the same geometry as the print. */
+  --sheet-w: 210mm;
+  background: #8A8A8A;
+  padding: 10mm 0;
+}
+
+/* ---- One sheet = one printed page --------------------------------------- */
+.sheet {
+  width: var(--sheet-w);
+  min-height: 297mm;
+  margin: 0 auto 8mm;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sheet--dark { background: var(--ink); color: var(--white); }
+.sheet--cover { background: var(--purple); color: var(--white); justify-content: space-between; }
+/* The Classic edition's cover takes the range's own colour. White type on
+   #FF932E is the brand's call — the site's Classic footer does the same. */
+.sheet--cover[data-scope='classic'] { background: var(--orange); }
+
+/* Carries the page inset that used to live on @page. */
+.sheet__pad { padding: 14mm 15mm; flex: 1; display: flex; flex-direction: column; }
+
+/* ---- Cover -------------------------------------------------------------- */
+/* Three bands: the lockup at the top, the type and figures pulled up under it,
+   and the cast lineup filling the foot of the page. */
+.sheet--cover { justify-content: flex-start; }
+.cover__top { padding: 12mm 12mm 0; }
+/* Inline SVG (see inlineMark() in brochure.js) rather than the site's masked
+   .mark — the mask does not survive Safari's print pipeline and lands in the
+   PDF as a solid white rectangle. */
+.cover__mark { width: 72mm; color: var(--white); }
+.cover__mark svg { display: block; width: 100%; height: auto; fill: currentColor; }
+
+/* The gap under the lockup — this is what drops the title down the page; the
+   lockup itself does not move. */
+.cover__head { padding: 0 12mm; margin-top: 24mm; }
+.cover__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 47mm;
+  line-height: 0.8;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--white);
+}
+/* Bold, and it carries the full sentence — this is the line that says what the
+   document actually is. */
+.cover__sub {
+  /* NEGATIVE, and it has to be. The visible gap is not this margin — at 47mm
+     with line-height 0.8 the title's line box still runs ~5.6mm below the cap
+     baseline, and that dead space is what separates the two lines. Closing it
+     means pulling up INTO the title's box. The heading is all caps with no
+     descenders, so there is nothing down there to collide with. */
+  margin: -2.5mm 0 0;
+  font-size: 5.7mm;
+  font-weight: 700;
+  line-height: 1.3;
+  /* One line, never two — the three blurbs are all about the same length and
+     `nowrap` is what guarantees none of them folds under itself. */
+  white-space: nowrap;
+}
+/* Dropped toward the artwork, but not onto it — .cover__base is pushed to the
+   foot by margin-top:auto, so any more here closes the gap to zero. */
+.cover__stats { display: flex; gap: 16mm; margin: 10mm 0 0; }
+.cover__stat b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24mm;
+  /* Tight, so the label sits right under the figure rather than a line away —
+     at 24mm a line-height of 1 left a visible gap between the pair. The negative
+     margin halves what the line box still leaves (measured 1.32mm). */
+  line-height: 0.82;
+  margin-bottom: -0.66mm;
+}
+.cover__stat span { font-size: 3mm; letter-spacing: 0.14em; text-transform: uppercase; }
+/* Smaller than the old 3.4mm — it is the imprint, not copy anyone reads. */
+.cover__foot {
+  margin: 0;
+  font-size: 2.6mm;
+  line-height: 1.5;
+  color: var(--white);
+  opacity: 0.75;
+}
+
+/* The cast lineup closes the cover. It runs WIDER than the page so the outermost
+   characters are cropped by the paper edge — at 100% it would be a strip of
+   thumbnails. `margin-inline: auto` cannot centre a box wider than its
+   container (auto resolves to 0 and the whole overflow lands on one side), so
+   the offset does it.
+   -47.22%, not -50%: that puts the SHEEP dead centre rather than the file's
+   bounding box. Its hooves sit at x=1071 and x=1634 of 2864, so the sheep's axis
+   is 1352 against the file's 1432 — 2.78% of the width left of centre, which
+   this adds back. Same figure as the landing page's hero, and for the same
+   reason. */
+/* The lineup and the dark table it stands on, pushed to the foot of the page. */
+.cover__base { margin-top: auto; }
+.cover__art {
+  width: 137%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-47.22%);
+}
+.cover__art picture { display: block; }
+/* The artwork is cut flat at y=1207 of 1307 and the hooves, two bottles and a
+   hand hang below that line. 100/1307 of the height, and the image is 1307/2864
+   as tall as it is wide, so the overhang is 3.49% OF ITS OWN WIDTH — which is
+   why the negative margin sits on the img inside a wrapper that is the image's
+   width. That makes the table's edge land on the cut at any size, rather than
+   being a tuned guess. */
+/* EXACTLY the landing page's relation, and the figure is measured, not tuned.
+   The artwork is cut flat at y=1207 of 1307 and the sheep's hooves, two bottles
+   and a hand hang below that line. 100/1307 of the height, and the image is
+   1307/2864 as tall as it is wide, so the overhang is 3.49% OF ITS OWN WIDTH —
+   which is why the negative margin sits on the img inside a wrapper that is the
+   image's width, making it exact at any size.
+   The table's top therefore lands ON the cut: the flat edge disappears behind it
+   and only the overhang laps over, so the cast reads as standing on a surface.
+   The extra 0.4mm is the print equivalent of the site's 3px — it hides the
+   hairline of paper that subpixel rounding can otherwise leave at the join. */
+.cover__art img {
+  display: block; width: 100%; height: auto;
+  margin-bottom: calc(-3.49% - 0.4mm);
+}
+
+/* THE ARTWORK PAINTS OVER THE TABLE, which is the landing page's arrangement and
+   the whole point of the overhang: .hero__art carries z-index 2 there for exactly
+   this reason. Without it the table — later in the DOM and positioned — painted
+   on top and simply covered the 3.49% that was supposed to lap over it, leaving
+   a hard flat cut where the sheep's arms and the bottles should cross onto the
+   dark. The table's top padding clears the overhang so the imprint stays legible
+   underneath it. */
+.cover__art { z-index: 2; }
+.cover__table {
+  position: relative;
+  z-index: 1;
+  padding: 15mm 15mm 11mm;
+  color: var(--white);
+}
+
+/* ---- Shared document furniture ------------------------------------------ */
+.doc-h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--purple);
+  font-size: 26mm;
+  line-height: 0.84;
+  text-transform: uppercase;
+  margin: 0 0 7mm;
+}
+.doc-h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 9mm;
+  line-height: 0.9;
+  text-transform: uppercase;
+  margin: 0 0 2mm;
+}
+.doc-body { font-size: 3.4mm; line-height: 1.45; font-weight: 400; margin: 0 0 3.5mm; }
+.doc-rule { border: 0; border-top: 0.4mm solid var(--rule); margin: 4.5mm 0; }
+.sheet--dark .doc-rule { border-top-color: var(--rule-invert); }
+/* On the dark closing sheet the heading stays white — purple on ink is 2.95:1,
+   the same reason the site's spec-band heading has to lighten. */
+.sheet--dark .doc-h1 { color: var(--white); }
+
+.doc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+.doc-cols--3 { grid-template-columns: repeat(3, 1fr); }
+
+.b-prop { break-inside: avoid; }
+.b-prop h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 6mm; line-height: 0.9; text-transform: uppercase; margin: 0 0 1.5mm;
+}
+.b-prop p { font-size: 3.1mm; line-height: 1.4; margin: 0; font-weight: 400; }
+
+/* Running footer on every content sheet */
+.sheet__footer {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 6mm;
+  padding: 3mm 15mm;
+  border-top: 0.3mm solid var(--rule);
+  font-size: 2mm; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #9A9A9A;
+}
+.sheet--dark .sheet__footer { border-top-color: var(--rule-invert); color: rgba(255,255,255,0.6); }
+
+/* ---- Closing sheet ------------------------------------------------------ */
+/* "Be the next / GAME <changers script>" — the landing page's own lockup, with
+   the brush script standing in for the word. Every offset is in `em` so the
+   composition holds if the heading size ever changes, exactly as it is on the
+   site. */
+.closing__title { font-size: 24mm; }
+.closing__line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* Closes the leading that line-height 0.84 still leaves between the two
+     lines, so GAME sits up tight under "Be the next". */
+  margin-top: -0.16em;
+}
+/* GAME comes back down by the amount the line above was pulled up, less half a
+   word-space. `transform`, not margin: the script shares this flex line and
+   must not shift, and transforms do not participate in layout. */
+.closing__word { transform: translateY(0.09em); }
+.closing__script {
+  flex: none;
+  display: block;
+  width: 2.31em;          /* the same 815-against-353 ratio the hero uses */
+  margin-left: -0.216em;  /* bites back over the end of GAME, clear of its E */
+  margin-top: -0.10em;    /* a touch above the type's centre */
+  /* --purple-light, not --purple: on the ink field #9445FF measures 2.95:1 and
+     the stroke all but disappears. Same substitution the site makes on its own
+     dark band. */
+  color: var(--purple-light);
+}
+.closing__script svg { display: block; width: 100%; height: auto; fill: currentColor; }
+
+/* ---- Overview sheets ---------------------------------------------------- */
+.doc-lead { font-size: 4.2mm; line-height: 1.4; font-weight: 400; margin: 0 0 6mm; max-width: 150mm; }
+
+/* 2x2 of cards rather than a stacked list, echoing the site's capability
+   carousel — which is what lets the sheep illustrations be big enough to read
+   as artwork instead of thumbnails sitting beside a paragraph. */
+.b-cap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6mm;
+}
+.b-cap {
+  position: relative;
+  border: 0.4mm solid var(--rule);
+  border-radius: 1.5mm;
+  padding: 6mm 6mm 0;
+  min-height: 90mm;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  break-inside: avoid;
+}
+.b-cap h3 {
+  font-family: var(--font-display);
+  font-weight: 400;                      /* SCHABO is 400-only */
+  font-size: 7mm; line-height: 0.9; text-transform: uppercase; margin: 0 0 2mm;
+}
+.b-cap p { font-size: 3.1mm; line-height: 1.45; margin: 0; }
+/* Sized by HEIGHT and pinned to the card's bottom-right, as on the site: the
+   four illustrations do not share an aspect ratio, so matching their widths
+   would make the squat ones tower over the tall ones. */
+/* Bigger than the copy needs, deliberately — the illustration is the reason
+   these are cards rather than a list. Sized by HEIGHT: the four do not share an
+   aspect ratio, so matching their widths would make the squat ones tower. */
+.b-cap__art {
+  align-self: flex-end;
+  margin-top: auto;
+  width: auto; height: 50mm;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom right;
+}
+
+/* Tiles 2 and 3 take a slightly darker ground. In a 2x2 those are the diagonal
+   pair, so the four read as a chequer rather than a block of identical boxes. */
+.b-cap:nth-child(2),
+.b-cap:nth-child(3) { background: var(--paper-tint); }
+
+/* ---- What you get -------------------------------------------------------- */
+/* One heading per value b-prop, in order, with the promotion-tool cards nested
+   under Engagement Tools. The section used to carry "Engagement Tools" twice —
+   once as a value b-prop and again as the heading over the cards. */
+.b-vp { break-inside: avoid; }
+.b-vp__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 9mm; line-height: 0.9; text-transform: uppercase; margin: 0 0 2mm;
+}
+.b-vp__body { font-size: 3.6mm; line-height: 1.45; margin: 0; max-width: 150mm; }
+
+/* Deliberately quieter than the b-prop above them: they are the detail under
+   Engagement Tools, not a third section competing with it. */
+.b-tool-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4mm 5mm;
+  margin-top: 4mm;
+}
+.b-tool {
+  border-top: 0.4mm solid var(--rule);
+  padding-top: 2.5mm;
+  break-inside: avoid;
+}
+/* `non-scaling-stroke` keeps the 24x24 viewBox's stroke at the weight it was
+   drawn at once the box is scaled to 6mm — without it the line lands about two
+   and a half times too heavy, exactly as noted for the site's own cards. */
+.b-tool__icon {
+  display: block;
+  width: 6mm; height: 6mm;
+  margin: 0 0 1.5mm;
+  color: var(--green-dark);
+}
+.b-tool__icon path { vector-effect: non-scaling-stroke; }
+.b-tool h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 4.4mm; line-height: 0.9; text-transform: uppercase; margin: 0 0 1mm;
+}
+.b-tool p { font-size: 2.7mm; line-height: 1.35; margin: 0; }
+
+/* Distribution reach — deliberately the smallest type on the sheet. It is a
+   completeness line (10 languages, 88 currencies), not something read through. */
+.b-reach {
+  margin-top: 2.5mm;
+  border-top: 0.4mm solid var(--rule);
+  padding-top: 2mm;
+}
+.b-reach p {
+  font-size: 1.9mm; line-height: 1.2; margin: 0 0 0.7mm; color: #7C7C7C;
+}
+.b-reach b {
+  color: var(--ink); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-right: 1mm;
+}
+
+/* ---- Upcomings ---------------------------------------------------------- */
+/* One sheet for the whole unreleased run: art and a date is all there is to say
+   about a title that is not out, so they do not each get a game sheet. */
+/* Two up, filling the page. The thumbnails are all 3:2, so `aspect-ratio` on the
+   box plus `cover` crops nothing — the box IS the picture's shape, which is what
+   keeps a page of them tidy at any card size. */
+/* One column of wide rows — thumbnail left, title and date beside it — which is
+   what fills a page with only three titles on it. The thumbnails are all 3:2, so
+   `aspect-ratio` on the box plus `cover` crops nothing: the box IS the picture's
+   shape, which is what keeps the page tidy at any card size. */
+.b-up-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8mm;
+  margin-top: 7mm;
+}
+.b-up {
+  display: grid;
+  grid-template-columns: 92mm 1fr;
+  gap: 8mm;
+  align-items: center;
+  break-inside: avoid;
+}
+/* Four or more would run off the sheet as full-width rows. */
+.b-up-grid--many { grid-template-columns: repeat(2, 1fr); gap: 8mm 7mm; }
+.b-up-grid--many .b-up { grid-template-columns: 1fr; gap: 0; align-items: start; }
+.b-up img {
+  display: block;
+  width: 100%;
+  /* height:auto is required whenever aspect-ratio is used on an <img> — the
+     height attribute is a presentational hint that would otherwise count as a
+     specified height and make aspect-ratio a no-op. Hard rule 4, in print. */
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: var(--ink);
+}
+/* No colour on either line — the sheet is a dark field and the type carries it,
+   the way the site's own Upcomings island does. */
+.b-up h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 9mm; line-height: 0.9; text-transform: uppercase; margin: 0 0 2mm;
+  color: var(--white);
+}
+.b-up-grid--many .b-up h3 { font-size: 7mm; margin-top: 3.5mm; }
+.b-up__date { font-size: 3.6mm; font-weight: 700; margin: 0; color: rgba(255, 255, 255, 0.78); }
+.sheet--dark .doc-lead { color: rgba(255, 255, 255, 0.8); }
+.b-up img { background: #1E1E1E; }
+
+/* ---- Game sheets: ONE GAME PER PAGE ------------------------------------- */
+/* The sheet mirrors the game page's own order — hero, spec band, story and
+   features, symbols, buy bonus — so print and web describe a title the same way
+   round. Every block after the hero is content-gated in the builder, so a
+   Classic title with figures and no prose renders a short clean sheet rather
+   than a page of empty headings. */
+.sheet--game { overflow: hidden; }
+
+/* The hero reproduces the page's composed treatment: key art under a brand
+   gradient with the logo sitting on top of it. */
+.game-sheet__hero {
+  position: relative;
+  height: 68mm;
+  flex: none;
+  background: var(--hero-base);
+  overflow: hidden;
+}
+.game-sheet__backdrop {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+/* The page's hero curve, re-tuned for a band a third of its height. The page
+   runs solid to 10% and clears by 64%; over 44mm that buried most of the key
+   art, so this holds solid only long enough to seat the logo and is gone by
+   half way. Same five-stop shape, shallower.
+
+   TWO PRINT RULES ARE BAKED IN HERE.
+   1. It is a real <span>, not a ::after. Safari drops gradients on
+      pseudo-elements often enough that a printed sheet lost its wash entirely.
+   2. The stops are literal rgba(), NOT color-mix(). color-mix resolves fine on
+      screen and is unreliable through the print pipeline; a gradient that fails
+      to parse takes the whole background with it. The two brand colours are
+      fixed values anyway (#9445FF and #FF932E), so nothing is lost by writing
+      them out. */
+/* The wash is now an inline <svg> emitted by svgWash() in brochure.js — see the
+   note there. It is CONTENT, so it survives Safari printing with backgrounds
+   off, where a CSS gradient does not. `preserveAspectRatio: none` lets a 10x10
+   viewBox stretch to the band. */
+.field-svg {
+  position: absolute; inset: 0;
+  display: block;
+  width: 100%; height: 100%;
+}
+/* The flat cover / closing fields sit behind everything in their sheet. Both
+   sheets' own children are positioned or in normal flow after it, so source
+   order alone keeps the artwork underneath. */
+.sheet--cover > .field-svg,
+.sheet--dark > .field-svg { z-index: 0; }
+.sheet--cover > *:not(.field-svg),
+.sheet--dark > *:not(.field-svg) { position: relative; z-index: 1; }
+
+/* Sized by a definite SLOT, not a width cap — the same lesson as the page's
+   hero logo: capped by width alone a squat lockup and a tall one render at
+   wildly different heights and every sheet opens at a different weight. */
+/* Comes after .game-sheet__wash in the DOM, so it paints on top of it without a
+   z-index. Don't reorder the markup.
+   The width cap is what binds on the WIDE lockups (Fortunes of Sparta is 3.97:1,
+   Bamboonanza 2.51:1) and the height cap on the near-square ones — which is why
+   widening the cap grew everything except Blob Invasion, whose logo is 1000x1003.
+   That one gets its own height below rather than inflating all 23. */
+.game-sheet__logo {
+  position: absolute;
+  right: 12mm; top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  /* Sized by a definite HEIGHT slot with a generous width cap: capped by width
+     alone a wide lockup like Blob Invasion's renders short and looks lost
+     against a tall one. */
+  width: auto; max-width: 92mm;
+  height: 48mm;
+  object-fit: contain;
+  object-position: right center;
+  /* Every lockup has its own aspect ratio, so a definite HEIGHT slot is what
+     makes all 26 sheets open at the same weight — the same lesson as the game
+     page's hero logo, where a width cap gave a 3x spread. */
+}
+/* Blob Invasion's lockup is square (1000x1003), so the shared height slot leaves
+   it visibly smaller on the page than the wide lockups beside it. Sized on its
+   own rather than raising the slot for all 23. */
+.sheet--game[data-slug='blob-invasion'] .game-sheet__logo { height: 64mm; }
+.status-pill--hero { position: absolute; top: 6mm; right: 6mm; margin: 0; }
+
+.game-sheet__body { padding-top: 6mm; padding-bottom: 6mm; gap: 0; }
+
+/* Sits in the hero band, left, opposite the logo. Comes after the wash in the
+   DOM so it paints on top of it — same rule as the logo. */
+.game-sheet__head {
+  position: absolute;
+  left: 15mm; right: 15mm; bottom: 8mm;
+  max-width: 96mm;
+}
+/* Quiet: it labels the title rather than competing with it. */
+.game-sheet__eyebrow {
+  font-size: 1.9mm; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; margin: 0 0 3.5mm;
+  color: rgba(255, 255, 255, 0.62);
+}
+.game-sheet__title {
+  font-family: var(--font-display);
+  font-weight: 400;                      /* SCHABO is 400-only */
+  font-size: 15mm; line-height: 0.86; text-transform: uppercase; margin: 0 0 2mm;
+  color: var(--white);
+}
+.game-sheet__tagline { font-size: 3.7mm; font-weight: 700; margin: 0 0 1.2mm; color: var(--white); }
+.game-sheet__summary {
+  font-size: 3mm; line-height: 1.4; font-weight: 400;
+  margin: 0; color: rgba(255, 255, 255, 0.92);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+}
+.game-sheet__note {
+  font-size: 2.8mm; font-weight: 700; color: #8A6A00;
+  margin: 2.5mm 0 0;
+}
+
+.doc-h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 6.5mm; line-height: 0.9; text-transform: uppercase;
+  margin: 0 0 2mm;
+  /* The range's own colour, like the site's SPECIFICATION heading: purple for
+     Origins, orange for Classic. --purple straight, not --purple-light: this is
+     on paper, where #9445FF measures 5.1:1 — it only needed lightening on the
+     site's dark band. */
+  color: var(--purple);
+}
+.sheet--game[data-brand='classic'] .doc-h3 { color: var(--orange); }
+.game-sheet__block { margin-top: 3mm; }
+.game-sheet__cols {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6mm;
+  margin-top: 3.5mm;
+}
+/* A game with only one of the two takes the full measure rather than leaving
+   half the row empty. Set as a class by brochure.js rather than with :has(),
+   so nothing in the printed layout depends on selector support. */
+.game-sheet__cols--solo { grid-template-columns: 1fr; }
+/* Clamped for the same reason the feature body is: The Void and Cursed run to
+   three paragraphs, and an unclamped story was the single block most likely to
+   push a sheet onto a second page. */
+.game-sheet__story p {
+  font-size: 3.1mm; line-height: 1.4; margin: 0 0 1.5mm;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden;
+}
+.b-feat { margin: 0 0 2mm; break-inside: avoid; }
+.b-feat b { display: block; font-size: 3.3mm; }
+/* Clamped: one feature with a long body must not set the height of the sheet. */
+.b-feat p {
+  font-size: 3.05mm; line-height: 1.4; margin: 0.4mm 0 0;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+}
+
+/* Symbols: the paytable strip. Capped in the builder so it cannot push a sheet
+   onto a second page — see MAX_SYMBOLS. */
+.b-sym-strip {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2mm 1.5mm;
+}
+.b-sym { margin: 0; text-align: center; break-inside: avoid; }
+.b-sym img {
+  display: block; margin: 0 auto 1mm;
+  width: auto; height: 7mm;
+  max-width: 100%;
+  object-fit: contain;
+}
+.b-sym figcaption {
+  font-size: 2.3mm; line-height: 1.15; color: #6E6E6E;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+
+.b-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; align-items: start; }
+/* NEVER CROPPED — `contain`, not `cover`. The captures are gameplay, so a crop
+   throws away the part that is worth showing. Height-capped so two of them stay
+   inside the sheet's budget; a wider capture simply sets narrower. */
+.b-shot {
+  width: 100%; height: auto;
+  max-height: 34mm;
+  border: 0.3mm solid var(--rule);
+  object-fit: contain;
+}
+/* Portrait captures are phone screens — keep their ratio at a capped width
+   rather than cropping them to landscape. */
+.b-shot--portrait { width: auto; max-width: 100%; max-height: 44mm; object-fit: contain; justify-self: center; }
+.b-shot-fig { margin: 0; }
+.b-shot-fig figcaption {
+  font-size: 2.4mm; color: #6E6E6E; margin-top: 1mm;
+}
+/* The img carries width/height attributes so the box is reserved before load —
+   without a height reset those count as a specified height and the CSS one is
+   ignored, which is hard rule 4 in a second file. */
+.b-shot-fig img { height: auto; max-height: 34mm; }
+
+.b-buy-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm; }
+.b-buy {
+  border-top: 0.4mm solid var(--rule);
+  padding-top: 1.6mm;
+  break-inside: avoid;
+}
+.b-buy b { display: block; font-size: 3.1mm; line-height: 1.2; }
+.b-buy__cost {
+  display: block; margin-top: 1mm;
+  font-size: 2.8mm; font-weight: 700; color: var(--green-dark);
+}
+
+/* `b-` prefixed because this sheet loads ALONGSIDE site.css, and the site's own
+   game page has a `.spec-grid`, `.spec`, `.shot` and `.shot--portrait`. Sharing
+   those names meant site.css won the specificity ties: the brochure's spec grid
+   inherited a 72px top margin and a WHITE (--rule-invert) border on every cell,
+   and the site's `@media (max-width: 1024px)` block silently forced it to two
+   columns IN PRINT, because an A4 page is only ~794 CSS px wide. Keep
+   brochure-only classes prefixed. */
+.b-specs {
+  display: grid;
+  margin: 0;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2mm 3mm;
+  /* No rule above the figures — the band's own edge already separates them from
+     the hero, and a second line there read as a table border. The margin is what
+     does the separating now. */
+  margin-top: 2mm;
+}
+.b-spec { break-inside: avoid; }
+.b-spec dt {
+  font-size: 2.5mm; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #7C7C7C; margin: 0 0 0.5mm;
+}
+.b-spec dd { font-size: 2.9mm; font-weight: 700; margin: 0; line-height: 1.15; }
+
+.status-pill {
+  display: inline-block;
+  padding: 0.8mm 2mm;
+  background: var(--green); color: var(--ink);
+  /* Sits inside the display-face heading, so reset back to the body face. */
+  font-family: var(--font-body);
+  font-size: 2.5mm; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  margin-left: 2mm; vertical-align: middle;
+}
+
+/* Index table on the contents sheet */
+.toc { width: 100%; border-collapse: collapse; font-size: 3.2mm; }
+.toc th {
+  text-align: left; font-size: 2.6mm; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #7C7C7C; padding: 0 0 2mm; border-bottom: 0.4mm solid var(--rule);
+}
+.toc td { padding: 1.15mm 0; border-bottom: 0.3mm solid rgba(46,46,46,0.09); }
+.toc td:first-child { font-weight: 700; }
+.toc td:not(:first-child) { font-weight: 400; }
+.toc .num { text-align: right; color: #7C7C7C; }
+
+/* ---- Screen-only toolbar ------------------------------------------------ */
+.brochure-bar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+  padding: 1rem clamp(1rem, 4vw, 2.5rem);
+  background: var(--ink); color: var(--white);
+}
+.brochure-bar__meta { margin: 0; font-size: var(--t-small); opacity: 0.75; }
+/* A footnote, not an instruction: Chrome's print engine is the more faithful of
+   the two, and Safari in particular needed several workarounds in this file. */
+.brochure-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.75rem; line-height: 1.4;
+  opacity: 0.55; max-width: 46ch;
+}
+.brochure-note b { font-weight: 700; opacity: 0.85; }
+/* The three editions. Plain .btn language, with the active one filled — the
+   same aria-pressed treatment the library's filter chips use. */
+.brochure-bar__actions { display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-end; }
+.brochure-scopes { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.brochure-scope { font-size: var(--t-small); padding: 0.5rem 0.9rem; }
+.brochure-scope[aria-pressed='true'] {
+  background: var(--green); color: var(--ink);
+}
+.brochure-bar__title { font-family: var(--font-display);
+  font-weight: 400; font-size: 1.75rem; text-transform: uppercase; margin: 0; }
+/* Above the title, with the arrow leading out of the page — a way back rather
+   than an action, so it is a plain link and not part of the button row. */
+.brochure-back {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  margin: 0 0 0.5rem;
+  font-size: var(--t-small); font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--white); opacity: 0.7;
+  transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.brochure-back:hover,
+.brochure-back:focus-visible { opacity: 1; color: var(--green); }
+.brochure-back svg { flex: none; }
+
+.loading { padding: 4rem; text-align: center; color: var(--white); }
+
+/* ---- Print -------------------------------------------------------------- */
+@media print {
+  html, body { background: #fff; }
+  .brochure-bar, .no-print { display: none !important; }
+  .brochure { background: none; padding: 0; }
+  /* EXACTLY the page, via a FIXED height with overflow clipped — and the
+     distinction from `min-height` is the whole fix.
+     With `min-height: 297mm` the box could still GROW: every sheet's content
+     bottom (the running footer) landed exactly on 297.0mm, and 297mm is 1122.52px
+     at 96dpi, so the engine's rounding tipped that last fraction over and
+     paginated a near-empty extra page after every sheet — nearly doubling the
+     page count. A fixed `height` cannot grow, and `overflow: hidden` guarantees
+     nothing inside it can push the box past the boundary.
+     294mm was tried in between. It fixed the pagination but left a 3mm white bar
+     along the foot of every page, which is worse than the bug. 297mm is the right
+     number; the fixed height is what makes it safe. The tallest sheet's INTRINSIC
+     content is 284.9mm, so there is ~12mm of real headroom — check that before
+     adding anything tall to the front matter. */
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    min-height: 0;
+    box-sizing: border-box;
+    margin: 0; box-shadow: none;
+    overflow: hidden;
+    break-inside: avoid; page-break-inside: avoid;
+    break-after: page; page-break-after: always;
+  }
+  html, body { margin: 0; padding: 0; }
+  .sheet:last-child { break-after: auto; page-break-after: auto; }
+  /* Brand colour blocks must survive the print pipeline. */
+  .sheet, .sheet * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sheet--cover, .sheet--dark { padding: 0; }
+}
+
+/* SCREEN ONLY — and that is load-bearing, not tidiness. An A4 page is about
+   794 CSS px wide, so an unscoped `max-width: 800px` block fires during PRINT
+   and reflows the sheets that were measured to fit: the spec grid drops to two
+   columns, the symbol strip to four, and every game sheet grows past one page.
+   Same trap as the site.css class collision noted on .b-specs. */
+@media screen and (max-width: 800px) {
+  .brochure { padding: 1rem 0; }
+  .sheet { width: 100%; max-width: 100%; min-height: 0; }
+  .b-specs { grid-template-columns: repeat(2, 1fr); }
+  .game-sheet__cols { grid-template-columns: 1fr; }
+  .b-sym-strip { grid-template-columns: repeat(4, 1fr); }
+  .b-buy-strip { grid-template-columns: repeat(2, 1fr); }
+  .brochure-bar__actions { align-items: flex-start; }
+}

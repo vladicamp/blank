@@ -1,0 +1,2032 @@
+{
+  "_meta": {
+    "role": "Single source of truth for the game catalogue. Powers the game library, the landing-page carousels and the downloadable brochure.",
+    "catalogue": "30 entries: 26 named titles plus 4 unnamed teaser slots. 10 Origins (7 released, 3 upcoming) and 16 Classic. `WS.query()` drops the 4 teasers, so the library and brochure show 26.",
+    "wp_mapping": "Each entry becomes one 'game' custom post. See wp/HANDOVER.md for the field-by-field ACF mapping.",
+    "specs_source": "Every figure on the site is transcribed from one of three documents; none is invented except where noted. ORIGINS (10 titles, 7 released): spec blocks, stories, core features and buy options from A4-wildsheep-ORIGINS_20260820.pdf. CLASSIC (16 titles): twelve spec panels from A4-wildsheep-classic.pdf, which carries no prose at all; the six Joker Win Hits titles additionally carry hit frequencies and feature blocks from 'Wild Sheep Joker Win Hits Series.pdf', which is also the only source for Megaways, Win Boost and Win Stepper. Fields no brochure carries (`game_id`, `free_spin_cost`, `symbols`, `_meta.platforms`) come from the Techtoniq asset packs and apply to Origins only. `epic-stars` appears in no document and is the single entry still on placeholder figures — it carries `specs_provisional: true`.",
+    "spec_vocabularies": "The two ranges describe themselves differently and the schema keeps both rather than forcing one. ORIGINS uses `layout` (Grid Layout, '6x4') + `mechanic` (Win Mechanic, '4096 ways') + `hit_rate`/`feature_hit_rate`. CLASSIC uses `reels` (Game Type, '6 reels') + `lines` (Lines, '4,096 ways') + `region` + `orientation`, and states no hit frequencies. Every key is in the game page's SPEC_LABELS and each game renders only the keys it carries.",
+    "detail_blocks": "The game page renders these optional per-game blocks, each independently: `tagline_lines`, `options` (a string, or `{label, available:false}` for an option the game lacks), `story` (array of paragraphs), `features` (`{title, body[]}`), `symbols` (`{name, file, note?}`, with optional `symbols_title` / `symbols_lead` overriding the section heading and adding a lead), `screenshots` (`{file, caption, w, h}` — the pixel dimensions are required so the browser reserves the right box before load and so a portrait capture is never cropped to landscape), `buy_options` (`{title, body, cost?, symbol?}`), `platform` (a key into `_meta.platforms`), `demo_url` and `art` (`logo`, `backdrop`, `cast[]`). Omit a block and its section is skipped. `specs_provisional: true` prints the placeholder-specification note inside the spec band.",
+    "release_dates": "Release dates for the seven ORIGINS-brochure titles encode the brochure page ORDER (earlier page = more recent), which is all the brochure states. The dates themselves are inferred. Upcoming dates are the brochure's months, day set to the 1st.",
+    "inferred_dates": "Release dates for joker-win-hits-megaways, -win-boost and -win-stepper are inferred from their order in Wild Sheep Joker Win Hits Series.pdf, on the same monthly cadence the rest of the Joker entries use. The deck states no dates. They were re-dated on 2026-08-26 from 2026-05/06/07 to 2025-11-12, 2025-12-10 and 2026-01-14 so that the whole CLASSIC range sorts below the whole ORIGINS range: the old dates interleaved three Classic titles through the Origins run and put two of them in the library grid's promoted top four. No document states any release date in this catalogue, so the ordering is the only thing these values carry — and Classic predates Origins.",
+    "platforms": {
+      "techtoniq": {
+        "note": "Distribution reach quoted on the Origins marketing sheets. Identical across all seven, so it is stored once and referenced by each game's `platform` key rather than repeated.",
+        "languages": [
+          "English",
+          "Simplified Chinese",
+          "Russian",
+          "Thai",
+          "Korean",
+          "Turkish",
+          "Spanish",
+          "Japanese",
+          "Vietnamese",
+          "Portuguese"
+        ],
+        "currencies": [
+          "AMD",
+          "ARS",
+          "AUD",
+          "AZN",
+          "BND",
+          "BOB",
+          "BRL",
+          "BYN",
+          "CAD",
+          "CDF",
+          "CHF",
+          "CLP",
+          "COP",
+          "CZK",
+          "DOP",
+          "EUR",
+          "GBP",
+          "GEL",
+          "GHS",
+          "HUF",
+          "IDR",
+          "INR",
+          "IQD",
+          "IRR",
+          "JPY",
+          "KES",
+          "KGS",
+          "KRW",
+          "KZT",
+          "MDL",
+          "MMK",
+          "MXN",
+          "MNT",
+          "MYR",
+          "NGN",
+          "NOK",
+          "NZD",
+          "PEN",
+          "PHP",
+          "PKR",
+          "PLN",
+          "PYG",
+          "RSD",
+          "RUB",
+          "RWF",
+          "SEK",
+          "THB",
+          "TND",
+          "TRY",
+          "TWD",
+          "TZS",
+          "UAH",
+          "UGX",
+          "USD",
+          "UYU",
+          "UZS",
+          "VND",
+          "XAF",
+          "XOF",
+          "ZAR",
+          "ZMW",
+          "AED",
+          "BDT",
+          "BWP",
+          "DZD",
+          "EGP",
+          "ETB",
+          "GTQ",
+          "HTG",
+          "JOD",
+          "LKR",
+          "LYD",
+          "MZN",
+          "NAD",
+          "NPR",
+          "PAB",
+          "SSP",
+          "TMT",
+          "mBTC",
+          "kVND",
+          "kIDR",
+          "KWD",
+          "BHD",
+          "MAD",
+          "SAR",
+          "SLE",
+          "VES",
+          "HKD"
+        ]
+      }
+    },
+    "normalised_values": "Two source documents spell the same volatility level differently — the brochures write 'Medium-high', the Joker Win Hits deck writes 'Medium/High'. Normalised to 'Medium-high' (7 entries vs 3) on 2026-08-26 so the field is a single closed set: it is orthography, not a figure, and two spellings would become two options in one ACF Select. Also on that date, epic-stars' min/max bet were given the € symbol and the catalogue's number format — that entry appears in no document and its figures are invented placeholders (specs_provisional). STILL INCONSISTENT, deliberately left alone: feature_hit_rate runs '1 in 149' on the six Joker titles and '1/273' on Origins, again tracking the two documents. Both notations are readable, they never appear side by side, and neither becomes a Select.",
+    "source_conflicts": {
+      "bamboonanza.features": "A4-wildsheep-ORIGINS_20260820.pdf p7 gives Bamboonanza's Core Features as 'Expanding Grid' and 'Multiplier Totem' — which is Iron Gate's copy (p19), and contradicts Bamboonanza's OWN spec block on the facing page: an expanding grid is incompatible with 'Grid Layout 5x6' and 'Win Mechanic 50 Lines'. The same error is in the Techtoniq deck the brochure was built from, so it is an upstream content bug, not a transcription slip. The features shipped here come from Bamboonanza's own Feature Symbols slides instead. Flag to Techtoniq; a re-import from either document brings the wrong copy back.",
+      "spin-my-drink.hit_rate": "A4-wildsheep-ORIGINS_20260820.pdf p8 prints '48,5%' with a comma where every other figure in the document uses a point. Normalised to 48.5%.",
+      "iron-gate.buy_options": "A4-wildsheep-ORIGINS_20260820.pdf p19 titles the last tier 'ULTIMATE BONUS GAMES' but describes it as 'Direct access to the Ultimate Free Spins feature'. Kept verbatim.",
+      "packs_superseded": "Where the Techtoniq .pptx sheets disagree with the brochure, the brochure wins. They disagree on: Blob Invasion's RTP bands (packs show one band at 94.3%, brochure three at 94.0/96.0/98.2), Cursed's RTPs (94.5/96.0 vs 94.58/96.06), Bamboonanza's volatility and hit rate (Very High, 19.38% vs High, 27.1%), Spin My Drink's mechanic and max bet (Mini Game, €100 vs Hi-Lo, €2000), and High Roller's Cash's grid (1x4 vs 4x1).",
+      "classic_normalisations": "A4-wildsheep-classic.pdf writes the same value two ways across its own pages: '4096 ways' (p3, p4) and '4,096 ways' (p13), 'Pay anywhere' (p5, p11) and 'Pay Anywhere' (p6). Normalised to the separated/title-case form. Bets are printed '0.10 €' and are stored '€0.10' to match the rest of the catalogue; Stallion Stampede's capped figure '250,000x bet / 288,271 €' is kept whole as '250,000x bet / €288,271'.",
+      "joker_series_vs_classic_brochure": "Wild Sheep Joker Win Hits Series.pdf (created 2026-02-17) disagrees with A4-wildsheep-classic.pdf (2026-07-26) on three figures. The A4 brochure is five months newer and its values are the ones shipped: joker-win-hits volatility A4 'Medium-high' vs deck 'High'; joker-win-hits-power-5 max win A4 '5,000x bet' vs deck '10,000x'; joker-win-hits-power-5 volatility A4 'High' vs deck 'Medium/High' (its RTP also reads 95.01% vs a rounded 95%). Worth confirming with the studio — the max-win gap is a factor of two.",
+      "joker_series_placeholder_text": "Pages 9, 11 and 13 of Wild Sheep Joker Win Hits Series.pdf carry a leftover Fishin' Frenzy strapline ('Collect enough fisherman... the BIG CATCH... 50x bet') sitting underneath the real panels, where it is hidden by the artwork on screen but present in the text layer. It is placeholder residue from the template and is not used."
+    },
+    "updated": "2026-08-25"
+  },
+  "brands": {
+    "wildsheep": {
+      "label": "Wild Sheep",
+      "colour": "#9445FF",
+      "logo": "assets/img/logos/wildsheep.svg"
+    },
+    "origins": {
+      "label": "Wild Sheep Origins",
+      "colour": "#9445FF",
+      "logo": "assets/img/logos/wildsheep-origins.svg"
+    },
+    "classic": {
+      "label": "Wild Sheep Classic",
+      "colour": "#FF932E",
+      "logo": "assets/img/logos/wildsheep-classic.png"
+    }
+  },
+  "categories": [
+    {
+      "slug": "slots",
+      "label": "Slots"
+    },
+    {
+      "slug": "mini-game",
+      "label": "Mini Game"
+    },
+    {
+      "slug": "origins",
+      "label": "Origins",
+      "matches": {
+        "brand": "origins"
+      }
+    },
+    {
+      "slug": "classic",
+      "label": "Classic",
+      "matches": {
+        "brand": "classic"
+      }
+    }
+  ],
+  "games": [
+    {
+      "slug": "blob-invasion",
+      "title": "Blob Invasion",
+      "brand": "origins",
+      "category": "slots",
+      "status": "live",
+      "featured": true,
+      "release_date": "2026-04-16",
+      "tagline": "The invasion spreads. So do the wins.",
+      "tagline_lines": [
+        "The invasion spreads.",
+        "So do the wins."
+      ],
+      "summary": "A chain-reaction grid collector with frequent hits and flexible bonus-buy options, built to keep players engaged and revenue growing.",
+      "card_line": "A failed experiment is loose on the ship, and every blob it touches pays.",
+      "thumbnail": "assets/img/games/blob-invasion.jpg",
+      "specs": {
+        "game_id": "Blobinvasion",
+        "rtp": "94.0%",
+        "max_win": "10000x bet",
+        "volatility": "Medium",
+        "hit_rate": "27.1%",
+        "feature_hit_rate": "1/273",
+        "layout": "6x6 - 8x8",
+        "mechanic": "Chain Collect",
+        "free_spin_cost": "€0.20",
+        "min_bet": "€0.20",
+        "max_bet": "€100",
+        "variants": [
+          {
+            "label": "94",
+            "rtp": "94.0%"
+          },
+          {
+            "label": "96",
+            "rtp": "96.0%"
+          },
+          {
+            "label": "98",
+            "rtp": "98.2%"
+          }
+        ]
+      },
+      "options": [
+        "Crazy Speed",
+        "Flexible Max Win",
+        "Adjustable RTP"
+      ],
+      "story": [
+        "A drifting spaceship has been overrun by mysterious Blobs created by a failed space experiment. As the Blobs spread through the ship, they connect, multiply, and trigger chain reactions within its systems. The further the invasion grows, the more unstable — and rewarding — the journey becomes."
+      ],
+      "features": [
+        {
+          "title": "Chain Collect",
+          "body": [
+            "Blob Symbols move across the grid and collect adjacent paying symbols in horizontal or vertical positions to form wins."
+          ]
+        }
+      ],
+      "buy_options": [
+        {
+          "title": "Boost Bet",
+          "cost": "3x bet",
+          "symbol": "assets/img/games/blob-invasion/buy-boost-bet.png",
+          "body": "Activate to increase the chance of triggering the Bonus Games feature."
+        },
+        {
+          "title": "High-Roller Boost",
+          "symbol": "assets/img/games/blob-invasion/buy-high-roller.png",
+          "body": "A 1 in 10.6 chance to reach the maximum win."
+        },
+        {
+          "title": "Soapy Water Chaos",
+          "cost": "10x bet",
+          "symbol": "assets/img/games/blob-invasion/buy-soapy-water.png",
+          "body": "A single spin is played with the Soapy Water feature active from the start."
+        },
+        {
+          "title": "Maximum Grid Size",
+          "cost": "25x bet",
+          "symbol": "assets/img/games/blob-invasion/buy-max-grid.png",
+          "body": "A single spin is played on the maximum grid size."
+        },
+        {
+          "title": "Buy Bonus Games",
+          "cost": "100x bet",
+          "symbol": "assets/img/games/blob-invasion/buy-bonus-games.png",
+          "body": "Allows direct access to Bonus Games."
+        },
+        {
+          "title": "Ultimate Bonus Games",
+          "cost": "500x bet",
+          "symbol": "assets/img/games/blob-invasion/buy-ultimate-bonus.png",
+          "body": "Allows direct access to Ultimate Bonus Games."
+        }
+      ],
+      "screenshots": [
+        {
+          "file": "assets/img/games/blob-invasion/shot-base-game.jpg",
+          "caption": "Base game",
+          "w": 930,
+          "h": 458
+        },
+        {
+          "file": "assets/img/games/blob-invasion/shot-bonus.jpg",
+          "caption": "Bonus game",
+          "w": 995,
+          "h": 489
+        }
+      ],
+      "demo_url": "",
+      "art": {
+        "logo": "assets/img/games/blob-invasion/logo.png",
+        "backdrop": "assets/img/games/blob-invasion/backdrop.jpg",
+        "cast": [
+          "assets/img/games/blob-invasion/cast-1.png",
+          "assets/img/games/blob-invasion/cast-2.png",
+          "assets/img/games/blob-invasion/cast-3.png",
+          "assets/img/games/blob-invasion/cast-4.png"
+        ]
+      },
+      "platform": "techtoniq",
+      "symbols": [
+        {
+          "name": "Wild",
+          "file": "assets/img/games/blob-invasion/sym-wild.png",
+          "note": "Substitutes for Jelly symbols at their corresponding current payout levels."
+        },
+        {
+          "name": "Bonus",
+          "file": "assets/img/games/blob-invasion/sym-bonus.png",
+          "note": "Three Bonus symbols collected by Blob symbols trigger Bonus Games."
+        },
+        {
+          "name": "Mystery Box",
+          "file": "assets/img/games/blob-invasion/sym-mystery-box.png"
+        },
+        {
+          "name": "Transform",
+          "file": "assets/img/games/blob-invasion/sym-transform.png"
+        },
+        {
+          "name": "Soapy Water",
+          "file": "assets/img/games/blob-invasion/sym-soapy-water.png"
+        },
+        {
+          "name": "Specimen Pod",
+          "file": "assets/img/games/blob-invasion/sym-specimen-pod.png"
+        },
+        {
+          "name": "Flood Hatch",
+          "file": "assets/img/games/blob-invasion/sym-flood-hatch.png"
+        },
+        {
+          "name": "Upgrade",
+          "file": "assets/img/games/blob-invasion/sym-upgrade.png"
+        },
+        {
+          "name": "Upgrade All",
+          "file": "assets/img/games/blob-invasion/sym-upgrade-all.png"
+        },
+        {
+          "name": "Golden Tile",
+          "file": "assets/img/games/blob-invasion/sym-golden-tile.png",
+          "note": "Awards its displayed value multiplied by the active bet level."
+        },
+        {
+          "name": "Red Blob",
+          "file": "assets/img/games/blob-invasion/sym-blob-red.png",
+          "note": "Moves across the grid, collecting adjacent paying symbols."
+        },
+        {
+          "name": "Purple Blob",
+          "file": "assets/img/games/blob-invasion/sym-blob-purple.png",
+          "note": "Moves across the grid, collecting adjacent paying symbols."
+        },
+        {
+          "name": "Green Blob",
+          "file": "assets/img/games/blob-invasion/sym-blob-green.png",
+          "note": "Moves across the grid, collecting adjacent paying symbols."
+        },
+        {
+          "name": "Blue Blob",
+          "file": "assets/img/games/blob-invasion/sym-blob-blue.png",
+          "note": "Moves across the grid, collecting adjacent paying symbols."
+        },
+        {
+          "name": "Red Jelly",
+          "file": "assets/img/games/blob-invasion/sym-jelly-red.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Purple Jelly",
+          "file": "assets/img/games/blob-invasion/sym-jelly-purple.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Green Jelly",
+          "file": "assets/img/games/blob-invasion/sym-jelly-green.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Blue Jelly",
+          "file": "assets/img/games/blob-invasion/sym-jelly-blue.png",
+          "note": "Low-paying symbol."
+        }
+      ]
+    },
+    {
+      "slug": "iron-gate",
+      "title": "Iron Gate",
+      "brand": "origins",
+      "category": "slots",
+      "status": "live",
+      "featured": true,
+      "release_date": "2026-02-19",
+      "tagline": "Hold the gate. Take the hoard.",
+      "summary": "A siege-themed cascade slot on a grid that grows as you win: every cascade adds a row, up to 8 rows and 262,144 ways, while the Multiplier Totem climbs through three stages.",
+      "card_line": "Hold the gate and the grid grows with you — one new row for every wave.",
+      "thumbnail": "assets/img/games/iron-gate.jpg",
+      "specs": {
+        "game_id": "Irongate",
+        "rtp": "94.06%",
+        "max_win": "50000x bet",
+        "volatility": "Medium",
+        "hit_rate": "27.1%",
+        "feature_hit_rate": "1/273",
+        "layout": "6x4 - 6x8",
+        "mechanic": "4096 - 262144 ways · Cascading Reels",
+        "free_spin_cost": "€0.20",
+        "min_bet": "€0.20",
+        "max_bet": "€100",
+        "variants": [
+          {
+            "label": "94",
+            "rtp": "94.06%"
+          },
+          {
+            "label": "96",
+            "rtp": "96.31%"
+          },
+          {
+            "label": "98",
+            "rtp": "98.2%"
+          }
+        ]
+      },
+      "platform": "techtoniq",
+      "story": [
+        "Irongate — an ancient fortress built to contain immense power. Each breach weakens its defences, unleashing energy that reshapes the battlefield. As pressure mounts, the gate shifts and expands until it finally fails, releasing everything it was meant to hold.",
+        "Wins cascade across an ever-growing grid as the Multiplier Totem charges with every breach — driving the action toward explosive rewards."
+      ],
+      "features": [
+        {
+          "title": "Expanding Grid",
+          "body": [
+            "The grid grows by one row with each winning cascade, up to a maximum of 8 rows — increasing winning potential and feature impact with every expansion."
+          ]
+        },
+        {
+          "title": "Multiplier Totem",
+          "body": [
+            "The Totem advances through three stages, with multiplier values rising at each stage.",
+            "The active multiplier applies to all wins within the round, then resets before the next begins."
+          ]
+        }
+      ],
+      "symbols": [
+        {
+          "name": "Wild",
+          "file": "assets/img/games/iron-gate/sym-wild.png",
+          "note": "Substitutes for all symbols except Bonus, Upgrade and Multiplier symbols."
+        },
+        {
+          "name": "Bonus",
+          "file": "assets/img/games/iron-gate/sym-bonus.png",
+          "note": "When a Bonus symbol reaches the leftmost reel, 7 Free Spins are awarded."
+        },
+        {
+          "name": "Multiplier",
+          "file": "assets/img/games/iron-gate/sym-multiplier.png",
+          "note": "On reaching the leftmost reel or the bottom of the grid, increases the active multiplier and transforms into a Wild."
+        },
+        {
+          "name": "Upgrade",
+          "file": "assets/img/games/iron-gate/sym-upgrade.png",
+          "note": "On reaching the leftmost reel or the bottom of the grid, advances the Multiplier Totem by one stage and transforms into a Wild."
+        },
+        {
+          "name": "Lion Crest",
+          "file": "assets/img/games/iron-gate/sym-high-lion.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Copper Shield",
+          "file": "assets/img/games/iron-gate/sym-high-shield.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Knight’s Helm",
+          "file": "assets/img/games/iron-gate/sym-high-helm.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Crossed Swords",
+          "file": "assets/img/games/iron-gate/sym-high-swords.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Amethyst",
+          "file": "assets/img/games/iron-gate/sym-low-amethyst.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Sapphire",
+          "file": "assets/img/games/iron-gate/sym-low-sapphire.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Emerald",
+          "file": "assets/img/games/iron-gate/sym-low-emerald.png",
+          "note": "Low-paying symbol."
+        }
+      ],
+      "buy_options": [
+        {
+          "title": "Boost Bet",
+          "body": "Increases the chance of triggering Free Spins."
+        },
+        {
+          "title": "Upgrade",
+          "body": "Starts a single game round with the Multiplier Totem at Stage 3."
+        },
+        {
+          "title": "Multiplier Wild",
+          "body": "Enables Multiplier symbols to activate on reaching the leftmost reel or the bottom of the grid."
+        },
+        {
+          "title": "Buy Free Spins",
+          "body": "Direct access to the Free Spins feature."
+        },
+        {
+          "title": "Ultimate Bonus Games",
+          "body": "Direct access to the Ultimate Free Spins feature."
+        }
+      ],
+      "art": {
+        "logo": "assets/img/games/iron-gate/logo.png",
+        "backdrop": "assets/img/games/iron-gate/backdrop.jpg",
+        "cast": [
+          "assets/img/games/iron-gate/cast-1.png",
+          "assets/img/games/iron-gate/cast-2.png",
+          "assets/img/games/iron-gate/cast-3.png"
+        ]
+      },
+      "options": [
+        "Crazy Speed",
+        "Flexible Max Win",
+        "Adjustable RTP"
+      ]
+    },
+    {
+      "slug": "cursed",
+      "title": "Cursed",
+      "brand": "origins",
+      "category": "slots",
+      "status": "live",
+      "featured": true,
+      "release_date": "2026-03-19",
+      "tagline": "Some wins come with a price.",
+      "summary": "A haunted-halls cascading slot on 46,656 ways, built around the Wicked Reel above the grid, feeding sticky wilds, win multipliers and row replacements into a 25,000x top end.",
+      "card_line": "A wicked reel hangs over the grid, feeding it wilds that refuse to leave.",
+      "thumbnail": "assets/img/games/cursed.png",
+      "specs": {
+        "game_id": "Cursed",
+        "rtp": "94.58%",
+        "max_win": "25000x bet",
+        "volatility": "Medium",
+        "hit_rate": "26.1%",
+        "feature_hit_rate": "1/273",
+        "layout": "6x6",
+        "mechanic": "46656 ways · Cascading Reels",
+        "free_spin_cost": "€0.20",
+        "min_bet": "€0.20",
+        "max_bet": "€100",
+        "variants": [
+          {
+            "label": "94",
+            "rtp": "94.58%"
+          },
+          {
+            "label": "96",
+            "rtp": "96.06%"
+          },
+          {
+            "label": "98",
+            "rtp": "98.2%"
+          }
+        ]
+      },
+      "platform": "techtoniq",
+      "story": [
+        "Decades ago, a shattered séance tore the veil between worlds — and what should have been sealed was left open. The restless dead are bound to these halls. The night here is endless. Only Annie brings respite.",
+        "Where she appears, the Specters withdraw — then gather again, fusing into something worse. The PA crackles. Seals on the doors glow with the promise of escape. That promise is a lie. Beyond each threshold lies only deeper darkness. In the eternal seventh hour, awareness is the only light. Let it fade, and the night claims everything."
+      ],
+      "features": [
+        {
+          "title": "Wicked Reel",
+          "body": [
+            "The Wicked Reel is positioned above the grid and consists of three rows.",
+            "It contains Feature Symbols, blank symbols and empty cells; blank symbols occupy positions only.",
+            "Feature symbols become active when they enter the grid."
+          ]
+        }
+      ],
+      "symbols": [
+        {
+          "name": "Wild",
+          "file": "assets/img/games/cursed/sym-wild.png",
+          "note": "Substitutes for any paying symbol except Specters. A win of Wilds alone pays as the highest-paying regular symbol."
+        },
+        {
+          "name": "Bonus",
+          "file": "assets/img/games/cursed/sym-bonus.png",
+          "note": "Three or more anywhere on the grid trigger Free Spins."
+        },
+        {
+          "name": "Sticky Wild",
+          "file": "assets/img/games/cursed/sym-sticky-wild.png"
+        },
+        {
+          "name": "Win Multiplier",
+          "file": "assets/img/games/cursed/sym-win-multiplier.png"
+        },
+        {
+          "name": "Extra Spin",
+          "file": "assets/img/games/cursed/sym-extra-spin.png"
+        },
+        {
+          "name": "Row Replace",
+          "file": "assets/img/games/cursed/sym-row-replace.png"
+        },
+        {
+          "name": "Mystery",
+          "file": "assets/img/games/cursed/sym-mystery.png"
+        },
+        {
+          "name": "Annie",
+          "file": "assets/img/games/cursed/sym-annie.png",
+          "note": "Where she appears the Specters withdraw — named in the game’s own background story."
+        },
+        {
+          "name": "Candle",
+          "file": "assets/img/games/cursed/sym-high-candle.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Radio",
+          "file": "assets/img/games/cursed/sym-high-radio.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Voodoo Doll",
+          "file": "assets/img/games/cursed/sym-high-doll.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Grimoire",
+          "file": "assets/img/games/cursed/sym-high-book.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Cross",
+          "file": "assets/img/games/cursed/sym-high-cross.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Heart and Bones",
+          "file": "assets/img/games/cursed/sym-low-heart.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Smile",
+          "file": "assets/img/games/cursed/sym-low-smile.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Pentagram",
+          "file": "assets/img/games/cursed/sym-low-pentagram.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Triangle",
+          "file": "assets/img/games/cursed/sym-low-triangle.png",
+          "note": "Low-paying symbol."
+        }
+      ],
+      "buy_options": [
+        {
+          "title": "Big Symbol",
+          "cost": "10x bet",
+          "body": "Activate a single game round with at least one Big Symbol guaranteed to enter the grid and the Wicked Reel."
+        },
+        {
+          "title": "Annie's Spell",
+          "cost": "50x bet",
+          "body": "Activate a single game round with Annie's Spell guaranteed."
+        },
+        {
+          "title": "Buy Free Spins",
+          "cost": "100x bet",
+          "body": "Allows direct access to the Free Spins feature."
+        },
+        {
+          "title": "Ultimate Free Spins",
+          "cost": "500x bet",
+          "body": "Direct access to Ultimate Free Spins, where the win multiplier starts at x10."
+        }
+      ],
+      "art": {
+        "logo": "assets/img/games/cursed/logo.png",
+        "backdrop": "assets/img/games/cursed/backdrop.jpg"
+      },
+      "options": [
+        "Crazy Speed",
+        "Flexible Max Win",
+        "Adjustable RTP"
+      ]
+    },
+    {
+      "slug": "spin-my-drink",
+      "title": "Spin My Drink!",
+      "brand": "origins",
+      "category": "mini-game",
+      "status": "live",
+      "featured": true,
+      "release_date": "2026-07-09",
+      "tagline": "One spin. One round. On the house.",
+      "summary": "A Hi-Lo mini-game at 97.01% RTP with seconds-long rounds, where players pick the bottle each round — switchable across six house labels without touching the maths.",
+      "card_line": "Call it high or low, pick your poison, and it's settled in seconds.",
+      "thumbnail": "assets/img/games/spin-my-drink.jpg",
+      "specs": {
+        "game_id": "spinmydrink",
+        "rtp": "97.01%",
+        "max_win": "2x bet",
+        "volatility": "Low",
+        "hit_rate": "48.5%",
+        "mechanic": "Hi-Lo",
+        "min_bet": "€0.50",
+        "max_bet": "€2000"
+      },
+      "new_release": true,
+      "platform": "techtoniq",
+      "features": [
+        {
+          "title": "Rapid Rounds. Real Wins.",
+          "body": [
+            "Lightning-fast spins with instant outcomes drive bet frequency and session engagement.",
+            "No waiting — players stay in the loop, generating higher volume per session."
+          ]
+        },
+        {
+          "title": "What will your drinks be?",
+          "body": [
+            "Picking any drink you want for each round creates perceived control and emotional investment.",
+            "This ritual deepens retention and reduces churn through habit formation."
+          ]
+        },
+        {
+          "title": "Operator Advantages",
+          "body": [
+            "Velocity plus personalisation means higher session value and improved player lifetime value.",
+            "Frictionless mechanics meet psychological stickiness."
+          ]
+        }
+      ],
+      "symbols": [
+        {
+          "name": "Purple Ram",
+          "file": "assets/img/games/spin-my-drink/sym-bottle-1.png"
+        },
+        {
+          "name": "Purple Ram — Wine",
+          "file": "assets/img/games/spin-my-drink/sym-bottle-2.png"
+        },
+        {
+          "name": "Wooly Walker — Whiskey",
+          "file": "assets/img/games/spin-my-drink/sym-bottle-3.png"
+        },
+        {
+          "name": "Purple Ram — Gin",
+          "file": "assets/img/games/spin-my-drink/sym-bottle-4.png"
+        },
+        {
+          "name": "Grey Sheep Vodka",
+          "file": "assets/img/games/spin-my-drink/sym-bottle-5.png"
+        },
+        {
+          "name": "Maison du Bélier",
+          "file": "assets/img/games/spin-my-drink/sym-bottle-6.png"
+        }
+      ],
+      "art": {
+        "logo": "assets/img/games/spin-my-drink/logo.png",
+        "backdrop": "assets/img/games/spin-my-drink/backdrop.jpg"
+      },
+      "options": [
+        {
+          "label": "Crazy Speed",
+          "available": false
+        },
+        "Flexible Max Win",
+        "Adjustable RTP"
+      ],
+      "symbols_title": "Customisable Booze",
+      "symbols_lead": "The game supports switching between six house bottle labels. The change is cosmetic — the maths, RTP and hit frequency are unaffected.",
+      "screenshots": [
+        {
+          "file": "assets/img/games/spin-my-drink/shot-base-game.jpg",
+          "caption": "Base game",
+          "w": 610,
+          "h": 900
+        },
+        {
+          "file": "assets/img/games/spin-my-drink/shot-drinks.jpg",
+          "caption": "Choosing the drink",
+          "w": 554,
+          "h": 896
+        }
+      ]
+    },
+    {
+      "slug": "the-void",
+      "title": "The Void",
+      "brand": "origins",
+      "category": "slots",
+      "status": "live",
+      "featured": true,
+      "release_date": "2026-05-14",
+      "tagline": "Stare long enough and it pays back.",
+      "summary": "A Lovecraftian 4,096-ways slot with two separate bonus games, where Collect symbols sweep the value of every Cash and Jackpot symbol on the reels.",
+      "card_line": "Stare into it long enough and it starts handing back everything on the reels.",
+      "thumbnail": "assets/img/games/the-void.jpg",
+      "specs": {
+        "game_id": "thevoid",
+        "rtp": "94.08%",
+        "max_win": "20000x bet",
+        "volatility": "Medium",
+        "hit_rate": "30.8%",
+        "feature_hit_rate": "1/273",
+        "layout": "6x4",
+        "mechanic": "4096 ways",
+        "free_spin_cost": "€0.10",
+        "min_bet": "€0.10",
+        "max_bet": "€100",
+        "variants": [
+          {
+            "label": "94",
+            "rtp": "94.08%"
+          },
+          {
+            "label": "96",
+            "rtp": "96.18%"
+          },
+          {
+            "label": "98",
+            "rtp": "98.06%"
+          }
+        ]
+      },
+      "platform": "techtoniq",
+      "story": [
+        "In the stygian dark, the forests of New England stir around a colossal behemoth — trembling, squirming with unholy life, unhallowed flames flicker as wild drums pound a sonata of madness.",
+        "Acolytes of a forbidden cult dance and chant in rabid fervor, offering living flesh to call forth those abhorrent entities whose very glance condemns mortal men to eternal lunacy or instant oblivion: the Great Old Ones, who once ruled the cosmos for a trillion trillion years uncounted.",
+        "The Old Ones were. The Old Ones are. The Old Ones shall be."
+      ],
+      "features": [
+        {
+          "title": "Collect Feature",
+          "body": [
+            "Triggered when a Collect Symbol appears anywhere on the reels.",
+            "Each Collect Symbol collects the values of all Cash and Jackpot Symbols currently on the reels.",
+            "Cash, Jackpot and Collect Symbols do not appear in Call Of The Void."
+          ]
+        }
+      ],
+      "symbols": [
+        {
+          "name": "Wild",
+          "file": "assets/img/games/the-void/sym-wild.png"
+        },
+        {
+          "name": "Wild Multiplier",
+          "file": "assets/img/games/the-void/sym-wild-multiplier.png"
+        },
+        {
+          "name": "Scatter",
+          "file": "assets/img/games/the-void/sym-scatter.png"
+        },
+        {
+          "name": "Collect",
+          "file": "assets/img/games/the-void/sym-collect.png",
+          "note": "Collects the values of all Cash and Jackpot symbols on the reels."
+        },
+        {
+          "name": "Cash",
+          "file": "assets/img/games/the-void/sym-cash.png"
+        },
+        {
+          "name": "Minor Jackpot",
+          "file": "assets/img/games/the-void/sym-jackpot-minor.png"
+        },
+        {
+          "name": "Major Jackpot",
+          "file": "assets/img/games/the-void/sym-jackpot-major.png"
+        },
+        {
+          "name": "Mega Jackpot",
+          "file": "assets/img/games/the-void/sym-jackpot-mega.png"
+        },
+        {
+          "name": "Max Win",
+          "file": "assets/img/games/the-void/sym-jackpot-max.png"
+        },
+        {
+          "name": "Golden Idol",
+          "file": "assets/img/games/the-void/sym-high-idol.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Severed Head",
+          "file": "assets/img/games/the-void/sym-high-head.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Tentacle",
+          "file": "assets/img/games/the-void/sym-high-tentacle.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Blue Effigy",
+          "file": "assets/img/games/the-void/sym-high-effigy.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Green Crystal",
+          "file": "assets/img/games/the-void/sym-high-crystal.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Rune A",
+          "file": "assets/img/games/the-void/sym-low-a.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Rune K",
+          "file": "assets/img/games/the-void/sym-low-k.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Rune Q",
+          "file": "assets/img/games/the-void/sym-low-q.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Rune J",
+          "file": "assets/img/games/the-void/sym-low-j.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Rune 10",
+          "file": "assets/img/games/the-void/sym-low-10.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Rune 9",
+          "file": "assets/img/games/the-void/sym-low-9.png",
+          "note": "Low-paying symbol."
+        }
+      ],
+      "buy_options": [
+        {
+          "title": "Boost Bet",
+          "cost": "1.5x bet",
+          "body": "Activate to increase the chance of triggering the Bonus Games feature."
+        },
+        {
+          "title": "High-Roller Boost",
+          "cost": "2000x bet",
+          "symbol": "assets/img/games/the-void/buy-high-roller.png",
+          "body": "Activate for approximately a 1 in 10.6 chance to reach the maximum win."
+        },
+        {
+          "title": "Buy Bonus Game 1",
+          "cost": "75x bet",
+          "body": "4 Scatters award 12 spins in Call Of The Void, or 3 spins in Rise Of R'lyeh."
+        },
+        {
+          "title": "Buy Bonus Game 2",
+          "cost": "120x bet",
+          "body": "5 Scatters award 20 spins in Call Of The Void, or 5 spins in Rise Of R'lyeh."
+        },
+        {
+          "title": "Buy Bonus Game 3",
+          "cost": "150x bet",
+          "body": "6 Scatters award 30 spins in Call Of The Void, or 7 spins in Rise Of R'lyeh."
+        }
+      ],
+      "art": {
+        "logo": "assets/img/games/the-void/logo.png",
+        "backdrop": "assets/img/games/the-void/backdrop.jpg"
+      },
+      "options": [
+        "Crazy Speed",
+        "Flexible Max Win",
+        "Adjustable RTP"
+      ]
+    },
+    {
+      "slug": "high-rollers-cash",
+      "title": "High Roller's Cash",
+      "brand": "origins",
+      "category": "slots",
+      "status": "live",
+      "featured": true,
+      "release_date": "2026-06-11",
+      "tagline": "Play like the house always paid.",
+      "summary": "A single-line, four-reel cash game where reel 4 unlocks with the stake — Reward Multipliers, a Respin and the Lucky Wheel are all gated behind bet level.",
+      "card_line": "Raise the stake and a fourth reel opens up. Play like the house always paid.",
+      "thumbnail": "assets/img/games/high-rollers-cash.jpg",
+      "specs": {
+        "game_id": "highrollerscash",
+        "rtp": "94.09%",
+        "max_win": "10101x bet",
+        "volatility": "Medium-high",
+        "hit_rate": "21%",
+        "feature_hit_rate": "1/25",
+        "layout": "4x1",
+        "mechanic": "1 Line",
+        "free_spin_cost": "€0.10",
+        "min_bet": "€0.10",
+        "max_bet": "€10",
+        "variants": [
+          {
+            "label": "94",
+            "rtp": "94.09%"
+          },
+          {
+            "label": "95",
+            "rtp": "95.89%"
+          },
+          {
+            "label": "97",
+            "rtp": "97.98%"
+          }
+        ]
+      },
+      "new_release": true,
+      "platform": "techtoniq",
+      "features": [
+        {
+          "title": "Reward Multiplier",
+          "body": [
+            "Reward Multiplier symbols (2x / 5x / 10x) land only on the special reel 4 and boost that spin's line win.",
+            "Payout = number-symbol combination × Reward Multiplier."
+          ]
+        },
+        {
+          "title": "Scatter",
+          "body": [
+            "Scatter lands only on reel 4 and launches the Lucky Wheel.",
+            "Lucky Wheel Bonus = total bet × the multiplier landed on the wheel. Payout = number-symbol combination + Lucky Wheel Bonus."
+          ]
+        },
+        {
+          "title": "Respin",
+          "body": [
+            "The Respin symbol appears only on reel 4. Landing it re-spins reels 1, 2 and 3.",
+            "Payout = number-symbol combination + the combination produced by the respin."
+          ]
+        },
+        {
+          "title": "Feature Unlocks by Bet Level",
+          "body": [
+            "Reel 4's features activate progressively with the player's stake. While a feature is locked, its position on reel 4 displays a padlock symbol.",
+            "Higher stakes also raise the Lucky Wheel's top prize tiers."
+          ]
+        }
+      ],
+      "symbols": [
+        {
+          "name": "Scatter",
+          "file": "assets/img/games/high-rollers-cash/sym-scatter.png",
+          "note": "Lands only on reel 4 and launches the Lucky Wheel."
+        },
+        {
+          "name": "Respin",
+          "file": "assets/img/games/high-rollers-cash/sym-respin.png",
+          "note": "Appears only on reel 4 and re-spins reels 1, 2 and 3."
+        },
+        {
+          "name": "Multiplier 2x",
+          "file": "assets/img/games/high-rollers-cash/sym-multiplier-2x.png"
+        },
+        {
+          "name": "Multiplier 5x",
+          "file": "assets/img/games/high-rollers-cash/sym-multiplier-5x.png"
+        },
+        {
+          "name": "Multiplier 10x",
+          "file": "assets/img/games/high-rollers-cash/sym-multiplier-10x.png"
+        },
+        {
+          "name": "Scatter — Wheel",
+          "file": "assets/img/games/high-rollers-cash/sym-scatter-2.png"
+        }
+      ],
+      "art": {
+        "logo": "assets/img/games/high-rollers-cash/logo.png",
+        "backdrop": "assets/img/games/high-rollers-cash/backdrop.jpg"
+      },
+      "options": [
+        "Crazy Speed",
+        "Flexible Max Win",
+        "Adjustable RTP"
+      ]
+    },
+    {
+      "slug": "brauhaus-bonanza",
+      "title": "Brauhaus Bonanza",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-09-11",
+      "tagline": "Last orders never sounded so good.",
+      "summary": "A festive tumbling-reels slot with a stein-fill meter that converts repeat wins into escalating global multipliers.",
+      "card_line": "Keep winning, keep filling the stein — and watch the whole board multiply.",
+      "thumbnail": "assets/img/games/brauhaus-bonanza.jpg",
+      "specs": {
+        "rtp": "94.00%",
+        "max_win": "10,000x bet",
+        "volatility": "Medium-high",
+        "region": "Global",
+        "reels": "6 reels",
+        "lines": "4,096 ways",
+        "min_bet": "€0.10",
+        "max_bet": "€10.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/brauhaus-bonanza/logo.png",
+        "backdrop": "assets/img/games/brauhaus-bonanza/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "epic-stars",
+      "title": "Epic Stars",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-07-23",
+      "tagline": "Line them up and light them up.",
+      "summary": "A bright arcade-styled classic with stacked star wilds and a straightforward respin feature that reads instantly to new players.",
+      "card_line": "Stacked star wilds, one clean respin, and wins you can read at a glance.",
+      "thumbnail": "assets/img/games/epic-stars.jpg",
+      "specs": {
+        "rtp": "96.15%",
+        "volatility": "Medium",
+        "max_win": "2,500x",
+        "layout": "5x3",
+        "mechanic": "Stacked wilds + respins",
+        "hit_rate": "33.4%",
+        "bonus_buy": "No",
+        "min_bet": "€0.10",
+        "max_bet": "€80"
+      },
+      "art": {
+        "logo": "assets/img/games/epic-stars/logo.png",
+        "backdrop": "assets/img/games/epic-stars/backdrop.jpg"
+      },
+      "specs_provisional": true
+    },
+    {
+      "slug": "fortune-hunter",
+      "title": "Fortune Hunter",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-06-05",
+      "tagline": "The tomb always keeps one secret.",
+      "summary": "An adventure slot with a three-map bonus selector, letting players choose between frequency, volatility and top-end potential.",
+      "card_line": "Three maps into the tomb. Choose how greedy you're feeling today.",
+      "thumbnail": "assets/img/games/fortune-hunter.jpg",
+      "specs": {
+        "rtp": "95.49%",
+        "max_win": "40,960x bet",
+        "volatility": "Medium-high",
+        "region": "Global",
+        "reels": "6 reels",
+        "lines": "4,096 ways",
+        "min_bet": "€0.10",
+        "max_bet": "€10.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/fortune-hunter/logo.png",
+        "backdrop": "assets/img/games/fortune-hunter/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "fortunes-of-sparta",
+      "title": "Fortunes of Sparta",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-04-17",
+      "tagline": "Hold the line. Claim the spoils.",
+      "summary": "A phalanx-themed slot where shield symbols lock in place across respins to build guaranteed win formations.",
+      "card_line": "Shields lock into the wall and hold the line until the win forms.",
+      "thumbnail": "assets/img/games/fortunes-of-sparta.jpg",
+      "specs": {
+        "rtp": "95.00%",
+        "max_win": "10,000x bet",
+        "volatility": "High",
+        "region": "Global",
+        "reels": "6 reels",
+        "lines": "Pay Anywhere",
+        "min_bet": "€0.20",
+        "max_bet": "€50.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/fortunes-of-sparta/logo.png",
+        "backdrop": "assets/img/games/fortunes-of-sparta/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "glory-of-asgard",
+      "title": "Glory of Asgard",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-03-06",
+      "tagline": "Thunder pays in full.",
+      "summary": "A Norse-mythology slot with a lightning-strike wild engine that converts low symbols into premiums mid-spin.",
+      "card_line": "Lightning rewrites the reels mid-spin and turns scraps into treasure.",
+      "thumbnail": "assets/img/games/glory-of-asgard.jpg",
+      "specs": {
+        "rtp": "95.00%",
+        "max_win": "10,000x bet",
+        "volatility": "Medium-high",
+        "region": "Global",
+        "reels": "6 reels",
+        "lines": "Pay Anywhere",
+        "min_bet": "€0.20",
+        "max_bet": "€25.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/glory-of-asgard/logo.png",
+        "backdrop": "assets/img/games/glory-of-asgard/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "joker-win-hits",
+      "title": "Joker Win Hits",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2024-11-14",
+      "tagline": "The joker never misses twice.",
+      "summary": "The original of the Joker Win Hits line: a compact, fast-paced fruit slot with instant-win joker symbols and no bonus round to slow it down.",
+      "card_line": "The one that started it all: fruit, fire, and a joker that pays on sight.",
+      "thumbnail": "assets/img/games/joker-win-hits.jpg",
+      "specs": {
+        "rtp": "94.00%",
+        "max_win": "5,000x bet",
+        "volatility": "Medium-high",
+        "region": "Global",
+        "reels": "3 reels",
+        "lines": "5",
+        "hit_rate": "1 in 9",
+        "feature_hit_rate": "1 in 149",
+        "min_bet": "€0.10",
+        "max_bet": "€100.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/joker-win-hits/logo.png",
+        "backdrop": "assets/img/games/joker-win-hits/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ],
+      "features": [
+        {
+          "title": "Base Game",
+          "body": [
+            "3x3 win lines with four fixed pots ranging from 25x to 1000x base stake. Cash symbols are active on reels 1&3 and will be awarded when a Joker Collect symbol lands in view on reel 2."
+          ]
+        },
+        {
+          "title": "Joker Win Hits Bonus",
+          "body": [
+            "Achieving a Cash symbol on reels 1&3 with a Joker Collect symbol on reel 2 activates the feature round. You have 3 respins to land any coins on reels 1 & 3. Each time a new coin lands in view, it is collected by the Joker collect symbol on the centre reel, resetting the Spins Remaining to 3. This continues until all spins are used."
+          ]
+        },
+        {
+          "title": "Joker Win Hits Feature",
+          "body": [
+            "Every spin a Cash or Joker collect symbol lands in view, it is added to the Cash Blast meter above the reels. If the Cash Blast feature is triggered, it adds enough cash and collect symbols to the reels to trigger the Joker Win Hits Bonus."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "joker-win-hits-hotstepper",
+      "title": "Joker Win Hits Hotstepper",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-01-29",
+      "tagline": "Same joker. Hotter steps.",
+      "summary": "A step-multiplier sequel to Joker Win Hits, where consecutive wins advance a heat ladder that resets only on a dead spin.",
+      "card_line": "Every win climbs the ladder. Only a loss cools it back down.",
+      "thumbnail": "assets/img/games/joker-win-hits-hotstepper.jpg",
+      "specs": {
+        "rtp": "95.00%",
+        "max_win": "5,000x bet",
+        "volatility": "High",
+        "region": "Global",
+        "reels": "3 reels",
+        "lines": "5",
+        "hit_rate": "1 in 9",
+        "feature_hit_rate": "1 in 149",
+        "min_bet": "€0.10",
+        "max_bet": "€1,000.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/joker-win-hits-hotstepper/logo.png",
+        "backdrop": "assets/img/games/joker-win-hits-hotstepper/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ],
+      "features": [
+        {
+          "title": "Base Game",
+          "body": [
+            "3x3 reel set, four fixed pots ranging from 25x to 1000x base stake. Cash collect is active in the base game."
+          ]
+        },
+        {
+          "title": "Hotstepper",
+          "body": [
+            "Hotstepper is activated whenever a Joker collect symbol lands on reel 2. Once activated the Joker collect symbol will step one position down on every spin, until it steps out of view."
+          ]
+        },
+        {
+          "title": "Joker Win Hits Bonus",
+          "body": [
+            "Achieving a Cash symbol on reels 1&3 with a Joker Collect symbol on reel 2 activates the feature round. You have 3 respins to land any coins on reels 1 & 3. Each time a new coin lands in view, it is collected by the Joker collect symbol on the centre reel, resetting the Spins Remaining to 3. This continues until all spins are used."
+          ]
+        },
+        {
+          "title": "Joker Win Hits Feature",
+          "body": [
+            "Every spin a Cash or Joker collect symbol lands in view, it is added to the Cash Blast meter above the reels. If the Cash Blast feature is triggered, it adds enough cash and collect symbols to the reels to trigger the feature round."
+          ]
+        },
+        {
+          "title": "Power Play",
+          "body": [
+            "During Power Play only the Cash, Jackpot and Joker Collect symbols are active. Hotstepper can also be triggered during Power Play."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "joker-win-hits-power-5",
+      "title": "Joker Win Hits Power 5",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-05-21",
+      "tagline": "Five ways to make the joker pay.",
+      "summary": "The five-reel power entry in the Joker line, adding a persistent bonus wheel and a fifth win-multiplier tier.",
+      "card_line": "Five reels, a bonus wheel, and a fifth gear the others don't have.",
+      "thumbnail": "assets/img/games/joker-win-hits-power-5.jpg",
+      "specs": {
+        "rtp": "95.01%",
+        "max_win": "5,000x bet",
+        "volatility": "High",
+        "region": "Global",
+        "reels": "5 reels",
+        "lines": "5",
+        "hit_rate": "1 in 9",
+        "feature_hit_rate": "1 in 150",
+        "min_bet": "€0.20",
+        "max_bet": "€100.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/joker-win-hits-power-5/logo.png",
+        "backdrop": "assets/img/games/joker-win-hits-power-5/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ],
+      "features": [
+        {
+          "title": "Base Game",
+          "body": [
+            "5x3 reel set, adjacent pays, four fixed pots 25x to 1000x base stake. Cash symbols are active on reels 1, 2, 4 & 5, which will be awarded when a Joker Collect symbol lands in view on reel 3."
+          ]
+        },
+        {
+          "title": "Joker Win Hits Bonus",
+          "body": [
+            "Achieving a Cash symbol on adjacent reels with a Joker Collect symbol on reel 3 (1/2/3, 2/3/4 or 3/4/5) activates the feature round. You have 3 respins to land any coins on the reels. Each time a new coin lands in view, it is collected by the Joker collect symbol on the centre reel, resetting the Spins Remaining to 3. This continues until all spins are used."
+          ]
+        },
+        {
+          "title": "Power Play",
+          "body": [
+            "Activate Power Play to remove all reel symbols, leaving just the Cash and Collect symbols, giving more chance of a Cash Collect win or the bonus."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "stallion-stampede-megaways",
+      "title": "Stallion Stampede Megaways",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-02-12",
+      "tagline": "117,649 ways to run them down.",
+      "summary": "A wide-open Megaways title set on the plains, with unlimited win multipliers running through the free-spins round.",
+      "card_line": "117,649 ways across open plains, and the multipliers never cap.",
+      "thumbnail": "assets/img/games/stallion-stampede-megaways.jpg",
+      "specs": {
+        "rtp": "96.21%",
+        "max_win": "250,000x bet / €288,271",
+        "volatility": "High",
+        "region": "Global",
+        "reels": "6 reels",
+        "lines": "117,649 Megaways",
+        "min_bet": "€0.10",
+        "max_bet": "€1,000.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/stallion-stampede-megaways/logo.png",
+        "backdrop": "assets/img/games/stallion-stampede-megaways/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "the-real-og",
+      "title": "The Real OG",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2024-10-08",
+      "tagline": "Respect the original.",
+      "summary": "A stripped-back street-styled slot for players who want pure base-game pace with a single, generous wild feature.",
+      "card_line": "No ladders, no meters. One wild, pure pace, and respect for the original.",
+      "thumbnail": "assets/img/games/the-real-og.jpg",
+      "specs": {
+        "rtp": "94.02%",
+        "max_win": "10,000x bet",
+        "volatility": "High",
+        "region": "Global",
+        "reels": "6 reels",
+        "lines": "Pay Anywhere",
+        "min_bet": "€0.20",
+        "max_bet": "€50.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/the-real-og/logo.png",
+        "backdrop": "assets/img/games/the-real-og/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "wild-bull-megaways",
+      "title": "Wild Bull Megaways",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-08-20",
+      "tagline": "Let the herd loose.",
+      "summary": "A rodeo-themed Megaways slot with cascading reels and a stampede feature that clears low symbols across the full grid.",
+      "card_line": "The herd breaks loose and clears the reels of anything that isn't worth much.",
+      "thumbnail": "assets/img/games/wild-bull-megaways.jpg",
+      "specs": {
+        "rtp": "96.50%",
+        "max_win": "10,000x bet",
+        "volatility": "High",
+        "region": "Global",
+        "reels": "6 reels",
+        "lines": "117,649 Megaways",
+        "min_bet": "€0.10",
+        "max_bet": "€50.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/wild-bull-megaways/logo.png",
+        "backdrop": "assets/img/games/wild-bull-megaways/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "wolf-bonanza",
+      "title": "Wolf Bonanza",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2024-12-04",
+      "tagline": "Run with the pack.",
+      "summary": "A moonlit canyon slot built on pack-wild symbols that link across adjacent reels to form oversized win blocks.",
+      "card_line": "The pack links up across the reels, and the wins get very big very fast.",
+      "thumbnail": "assets/img/games/wolf-bonanza.jpg",
+      "specs": {
+        "rtp": "94.00%",
+        "max_win": "10,000x bet",
+        "volatility": "Medium-high",
+        "region": "Global",
+        "reels": "6 reels",
+        "lines": "4,096 ways",
+        "min_bet": "€0.10",
+        "max_bet": "€10.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/wolf-bonanza/logo.png",
+        "backdrop": "assets/img/games/wolf-bonanza/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "bamboonanza",
+      "title": "Bamboonanza",
+      "brand": "origins",
+      "category": "slots",
+      "status": "live",
+      "featured": true,
+      "new_release": true,
+      "release_date": "2026-08-06",
+      "tagline": "Balance, patience, and a calm heart.",
+      "tagline_lines": [
+        "Balance, patience,",
+        "and a calm heart."
+      ],
+      "summary": "A bamboo-grove slot where fortune follows a peaceful spirit — 50 lines across a 5x6 grid, with three certified RTP configurations and a 50,000x ceiling.",
+      "card_line": "Fortune follows a calm heart through the bamboo grove — and it pays for patience.",
+      "thumbnail": "assets/img/games/bamboonanza.jpg",
+      "specs": {
+        "game_id": "bamboonanza",
+        "rtp": "96.36%",
+        "max_win": "50000x bet",
+        "volatility": "High",
+        "hit_rate": "27.1%",
+        "feature_hit_rate": "1/203",
+        "layout": "5x6",
+        "mechanic": "50 Lines",
+        "free_spin_cost": "€0.10",
+        "min_bet": "€0.10",
+        "max_bet": "€100",
+        "variants": [
+          {
+            "label": "96",
+            "rtp": "96.36%"
+          },
+          {
+            "label": "93",
+            "rtp": "93.77%"
+          },
+          {
+            "label": "97",
+            "rtp": "97.96%"
+          }
+        ]
+      },
+      "story": [
+        "In a hidden bamboo grove, ancient masters have learned that true fortune comes from balance, patience, and a calm heart. Spin the wheel of destiny with each breath. When you approach with a peaceful spirit, Bamboonanza reveals its hidden treasures: where every win flows like water, and the ultimate prize is inner harmony."
+      ],
+      "platform": "techtoniq",
+      "features": [
+        {
+          "title": "Golden Bamboo",
+          "body": [
+            "Triggers when a Mystery Symbol reveals a Golden Bamboo Symbol.",
+            "During the feature each Golden Bamboo position spins independently to reveal a Cash, Multiplier, Scatter, Fortune Scatter or Collector Symbol."
+          ]
+        },
+        {
+          "title": "Cash & Multiplier",
+          "body": [
+            "Cash Symbols carry values from 1x up to 5,000x the Base Bet.",
+            "A Multiplier Symbol multiplies every Cash and Collector Symbol on the reels by its value — 2x, 3x, 5x or 10x — then leaves, and its position spins for a new prize."
+          ]
+        },
+        {
+          "title": "Collector",
+          "body": [
+            "The Collector Symbol may appear during the Golden Bamboo Feature.",
+            "When it appears, it collects the values of all Cash and Collect symbols currently on the reels."
+          ]
+        }
+      ],
+      "symbols": [
+        {
+          "name": "Wild",
+          "file": "assets/img/games/bamboonanza/sym-wild.png"
+        },
+        {
+          "name": "Scatter",
+          "file": "assets/img/games/bamboonanza/sym-scatter.png"
+        },
+        {
+          "name": "Mystery",
+          "file": "assets/img/games/bamboonanza/sym-mystery.png",
+          "note": "Lands anywhere in the Base Game and Free Games to reveal other symbols."
+        },
+        {
+          "name": "Golden Bamboo",
+          "file": "assets/img/games/bamboonanza/sym-golden-bamboo.png"
+        },
+        {
+          "name": "Cash",
+          "file": "assets/img/games/bamboonanza/sym-cash.png"
+        },
+        {
+          "name": "Multiplier",
+          "file": "assets/img/games/bamboonanza/sym-multiplier.png"
+        },
+        {
+          "name": "Collector",
+          "file": "assets/img/games/bamboonanza/sym-collector.png"
+        },
+        {
+          "name": "Extra Spins",
+          "file": "assets/img/games/bamboonanza/sym-extra-spin.png"
+        },
+        {
+          "name": "Panda",
+          "file": "assets/img/games/bamboonanza/sym-high-panda.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Tiger",
+          "file": "assets/img/games/bamboonanza/sym-high-tiger.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Ram",
+          "file": "assets/img/games/bamboonanza/sym-high-ram.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Rabbit",
+          "file": "assets/img/games/bamboonanza/sym-high-rabbit.png",
+          "note": "High-paying symbol."
+        },
+        {
+          "name": "Spade",
+          "file": "assets/img/games/bamboonanza/sym-low-spade.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Heart",
+          "file": "assets/img/games/bamboonanza/sym-low-heart.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Club",
+          "file": "assets/img/games/bamboonanza/sym-low-club.png",
+          "note": "Low-paying symbol."
+        },
+        {
+          "name": "Diamond",
+          "file": "assets/img/games/bamboonanza/sym-low-diamond.png",
+          "note": "Low-paying symbol."
+        }
+      ],
+      "buy_options": [
+        {
+          "title": "No Transform",
+          "cost": "100x base bet",
+          "body": "Direct access to Free Games with 7–9 Free Spins and no low-paying symbol transformed."
+        },
+        {
+          "title": "2 Symbols Transform",
+          "cost": "180x base bet",
+          "body": "Direct access to Free Games with 7–9 Free Spins and 2 low-paying symbols transformed."
+        },
+        {
+          "title": "4 Symbols Transform",
+          "cost": "600x base bet",
+          "body": "Direct access to Free Games with 8–10 Free Spins and 4 low-paying symbols transformed."
+        },
+        {
+          "title": "Random Free Games",
+          "cost": "300x base bet",
+          "body": "Randomly awards one of the three Free Games options."
+        }
+      ],
+      "art": {
+        "logo": "assets/img/games/bamboonanza/logo.png",
+        "backdrop": "assets/img/games/bamboonanza/backdrop.jpg",
+        "cast": [
+          "assets/img/games/bamboonanza/cast-1.png",
+          "assets/img/games/bamboonanza/cast-2.png",
+          "assets/img/games/bamboonanza/cast-3.png",
+          "assets/img/games/bamboonanza/cast-4.png"
+        ]
+      },
+      "options": [
+        "Crazy Speed",
+        "Flexible Max Win",
+        "Adjustable RTP"
+      ]
+    },
+    {
+      "slug": "crave",
+      "title": "Crave!",
+      "brand": "origins",
+      "category": "slots",
+      "status": "upcoming",
+      "featured": false,
+      "release_date": "2026-09-01",
+      "tagline": "Every craving, every spin.",
+      "summary": "A food-fuelled slot built around appetite and impulse — the September release.",
+      "card_line": "Every craving you have ever had, spinning straight back at you.",
+      "thumbnail": "assets/img/games/crave.jpg",
+      "specs": {}
+    },
+    {
+      "slug": "its-not-mahjong",
+      "title": "It's Not Mahjong!",
+      "brand": "origins",
+      "category": "slots",
+      "status": "upcoming",
+      "featured": false,
+      "release_date": "2026-10-01",
+      "tagline": "Tiles, but not as you know them.",
+      "summary": "A tile-matching slot that borrows the board and rewrites the rules — the October release.",
+      "card_line": "It borrows the tiles. It absolutely does not follow the rules.",
+      "thumbnail": "assets/img/games/its-not-mahjong.jpg",
+      "specs": {}
+    },
+    {
+      "slug": "sheep-x-goat",
+      "title": "Sheep x Goat",
+      "brand": "origins",
+      "category": "slots",
+      "status": "upcoming",
+      "featured": false,
+      "release_date": "2026-11-01",
+      "tagline": "Two rivals. One grid.",
+      "summary": "A head-to-head brawler pitting sheep against goat across a festival grid — the November release.",
+      "card_line": "Sheep against goat, one grid, and only one of them is walking away.",
+      "thumbnail": "assets/img/games/sheep-x-goat.jpg",
+      "specs": {}
+    },
+    {
+      "slug": "",
+      "title": "",
+      "brand": "origins",
+      "category": "slots",
+      "status": "upcoming",
+      "featured": false,
+      "release_date": "2026-12-01",
+      "teaser": true,
+      "thumbnail": "assets/img/games/upcoming-dec-2026.jpg",
+      "art": {
+        "cutout": "assets/img/games/upcoming/dec-2026.png"
+      },
+      "specs": {}
+    },
+    {
+      "slug": "",
+      "title": "",
+      "brand": "origins",
+      "category": "slots",
+      "status": "upcoming",
+      "featured": false,
+      "release_date": "2027-01-01",
+      "teaser": true,
+      "thumbnail": "assets/img/games/upcoming-jan-2027.jpg",
+      "art": {
+        "cutout": "assets/img/games/upcoming/jan-2027.png"
+      },
+      "specs": {}
+    },
+    {
+      "slug": "",
+      "title": "",
+      "brand": "origins",
+      "category": "slots",
+      "status": "upcoming",
+      "featured": false,
+      "release_date": "2027-02-01",
+      "teaser": true,
+      "thumbnail": "assets/img/games/upcoming-feb-2027.jpg",
+      "art": {
+        "cutout": "assets/img/games/upcoming/feb-2027.png"
+      },
+      "specs": {}
+    },
+    {
+      "slug": "",
+      "title": "",
+      "brand": "origins",
+      "category": "slots",
+      "status": "upcoming",
+      "featured": false,
+      "release_date": "2027-03-01",
+      "teaser": true,
+      "thumbnail": "assets/img/games/upcoming-mar-2027.jpg",
+      "art": {
+        "cutout": "assets/img/games/upcoming/mar-2027.png"
+      },
+      "specs": {}
+    },
+    {
+      "slug": "wonder-of-greece",
+      "title": "Wonder of Greece",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-10-15",
+      "tagline": "Temples, gods and a golden hoard.",
+      "summary": "A Hellenic slot built on expanding wilds and a free-spin round that keeps its multipliers between spins.",
+      "card_line": "The gods stretch the reels wide, and free spins keep every multiplier they earn.",
+      "thumbnail": "assets/img/games/wonder-of-greece.jpg",
+      "specs": {
+        "rtp": "96.01%",
+        "max_win": "10,000x bet",
+        "volatility": "Medium-high",
+        "region": "Global",
+        "reels": "5 reels",
+        "lines": "25",
+        "min_bet": "€0.25",
+        "max_bet": "€40.00",
+        "orientation": "Mobile / Desktop"
+      },
+      "art": {
+        "logo": "assets/img/games/wonder-of-greece/logo.png",
+        "backdrop": "assets/img/games/wonder-of-greece/backdrop.jpg"
+      },
+      "options": [
+        "Free Rounds",
+        "Bet Limits"
+      ]
+    },
+    {
+      "slug": "joker-win-hits-megaways",
+      "title": "Joker Win Hits Megaways",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-11-12",
+      "tagline": "The Joker, now with Megaways.",
+      "summary": "A Joker Win Hits cabinet built on Coin Collect, where Coin and Pot symbols on reels 1&3 are swept by the Joker on reel 2, and Hotstepper walks that Joker down the reel.",
+      "card_line": "The Joker walks the middle reel, sweeping gold off both sides as he goes.",
+      "thumbnail": "assets/img/games/joker-win-hits-megaways.jpg",
+      "specs": {
+        "rtp": "95%",
+        "max_win": "5,000x bet",
+        "volatility": "Medium-high",
+        "hit_rate": "1 in 9",
+        "feature_hit_rate": "1 in 149"
+      },
+      "art": {
+        "logo": "assets/img/games/joker-win-hits-megaways/logo.png",
+        "backdrop": "assets/img/games/joker-win-hits-megaways/backdrop.jpg"
+      },
+      "features": [
+        {
+          "title": "Coin Collect",
+          "body": [
+            "Coin and Pot symbols are active on reels 1&3 and will be awarded when a Joker Win Hits symbol lands in view on reel 2."
+          ]
+        },
+        {
+          "title": "Hotstepper",
+          "body": [
+            "Hotstepper is activated whenever a Joker Win Hits symbol lands on reel 2. Once activated the Joker Win Hits symbol will step one position down on every spin, until it steps out of view."
+          ]
+        },
+        {
+          "title": "Joker Win Hits Bonus",
+          "body": [
+            "Achieving a Coin symbol on reels 1&3 with a Joker Win Hits symbol on reel 2 activates Joker Win Hits Bonus. You have 3 respins to land any coins on reels 1 & 3. Each time a new coin lands in view, it is collected by the Joker Win Hits symbol on the centre reel, resetting the Spins Remaining to 3."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "joker-win-hits-win-boost",
+      "title": "Joker Win Hits Win Boost",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2025-12-10",
+      "tagline": "Every collect, worth more.",
+      "summary": "A Joker Win Hits cabinet with a Win Boost Collect on reel 2 that inflates every coin value on the reels by a random amount before sweeping them.",
+      "card_line": "One collect, and suddenly every coin on the reels is worth more.",
+      "thumbnail": "assets/img/games/joker-win-hits-win-boost.jpg",
+      "specs": {
+        "rtp": "95%",
+        "max_win": "5,000x bet",
+        "volatility": "Medium-high",
+        "hit_rate": "1 in 9",
+        "feature_hit_rate": "1 in 149"
+      },
+      "art": {
+        "logo": "assets/img/games/joker-win-hits-win-boost/logo.png",
+        "backdrop": "assets/img/games/joker-win-hits-win-boost/backdrop.jpg"
+      },
+      "screenshots": [
+        {
+          "file": "assets/img/games/joker-win-hits-win-boost/shot-base-game.jpg",
+          "caption": "Base game",
+          "w": 1000,
+          "h": 495
+        },
+        {
+          "file": "assets/img/games/joker-win-hits-win-boost/shot-bonus.jpg",
+          "caption": "Feature round",
+          "w": 1000,
+          "h": 747
+        }
+      ],
+      "features": [
+        {
+          "title": "Win Boost",
+          "body": [
+            "A special Win Boost Collect symbol is active on reel 2. When it lands in view with any coin prize symbols, the Win Boost Collect boosts their value by a random amount before collecting the increased values."
+          ]
+        },
+        {
+          "title": "Hotstepper",
+          "body": [
+            "Hotstepper is activated whenever a Joker Win Hits symbol lands on reel 2. Once activated the Joker Win Hits symbol will step one position down on every spin, until it steps out of view."
+          ]
+        },
+        {
+          "title": "Joker Win Hits Bonus",
+          "body": [
+            "Achieving a Coin symbol on reels 1&3 with a Joker Win Hits symbol on reel 2 activates Joker Win Hits Bonus. You have 3 respins to land any coins on reels 1 & 3. Each time a new coin lands in view, it is collected by the Joker Win Hits symbol on the centre reel, resetting the Spins Remaining to 3."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "joker-win-hits-win-stepper",
+      "title": "Joker Win Hits Win Stepper",
+      "brand": "classic",
+      "category": "slots",
+      "status": "live",
+      "featured": false,
+      "release_date": "2026-01-14",
+      "tagline": "Wins that keep walking down.",
+      "summary": "A Joker Win Hits cabinet where the Win Stepper icon marches every coin value down a position and collects it again, for as long as values stay on the reels.",
+      "card_line": "Each coin marches down a step and gets collected all over again.",
+      "thumbnail": "assets/img/games/joker-win-hits-win-stepper.jpg",
+      "specs": {
+        "rtp": "95%",
+        "max_win": "5,000x bet",
+        "volatility": "Medium-high",
+        "hit_rate": "1 in 9",
+        "feature_hit_rate": "1 in 149"
+      },
+      "art": {
+        "logo": "assets/img/games/joker-win-hits-win-stepper/logo.png",
+        "backdrop": "assets/img/games/joker-win-hits-win-stepper/backdrop.jpg"
+      },
+      "screenshots": [
+        {
+          "file": "assets/img/games/joker-win-hits-win-stepper/shot-base-game.jpg",
+          "caption": "Base game",
+          "w": 1000,
+          "h": 715
+        },
+        {
+          "file": "assets/img/games/joker-win-hits-win-stepper/shot-bonus.jpg",
+          "caption": "Feature round",
+          "w": 1000,
+          "h": 715
+        }
+      ],
+      "features": [
+        {
+          "title": "Win Stepper",
+          "body": [
+            "If the Joker Win Hits symbol reveals the special Win Stepper icon, the Win Stepper feature is triggered. Any values in view step down one position. If they remain in view, they are collected again, and so on. New coin symbols can step into view on reels 1 and 3.",
+            "Win Stepper continues until no coin values are on the reels."
+          ]
+        },
+        {
+          "title": "Joker Win Hits Bonus",
+          "body": [
+            "Achieving a Coin symbol on reels 1&3 with a Joker Win Hits symbol on reel 2 activates Joker Win Hits Bonus. You have 3 respins to land any coins on reels 1 & 3. Each time a new coin lands in view, it is collected by the Joker Win Hits symbol on the centre reel, resetting the Spins Remaining to 3."
+          ]
+        }
+      ]
+    }
+  ]
+}
