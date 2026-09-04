@@ -615,7 +615,7 @@ const ARROWS = (label) => `
     /* added custom coded for deme-frame__empty to add thumbanail as background
     style in ws-overrides.css */
     const demoFrameEmpty = document.querySelector('.demo-frame__empty');
-    demoFrameEmpty.style.backgroundImage = `url('${game.thumbnail}')`; 
+    demoFrameEmpty.style.backgroundImage = `url('${e(game.thumbnail)}')`; 
 
   } catch (err) {
     console.error(err);

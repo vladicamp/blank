@@ -19,49 +19,6 @@
  * answer in one place.
  */
 
-.btn {
-  border: var(--rule-w) solid var(--green) !important;
-  background: transparent !important;
-  color: var(--green-dark) !important;
-}
-.btn:hover, .btn:focus-visible {
-  background: var(--green) !important;
-  color: var(--ink) !important;
-}
-.btn--solid {
-  background: var(--green) !important;
-  color: var(--ink) !important;
-}
-.btn--solid:hover {
-  background: var(--green-dark) !important;
-  color: var(--white) !important;
-}
-.btn[aria-pressed='true'] {
-  background: var(--green) !important;
-  color: var(--ink) !important;
-}
-.band-dark .btn {
-  color: var(--green) !important;
-}
-.band-dark .btn:hover,
-.band-dark .btn[aria-pressed='true'],
-.band-dark .btn--solid {
-  color: var(--ink) !important;
-}
-
-.carousel-nav button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: var(--rule-w) solid var(--green) !important;
-  background: transparent !important;
-  color: var(--green-dark) !important;
-}
-.carousel-nav button svg 
-{
-  max-width: unset;
-}
 .demo-frame__empty
 {
   background-size: cover;
